@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+
+	<diskStore path="java.io.tmpdir" />
+
+<!-- 	<cacheManagerPeerProviderFactory  -->
+<!-- 		class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" -->
+<!-- 		properties="hostName=, peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,multicastGroupPort=4446, timeToLive=1" /> -->
+
+	<!-- TODO: hostName needs to be IP to listen on, eg 10.0.0.2 -->
+<!-- 	<cacheManagerPeerListenerFactory -->
+<!-- 		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory" -->
+<!-- 		properties="hostName=, port=40001, remoteObjectPort=47000, socketTimeoutMillis=" /> -->
+
+	<defaultCache 
+		maxElementsInMemory="100000" 
+		eternal="false"
+		timeToIdleSeconds="60" 
+		timeToLiveSeconds="120" 
+		overflowToDisk="false"
+		maxElementsOnDisk="10000000" 
+		diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" 
+		memoryStoreEvictionPolicy="LRU">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true,replicatePuts=true,replicateUpdates=true,replicateUpdatesViaCopy=true,replicateRemovals=true " />
+	</defaultCache>
+</ehcache>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sm24soft</groupId>
+	<artifactId>sm24soft</artifactId>
+	<version>0.1.0</version>
+	<name>Sm24Soft :: Sales Management 24h Software (Tool)</name>
+	
+	<url>http://maven.apache.org</url>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>sondn</id>
+			<name>Ngoc Son Dang</name>
+		</developer>
+	</developers>
+	
+	<modules>
+		<module>sm24soft-core</module>
+		<module>sm24soft-webapp</module>
+		<module>sm24soft-common</module>
+		<module>sm24soft-security-web</module>
+	</modules>
+  	
+  	<properties>
+  		<slf4j.version>1.7.7</slf4j.version>
+  		<jdk.version>1.7</jdk.version>
+  		<spring.version>4.2.0.RELEASE</spring.version>
+  		<spring.security.version>3.2.8.RELEASE</spring.security.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
+	
+  	<dependencyManagement>
+  		<dependencies>
+  			<!-- Spring FRAMEWORK -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			<!-- Spring Security 3.x -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-bom</artifactId>
+				<version>${spring.security.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+<!-- 			<dependency> -->
+<!-- 				<groupId>antlr</groupId> -->
+<!-- 				<artifactId>antlr</artifactId> -->
+<!-- 				<version>2.7.7</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.poi</groupId> -->
+<!-- 				<artifactId>poi</artifactId> -->
+<!-- 				<version>3.11-beta2</version> -->
+<!-- 			</dependency> -->
+<!-- 			<dependency> -->
+<!-- 				<groupId>org.apache.poi</groupId> -->
+<!-- 				<artifactId>poi-ooxml</artifactId> -->
+<!-- 				<version>3.11-beta2</version> -->
+<!-- 			</dependency> -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>1.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+			<dependency>
+				<artifactId>commons-lang</artifactId>
+				<groupId>commons-lang</groupId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.9</version>
+			</dependency>
+			<dependency>
+	            <groupId>commons-digester</groupId>
+	            <artifactId>commons-digester</artifactId>
+	            <version>2.1</version>
+	            <type>jar</type>
+	            <scope>compile</scope>
+	        </dependency>
+
+	        <!-- SLF4J Logging -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.17</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>apache-log4j-extras</artifactId>
+				<version>1.2.17</version>
+				<scope>runtime</scope>
+			</dependency>
+			
+			<!-- Servlet & JSP API -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- TEST Frameworks -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+  		</dependencies>
+  	</dependencyManagement>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <packagingExcludes>WEB-INF/classes/*</packagingExcludes>
+                </configuration>
+            </plugin>            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>emma-maven-plugin</artifactId>
+                <version>1.0-alpha-3</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <reportFormat>xml</reportFormat>
+                    <classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory>
+                    <argLine>-XX:-UseSplitVerifier</argLine>
+					<argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>unpack-dependencies</id> -->
+<!-- 						<phase>package</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>unpack-dependencies</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 					<execution> -->
+<!-- 						<id>tree</id> -->
+<!-- 						<phase>generate-sources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>tree</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 					<execution> -->
+<!-- 						<id>build-classpath</id> -->
+<!-- 						<phase>generate-sources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>build-classpath</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+			</plugin>
+        </plugins>
+        
+<!--         <resources> -->
+<!--             <resource> -->
+<!--                 <filtering>false</filtering> -->
+<!--                 <directory>src/main/resources</directory> -->
+<!--             </resource> -->
+<!--             <resource> -->
+<!--                 <filtering>false</filtering> -->
+<!--                 <directory>src/main/java</directory> -->
+<!--                 <includes> -->
+<!--                     <include>**</include> -->
+<!--                 </includes> -->
+<!--                 <excludes> -->
+<!--                     <exclude>**/*.java</exclude> -->
+<!--                 </excludes> -->
+<!--             </resource> -->
+<!--             <resource> -->
+<!--                 <filtering>false</filtering> -->
+<!--                 <directory>config</directory> -->
+<!--             </resource> -->
+<!--         </resources> -->
+<!--         <testResources> -->
+<!--             <testResource> -->
+<!--                 <filtering>false</filtering> -->
+<!--                 <directory>src/test/resources</directory> -->
+<!--             </testResource> -->
+<!--             <testResource> -->
+<!--                 <filtering>false</filtering> -->
+<!--                 <directory>src/test/java</directory> -->
+<!--                 <includes> -->
+<!--                     <include>**</include> -->
+<!--                 </includes> -->
+<!--                 <excludes> -->
+<!--                     <exclude>**/*.java</exclude> -->
+<!--                 </excludes> -->
+<!--             </testResource> -->
+<!--         </testResources> -->
+    </build>
+    <packaging>pom</packaging>
+</project>
