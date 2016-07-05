@@ -12,7 +12,7 @@ public class Invoice extends BaseEntity {
 	private Store store;
 	private Customer customer;
 	private List<ItemDetail> itemDetails;
-	private String originInvoiceNumber;
+	private Invoice originInvoice;
 	private String returnedInvoiceFlg; // 0 = Normal Sale, 1 = Return Invoice
 	private double totalPriceBeforeVAT; // tổng giá trị trước thuế
 	private String valueAddedTax; // thuế giá trị gia tăng - VAT Code. Ex: 10%
@@ -29,6 +29,8 @@ public class Invoice extends BaseEntity {
 	private String actualInvoiceStatus;
 	private Date expectedDateOfShipping;
 	private Date expectedTimeOfShipping;
+	
+	private List<Invoice> listOfSubInvoices;
 
 	public Invoice() {
 		super();
@@ -90,12 +92,12 @@ public class Invoice extends BaseEntity {
 		this.itemDetails = itemDetails;
 	}
 
-	public String getOriginInvoiceNumber() {
-		return originInvoiceNumber;
+	public Invoice getOriginInvoice() {
+		return originInvoice;
 	}
 
-	public void setOriginInvoiceNumber(String originInvoiceNumber) {
-		this.originInvoiceNumber = originInvoiceNumber;
+	public void setOriginInvoice(Invoice originInvoice) {
+		this.originInvoice = originInvoice;
 	}
 
 	public String getReturnedInvoiceFlg() {
@@ -192,6 +194,14 @@ public class Invoice extends BaseEntity {
 
 	public void setExpectedTimeOfShipping(Date expectedTimeOfShipping) {
 		this.expectedTimeOfShipping = expectedTimeOfShipping;
+	}
+
+	public List<Invoice> getListOfSubInvoices() {
+		return listOfSubInvoices;
+	}
+
+	public void setListOfSubInvoices(List<Invoice> listOfSubInvoices) {
+		this.listOfSubInvoices = listOfSubInvoices;
 	}
 
 }

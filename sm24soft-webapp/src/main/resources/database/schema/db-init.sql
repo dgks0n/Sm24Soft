@@ -119,8 +119,8 @@ CREATE TABLE `invoice` (
   `invoice_number` int(8) unsigned zerofill NOT NULL,
   `template_number` varchar(8) DEFAULT NULL,
   `date_of_issue` datetime NOT NULL,
-  `store_id` int(8) unsigned zerofill NOT NULL,
-  `customer_id` int(8) unsigned zerofill NOT NULL,
+  `store_id` int(8) unsigned zerofill DEFAULT NULL,
+  `customer_id` int(8) unsigned zerofill DEFAULT NULL,
   `origin_invoice_number` int(8) unsigned zerofill DEFAULT NULL,
   `returned_invoice_flg` varchar(1) NOT NULL,
   `total_price_before_vat` double NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE `invoice` (
   `total_price_after_vat` double NOT NULL,
   `total_price_after_vat_as_string` varchar(400) NOT NULL,
   `date_of_sale` datetime NOT NULL,
-  `seller_person_id` int(8) unsigned zerofill NOT NULL,
+  `seller_person_id` int(8) unsigned zerofill DEFAULT NULL,
   `payment_code` varchar(1) NOT NULL,
   `actual_invoice_status` varchar(1) NOT NULL,
   `expected_daate_of_shipping` datetime NOT NULL,
@@ -166,11 +166,11 @@ CREATE TABLE `item` (
   `plu_code1` varchar(30) DEFAULT NULL,
   `plu_code2` varchar(30) DEFAULT NULL,
   `plu_code3` varchar(30) DEFAULT NULL,
-  `short_name` varchar(100) DEFAULT NULL,
-  `full_name` varchar(255) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `short_name` varchar(100) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `description` text,
   `item_category_id` int(4) unsigned zerofill NOT NULL,
-  `store_id` int(4) unsigned zerofill NOT NULL,
+  `store_id` int(4) unsigned zerofill DEFAULT NULL,
   `supplier_id` int(4) unsigned zerofill NOT NULL,
   `import_date` datetime NOT NULL,
   `price` double NOT NULL DEFAULT '0',
@@ -179,12 +179,12 @@ CREATE TABLE `item` (
   `unit_of_price` varchar(10) NOT NULL,
   `discount` double NOT NULL DEFAULT '0',
   `unit_of_discount` varchar(10) NOT NULL,
-  `tax_id` int(2) unsigned zerofill NOT NULL,
+  `tax_id` int(2) unsigned zerofill DEFAULT NULL,
   `saleable_flag` varchar(1) NOT NULL DEFAULT '0',
   `manufacture_date` datetime NOT NULL,
   `expire_date` datetime NOT NULL,
   `weight` float NOT NULL DEFAULT '0',
-  `weight_of_one_box` text DEFAULT NULL,
+  `weight_of_one_box` text NOT NULL,
   `total_weight` float NOT NULL DEFAULT '0',
   `total_remaining_weight_after_sell` float NOT NULL DEFAULT '0',
   `unit_of_weight` varchar(5) NOT NULL,
@@ -221,8 +221,8 @@ DROP TABLE IF EXISTS `item_category`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_category` (
   `id` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text,
   `parent_category_id` int(4) unsigned zerofill NOT NULL,
   `supplier_id` int(4) unsigned zerofill NOT NULL,
   `delete_flg` varchar(1) NOT NULL DEFAULT '0',
@@ -294,7 +294,7 @@ CREATE TABLE `menu` (
   `order_type` varchar(4) COLLATE utf8_bin NOT NULL DEFAULT '0',
   `full_path_of_menu_item` varchar(150) CHARACTER SET utf8 NOT NULL DEFAULT '/',
   `actual_status` int(1) NOT NULL DEFAULT '0',
-  `delete_flg` varchar(1) NOT NULL DEFAULT '0',
+  `delete_flg` varchar(1) COLLATE utf8_bin NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `created_user_id` int(8) unsigned zerofill NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -315,13 +315,13 @@ LOCK TABLES `menu` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `representative_person`
+-- Table structure for table `representative_or_contact_person`
 --
 
-DROP TABLE IF EXISTS `representative_person`;
+DROP TABLE IF EXISTS `representative_or_contact_person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `representative_person` (
+CREATE TABLE `representative_or_contact_person` (
   `id` int(8) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `short_name` varchar(100) NOT NULL,
   `full_name` varchar(255) NOT NULL,
@@ -334,7 +334,6 @@ CREATE TABLE `representative_person` (
   `telephone_number1` varchar(15) NOT NULL,
   `telephone_number2` varchar(15) DEFAULT NULL,
   `telephone_number3` varchar(15) DEFAULT NULL,
-  `delete_flg` varchar(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `created_user_id` int(8) unsigned zerofill NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -350,12 +349,12 @@ CREATE TABLE `representative_person` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `representative_person`
+-- Dumping data for table `representative_or_contact_person`
 --
 
-LOCK TABLES `representative_person` WRITE;
-/*!40000 ALTER TABLE `representative_person` DISABLE KEYS */;
-/*!40000 ALTER TABLE `representative_person` ENABLE KEYS */;
+LOCK TABLES `representative_or_contact_person` WRITE;
+/*!40000 ALTER TABLE `representative_or_contact_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `representative_or_contact_person` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -475,8 +474,8 @@ CREATE TABLE `supplier` (
   `id` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `supplier_name` varchar(255) NOT NULL,
   `supplier_trading_name` varchar(255) NOT NULL,
-  `representative_person_id` int(8) unsigned zerofill NOT NULL,
-  `contact_person_id` int(8) unsigned zerofill NOT NULL,
+  `representative_person_id` int(8) unsigned zerofill DEFAULT NULL,
+  `contact_person_id` int(8) unsigned zerofill DEFAULT NULL,
   `address1` varchar(255) NOT NULL,
   `address2` varchar(255) DEFAULT NULL,
   `email_address` varchar(60) NOT NULL,
@@ -549,4 +548,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-03 13:44:26
+-- Dump completed on 2016-07-06  1:06:44

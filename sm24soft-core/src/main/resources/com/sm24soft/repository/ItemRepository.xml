@@ -31,18 +31,18 @@
 			property="itemCategory"
 			javaType="com.sm24soft.entity.ItemCategory"
 			select="com.sm24soft.repository.ItemCategoryRepository.findById" />
-		<association column="store_id" 
-			property="store"
-			javaType="com.sm24soft.entity.Store"
-			select="com.sm24soft.repository.StoreRepository.findById" />
+<!-- 		<association column="store_id"  -->
+<!-- 			property="store" -->
+<!-- 			javaType="com.sm24soft.entity.Store" -->
+<!-- 			select="com.sm24soft.repository.StoreRepository.findById" /> -->
 		<association column="supplier_id" 
 			property="supplier"
 			javaType="com.sm24soft.entity.Supplier"
 			select="com.sm24soft.repository.SupplierRepository.findById" />
-		<association column="tax_id" 
-			property="tax"
-			javaType="com.sm24soft.entity.Tax"
-			select="com.sm24soft.repository.TaxRepository.findById" />
+<!-- 		<association column="tax_id"  -->
+<!-- 			property="tax" -->
+<!-- 			javaType="com.sm24soft.entity.Tax" -->
+<!-- 			select="com.sm24soft.repository.TaxRepository.findById" /> -->
 	</resultMap>
 	
 	<sql id="findItemSQL">

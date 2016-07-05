@@ -16,16 +16,16 @@
 		<result column="fax_number3" property="faxNumber3" />
 		<result column="loyalty_accumulated_point" property="loyaltyAccumulatedPoint" />
 		
-		<association column="representative_person_id"
-			columnPrefix="represent_"
-			property="representativePerson"
-			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
-			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
-		<association column="contact_person_id"
-			columnPrefix="contact_"
-			property="contactPerson"
-			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
-			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
+<!-- 		<association column="representative_person_id" -->
+<!-- 			columnPrefix="represent_" -->
+<!-- 			property="representativePerson" -->
+<!-- 			javaType="com.sm24soft.entity.RepresentativeOrContactPerson" -->
+<!-- 			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" /> -->
+<!-- 		<association column="contact_person_id" -->
+<!-- 			columnPrefix="contact_" -->
+<!-- 			property="contactPerson" -->
+<!-- 			javaType="com.sm24soft.entity.RepresentativeOrContactPerson" -->
+<!-- 			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" /> -->
 		<collection column="id"
 			property="listOfItemCategories"
 			javaType="ArrayList"
@@ -91,9 +91,9 @@
 		    `contact`.`updated_at`				AS `contact_updated_at`,
 		    `contact`.`updated_user_id`			AS `contact_updated_user_id`
 		FROM `supplier`
-		INNER JOIN `representative_or_contact_person` AS `represent`
+		LEFT JOIN `representative_or_contact_person` AS `represent`
 			ON `represent`.`id` = `supplier`.`representative_person_id`
-		INNER JOIN `representative_or_contact_person` AS `contact`
+		LEFT JOIN `representative_or_contact_person` AS `contact`
 			ON `contact`.`id` = `supplier`.`contact_person_id`
 	</sql>
 	

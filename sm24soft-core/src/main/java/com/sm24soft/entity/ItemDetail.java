@@ -9,6 +9,8 @@ public class ItemDetail extends BaseEntity {
 	private double totalPrice;
 	private String unitOfTotalPrice;
 	
+	private Invoice originalInvoice;
+	
 	public ItemDetail() {
 		super();
 	}
@@ -59,6 +61,14 @@ public class ItemDetail extends BaseEntity {
 
 	public void setUnitOfTotalPrice(String unitOfTotalPrice) {
 		this.unitOfTotalPrice = unitOfTotalPrice;
+	}
+
+	public Invoice getOriginalInvoice() {
+		return originalInvoice;
+	}
+
+	public void setOriginalInvoice(Invoice originalInvoice) {
+		this.originalInvoice = originalInvoice;
 	}
 
 }

@@ -20,5 +20,5 @@ public class BoxReference extends Entity {
 	public void setWeightOfOneBox(float weightOfOneBox) {
 		this.weightOfOneBox = weightOfOneBox;
 	}
-
+	
 }

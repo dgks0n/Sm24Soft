@@ -1,6 +1,6 @@
 package com.sm24soft.entity;
 
-public abstract class Entity implements IEntity {
+public class Entity implements IEntity {
 
 	private String id;
 
