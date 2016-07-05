@@ -3,11 +3,10 @@ package com.sm24soft.entity;
 public class Tax extends BaseEntity {
 
 	private String description;
-	private String taxCalculation;
+	private String calculation;
 
 	public Tax() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDescription() {
@@ -18,12 +17,12 @@ public class Tax extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getTaxCalculation() {
-		return taxCalculation;
+	public String getCalculation() {
+		return calculation;
 	}
 
-	public void setTaxCalculation(String taxCalculation) {
-		this.taxCalculation = taxCalculation;
+	public void setCalculation(String calculation) {
+		this.calculation = calculation;
 	}
 
 }

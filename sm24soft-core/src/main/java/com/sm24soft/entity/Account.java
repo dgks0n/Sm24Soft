@@ -1,17 +1,25 @@
 package com.sm24soft.entity;
 
+import com.sm24soft.encryption.EncryptedPassword;
+
 public class Account extends BaseEntity {
 
 	private String username;
-	private String encryptedPassword;
+	private EncryptedPassword encryptedPassword;
+	private String confirmationCode;
 	private int role;
-	private String staffCode;
-	private String storeCode;
-	private String departmentCode;
+	private String status; // 0 = NON_ACTIVE, 1 = ACTIVE
+	private String staffOrCustomerFlg; // 0 = Customer, 1 = Staff
+	private Person staffOrCustomer;
+	private Store store;
+	private String signedUpWithFacebookFlg; // 0 = Normal Account, 1 = Facebook Account
+	private String signedUpWithGoogleFlg; // 0 = Normal Account, 1 = Google Account
+	private String sharingBlogUrl1; // blog URL
+	private String sharingBlogUrl2;
+	private String sharingBlogUrl3;
 	
 	public Account() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getUsername() {
@@ -22,12 +30,20 @@ public class Account extends BaseEntity {
 		this.username = username;
 	}
 
-	public String getEncryptedPassword() {
+	public EncryptedPassword getEncryptedPassword() {
 		return encryptedPassword;
 	}
 
-	public void setEncryptedPassword(String encryptedPassword) {
+	public void setEncryptedPassword(EncryptedPassword encryptedPassword) {
 		this.encryptedPassword = encryptedPassword;
+	}
+
+	public String getConfirmationCode() {
+		return confirmationCode;
+	}
+
+	public void setConfirmationCode(String confirmationCode) {
+		this.confirmationCode = confirmationCode;
 	}
 
 	public int getRole() {
@@ -38,28 +54,76 @@ public class Account extends BaseEntity {
 		this.role = role;
 	}
 
-	public String getStaffCode() {
-		return staffCode;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStaffCode(String staffCode) {
-		this.staffCode = staffCode;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public String getStoreCode() {
-		return storeCode;
+	public String getStaffOrCustomerFlg() {
+		return staffOrCustomerFlg;
 	}
 
-	public void setStoreCode(String storeCode) {
-		this.storeCode = storeCode;
+	public void setStaffOrCustomerFlg(String staffOrCustomerFlg) {
+		this.staffOrCustomerFlg = staffOrCustomerFlg;
 	}
 
-	public String getDepartmentCode() {
-		return departmentCode;
+	public Person getStaffOrCustomer() {
+		return staffOrCustomer;
 	}
 
-	public void setDepartmentCode(String departmentCode) {
-		this.departmentCode = departmentCode;
+	public void setStaffOrCustomer(Person staffOrCustomer) {
+		this.staffOrCustomer = staffOrCustomer;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public String getSignedUpWithFacebookFlg() {
+		return signedUpWithFacebookFlg;
+	}
+
+	public void setSignedUpWithFacebookFlg(String signedUpWithFacebookFlg) {
+		this.signedUpWithFacebookFlg = signedUpWithFacebookFlg;
+	}
+
+	public String getSignedUpWithGoogleFlg() {
+		return signedUpWithGoogleFlg;
+	}
+
+	public void setSignedUpWithGoogleFlg(String signedUpWithGoogleFlg) {
+		this.signedUpWithGoogleFlg = signedUpWithGoogleFlg;
+	}
+
+	public String getSharingBlogUrl1() {
+		return sharingBlogUrl1;
+	}
+
+	public void setSharingBlogUrl1(String sharingBlogUrl1) {
+		this.sharingBlogUrl1 = sharingBlogUrl1;
+	}
+
+	public String getSharingBlogUrl2() {
+		return sharingBlogUrl2;
+	}
+
+	public void setSharingBlogUrl2(String sharingBlogUrl2) {
+		this.sharingBlogUrl2 = sharingBlogUrl2;
+	}
+
+	public String getSharingBlogUrl3() {
+		return sharingBlogUrl3;
+	}
+
+	public void setSharingBlogUrl3(String sharingBlogUrl3) {
+		this.sharingBlogUrl3 = sharingBlogUrl3;
 	}
 
 }

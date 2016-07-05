@@ -1,14 +1,20 @@
 package com.sm24soft.entity;
 
+import java.util.List;
+
 public class ItemCategory extends BaseEntity {
 
 	private String name;
 	private String description;
-	private String parentItemCategoryCode;
+	private ItemCategory parentItemCategory;
+	private Supplier supplier; // Belong to what supplier
+	
+	// Extends
+	private List<ItemCategory> listOfItemCategories;
+	private List<Item> listOfItems;
 
 	public ItemCategory() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {
@@ -27,12 +33,36 @@ public class ItemCategory extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getParentItemCategoryCode() {
-		return parentItemCategoryCode;
+	public ItemCategory getParentItemCategory() {
+		return parentItemCategory;
 	}
 
-	public void setParentItemCategoryCode(String parentItemCategoryCode) {
-		this.parentItemCategoryCode = parentItemCategoryCode;
+	public void setParentItemCategory(ItemCategory parentItemCategory) {
+		this.parentItemCategory = parentItemCategory;
+	}
+
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+
+	public List<ItemCategory> getListOfItemCategories() {
+		return listOfItemCategories;
+	}
+
+	public void setListOfItemCategories(List<ItemCategory> listOfItemCategories) {
+		this.listOfItemCategories = listOfItemCategories;
+	}
+
+	public List<Item> getListOfItems() {
+		return listOfItems;
+	}
+
+	public void setListOfItems(List<Item> listOfItems) {
+		this.listOfItems = listOfItems;
 	}
 
 }

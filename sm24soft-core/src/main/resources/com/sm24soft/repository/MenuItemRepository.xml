@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.MenuItemRepository">
+	<resultMap type="com.sm24soft.entity.MenuItem" id="MenuItemResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="full_name_of_menu_item" property="fullNameOfMenuItem" />
+		<result column="role_of_menu_item" property="roleOfMenuItem" />
+		<result column="order_number" property="orderNumber" />
+		<result column="order_type" property="orderType" />
+		<result column="full_path_of_menu_item" property="fullPathOfMenuItem" />
+		<result column="actual_status" property="actualStatus" />
+	</resultMap>
+	
+	<select id="findAllMenuItem" resultMap="MenuItemResultMap">
+	SELECT `menu`.`id`,
+	    `menu`.`full_name_of_menu_item`,
+	    `menu`.`role_of_menu_item`,
+	    `menu`.`order_number`,
+	    `menu`.`order_type`,
+	    `menu`.`full_path_of_menu_item`,
+	    `menu`.`actual_status`,
+	    `menu`.`created_at`,
+	    `menu`.`created_user_id`,
+	    `menu`.`updated_at`,
+	    `menu`.`updated_user_id`
+	FROM `menu`;
+	</select>
+</mapper>

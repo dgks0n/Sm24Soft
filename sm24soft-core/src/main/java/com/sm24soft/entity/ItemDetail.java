@@ -2,23 +2,23 @@ package com.sm24soft.entity;
 
 public class ItemDetail extends BaseEntity {
 
-	private String itemCode;
+	private Item purchasedItem; // Original sell item
 	private String unitOfSale;
 	private double price;
 	private int numberOfItem;
 	private double totalPrice;
+	private String unitOfTotalPrice;
 	
 	public ItemDetail() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public String getItemCode() {
-		return itemCode;
+	public Item getPurchasedItem() {
+		return purchasedItem;
 	}
 
-	public void setItemCode(String itemCode) {
-		this.itemCode = itemCode;
+	public void setPurchasedItem(Item purchasedItem) {
+		this.purchasedItem = purchasedItem;
 	}
 
 	public String getUnitOfSale() {
@@ -51,6 +51,14 @@ public class ItemDetail extends BaseEntity {
 
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public String getUnitOfTotalPrice() {
+		return unitOfTotalPrice;
+	}
+
+	public void setUnitOfTotalPrice(String unitOfTotalPrice) {
+		this.unitOfTotalPrice = unitOfTotalPrice;
 	}
 
 }

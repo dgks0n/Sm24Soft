@@ -4,56 +4,55 @@ import java.util.Date;
 
 public class BaseEntity extends Entity {
 
-	private String DeleteFlg; // 0 = Normal, 1 = Deleted
+	private String deleteFlg; // 0 = Normal, 1 = Deleted
 	
-	private String createdUserCode;
-	private Date createdDateTime;
-	private String updatedUserCode;
-	private Date updatedDateTime;
+	private String createdUserId;
+	private Date createdAt;
+	private String updatedUserId;
+	private Date updatedAt;
 
 	public BaseEntity() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDeleteFlg() {
-		return DeleteFlg;
+		return deleteFlg;
 	}
 
 	public void setDeleteFlg(String deleteFlg) {
-		DeleteFlg = deleteFlg;
+		this.deleteFlg = deleteFlg;
 	}
 
-	public String getCreatedUserCode() {
-		return createdUserCode;
+	public String getCreatedUserId() {
+		return createdUserId;
 	}
 
-	public void setCreatedUserCode(String createdUserCode) {
-		this.createdUserCode = createdUserCode;
+	public void setCreatedUserId(String createdUserId) {
+		this.createdUserId = createdUserId;
 	}
 
-	public Date getCreatedDateTime() {
-		return createdDateTime;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreatedDateTime(Date createdDateTime) {
-		this.createdDateTime = createdDateTime;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public String getUpdatedUserCode() {
-		return updatedUserCode;
+	public String getUpdatedUserId() {
+		return updatedUserId;
 	}
 
-	public void setUpdatedUserCode(String updatedUserCode) {
-		this.updatedUserCode = updatedUserCode;
+	public void setUpdatedUserId(String updatedUserId) {
+		this.updatedUserId = updatedUserId;
 	}
 
-	public Date getUpdatedDateTime() {
-		return updatedDateTime;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdatedDateTime(Date updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }

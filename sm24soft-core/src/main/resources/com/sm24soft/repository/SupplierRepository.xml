@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.SupplierRepository">
+	<resultMap type="com.sm24soft.entity.Supplier" id="SupplierResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="supplier_name" property="companyName" />
+		<result column="supplier_trading_name" property="companyTradingName" />
+		<result column="address1" property="address1" />
+		<result column="address2" property="address2" />
+		<result column="email_address" property="email" />
+		<result column="telephone_number1" property="telephoneNumber1" />
+		<result column="telephone_number2" property="telephoneNumber2" />
+		<result column="telephone_number3" property="telephoneNumber3" />
+		<result column="fax_number1" property="faxNumber1" />
+		<result column="fax_number2" property="faxNumber2" />
+		<result column="fax_number3" property="faxNumber3" />
+		<result column="loyalty_accumulated_point" property="loyaltyAccumulatedPoint" />
+		
+		<association column="representative_person_id"
+			columnPrefix="represent_"
+			property="representativePerson"
+			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
+			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
+		<association column="contact_person_id"
+			columnPrefix="contact_"
+			property="contactPerson"
+			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
+			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
+		<collection column="id"
+			property="listOfItemCategories"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.ItemCategory"
+			select="com.sm24soft.repository.ItemCategoryRepository.findAllBySupplierId" />
+		<collection column="id"
+			property="listOfItems"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.Item"
+			select="com.sm24soft.repository.ItemRepository.findAllBySupplierId" />
+	</resultMap>
+	
+	<sql id="findSupplierSQL">
+		SELECT `supplier`.`id`,
+		    `supplier`.`supplier_name`,
+		    `supplier`.`supplier_trading_name`,
+		    `supplier`.`representative_person_id`,
+		    `supplier`.`contact_person_id`,
+		    `supplier`.`address1`,
+		    `supplier`.`address2`,
+		    `supplier`.`email_address`,
+		    `supplier`.`telephone_number1`,
+		    `supplier`.`telephone_number2`,
+		    `supplier`.`telephone_number3`,
+		    `supplier`.`fax_number1`,
+		    `supplier`.`fax_number2`,
+		    `supplier`.`fax_number3`,
+		    `supplier`.`loyalty_accumulated_point`,
+		    `supplier`.`created_at`,
+		    `supplier`.`created_user_id`,
+		    `supplier`.`updated_at`,
+		    `supplier`.`updated_user_id`,
+		    `represent`.`id`					AS `represent_id`,
+		    `represent`.`short_name`			AS `represent_short_name`,
+		    `represent`.`full_name`				AS `represent_full_name`,
+		    `represent`.`birthday`				AS `represent_birthday`,
+		    `represent`.`address1`				AS `represent_address1`,
+		    `represent`.`address2`				AS `represent_address2`,
+		    `represent`.`email_address`			AS `represent_email_address`,
+		    `represent`.`national`				AS `represent_national`,
+		    `represent`.`identity_card_number`	AS `represent_identity_card_number`,
+		    `represent`.`telephone_number1`		AS `represent_telephone_number1`,
+		    `represent`.`telephone_number2`		AS `represent_telephone_number2`,
+		    `represent`.`telephone_number3`		AS `represent_telephone_number3`,
+		    `represent`.`created_at`			AS `represent_created_at`,
+		    `represent`.`created_user_id`		AS `represent_created_user_id`,
+		    `represent`.`updated_at`			AS `represent_updated_at`,
+		    `represent`.`updated_user_id`		AS `represent_updated_user_id`,
+		    `contact`.`id`						AS `contact_id`,
+		    `contact`.`short_name`				AS `contact_short_name`,
+		    `contact`.`full_name`				AS `contact_full_name`,
+		    `contact`.`birthday`				AS `contact_birthday`,
+		    `contact`.`address1`				AS `contact_address1`,
+		    `contact`.`address2`				AS `contact_address2`,
+		    `contact`.`email_address`			AS `contact_email_address`,
+		    `contact`.`national`				AS `contact_national`,
+		    `contact`.`identity_card_number`	AS `contact_identity_card_number`,
+		    `contact`.`telephone_number1`		AS `contact_telephone_number1`,
+		    `contact`.`telephone_number2`		AS `contact_telephone_number2`,
+		    `contact`.`telephone_number3`		AS `contact_telephone_number3`,
+		    `contact`.`created_at`				AS `contact_created_at`,
+		    `contact`.`created_user_id`			AS `contact_created_user_id`,
+		    `contact`.`updated_at`				AS `contact_updated_at`,
+		    `contact`.`updated_user_id`			AS `contact_updated_user_id`
+		FROM `supplier`
+		INNER JOIN `representative_or_contact_person` AS `represent`
+			ON `represent`.`id` = `supplier`.`representative_person_id`
+		INNER JOIN `representative_or_contact_person` AS `contact`
+			ON `contact`.`id` = `supplier`.`contact_person_id`
+	</sql>
+	
+	<select id="findAll" resultMap="SupplierResultMap">
+		<include refid="findSupplierSQL" />
+		WHERE `supplier`.`delete_flg` = 0
+		ORDER BY `supplier`.`loyalty_accumulated_point` DESC;
+	</select>
+	
+	<select id="findById" parameterType="java.lang.String" resultMap="SupplierResultMap">
+		<include refid="findSupplierSQL" />
+		WHERE `supplier`.`id` = #{id}
+			AND `supplier`.`delete_flg` = 0;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.Supplier" 
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `supplier`
+		(`supplier_name`,
+		`supplier_trading_name`,
+		`representative_person_id`,
+		`contact_person_id`,
+		`address1`,
+		`address2`,
+		`email_address`,
+		`telephone_number1`,
+		`telephone_number2`,
+		`telephone_number3`,
+		`fax_number1`,
+		`fax_number2`,
+		`fax_number3`,
+		`loyalty_accumulated_point`,
+		`delete_flg`,
+		`created_at`,
+		`created_user_id`,
+		`updated_at`,
+		`updated_user_id`)
+		VALUES
+		(#{companyName},
+		#{companyTradingName},
+		#{representativePerson.id},
+		#{contactPerson.id},
+		#{address1},
+		#{address2},
+		#{email},
+		#{telephoneNumber1},
+		#{telephoneNumber2},
+		#{telephoneNumber3},
+		#{faxNumber1},
+		#{faxNumber2},
+		#{faxNumber3},
+		#{loyaltyAccumulatedPoint},
+		#{deleteFlg},
+		#{createdAt},
+		#{createdUserId},
+		#{updatedAt},
+		#{updatedUserId});
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.Supplier">
+		UPDATE `supplier`
+		SET
+		`supplier_name` = #{companyName},
+		`supplier_trading_name` = #{companyTradingName},
+		`representative_person_id` = #{representativePerson.id},
+		`contact_person_id` = #{contactPerson.id},
+		`address1` = #{address1},
+		`address2` = #{address2},
+		`email_address` = #{email},
+		`telephone_number1` = #{telephoneNumber1},
+		`telephone_number2` = #{telephoneNumber2},
+		`telephone_number3` = #{telephoneNumber3},
+		`fax_number1` = #{faxNumber1},
+		`fax_number2` = #{faxNumber2},
+		`fax_number3` = #{faxNumber3},
+		`loyalty_accumulated_point` = #{loyaltyAccumulatedPoint},
+		`delete_flg` = #{deleteFlg},
+		`updated_at` = NOW(),
+		`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `supplier`
+		SET
+		`delete_flg` = 1,
+		`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+</mapper>

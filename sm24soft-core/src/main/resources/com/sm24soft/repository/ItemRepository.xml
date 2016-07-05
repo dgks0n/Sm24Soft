@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.ItemRepository">
+	<resultMap type="com.sm24soft.entity.Item" id="ItemResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="plu_code1" property="pLUCode1" />
+		<result column="plu_code2" property="pLUCode2" />
+		<result column="plu_code3" property="pLUCode3" />
+		<result column="short_name" property="shortName" />
+		<result column="full_name" property="fullName" />
+		<result column="description" property="description" />
+		<result column="import_date" property="importDate" />
+		<result column="price" property="price" />
+		<result column="sale_price" property="salePrice" />
+		<result column="old_of_sale_price" property="oldSalePrice" />
+		<result column="unit_of_price" property="unitOfSalePrice" />
+		<result column="discount" property="discount" />
+		<result column="unit_of_discount" property="unitOfDiscount" />
+		<result column="saleable_flag" property="saleableFlg" />
+		<result column="manufacture_date" property="manufactureDate" />
+		<result column="expire_date" property="expireDate" />
+		<result column="weight" property="weight" />
+		<result column="weight_of_one_box" property="weightOfOneBox" />
+		<result column="total_weight" property="totalWeight" />
+		<result column="total_remaining_weight_after_sell" property="totalRemainingWeightAfterSell" />
+		<result column="unit_of_weight" property="unitOfWeight" />
+		<result column="thumbnail_url" property="thumbnailUrl" />
+		<result column="preview_image_url" property="previewImageUrl" />
+		
+		<association column="item_category_id" 
+			property="itemCategory"
+			javaType="com.sm24soft.entity.ItemCategory"
+			select="com.sm24soft.repository.ItemCategoryRepository.findById" />
+		<association column="store_id" 
+			property="store"
+			javaType="com.sm24soft.entity.Store"
+			select="com.sm24soft.repository.StoreRepository.findById" />
+		<association column="supplier_id" 
+			property="supplier"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findById" />
+		<association column="tax_id" 
+			property="tax"
+			javaType="com.sm24soft.entity.Tax"
+			select="com.sm24soft.repository.TaxRepository.findById" />
+	</resultMap>
+	
+	<sql id="findItemSQL">
+		SELECT `item`.`id`,
+		    `item`.`plu_code1`,
+		    `item`.`plu_code2`,
+		    `item`.`plu_code3`,
+		    `item`.`short_name`,
+		    `item`.`full_name`,
+		    `item`.`description`,
+		    `item`.`item_category_id`,
+		    `item`.`store_id`,
+		    `item`.`supplier_id`,
+		    `item`.`import_date`,
+		    `item`.`price`,
+		    `item`.`sale_price`,
+		    `item`.`old_of_sale_price`,
+		    `item`.`unit_of_price`,
+		    `item`.`discount`,
+		    `item`.`unit_of_discount`,
+		    `item`.`tax_id`,
+		    `item`.`saleable_flag`,
+		    `item`.`manufacture_date`,
+		    `item`.`expire_date`,
+		    `item`.`weight`,
+		    `item`.`weight_of_one_box`,
+		    `item`.`total_weight`,
+		    `item`.`total_remaining_weight_after_sell`,
+		    `item`.`unit_of_weight`,
+		    `item`.`thumbnail_url`,
+		    `item`.`preview_image_url`,
+		    `item`.`delete_flg`,
+		    `item`.`created_at`,
+		    `item`.`created_user_id`,
+		    `item`.`updated_at`,
+		    `item`.`updated_user_id`
+		FROM `item`
+	</sql>
+	
+	<select id="findById" resultMap="ItemResultMap">
+		<include refid="findItemSQL" />
+		WHERE `item`.`id` = #{id}
+			AND `item`.`delete_flg` = 0;
+	</select>
+	
+	<select id="findAllByItemCategoryId" resultMap="ItemResultMap">
+		<include refid="findItemSQL" />
+		WHERE `item`.`item_category_id` = #{id}
+			AND `item`.`delete_flg` = 0
+		ORDER BY `item`.`full_name` ASC;
+	</select>
+	
+	<select id="findAllBySupplierId" resultMap="ItemResultMap">
+		<include refid="findItemSQL" />
+		WHERE `item`.`supplier_id` = #{id}
+			AND `item`.`delete_flg` = 0
+		ORDER BY `item`.`full_name` ASC;
+	</select>
+	
+	<select id="findAll" resultMap="ItemResultMap">
+		<include refid="findItemSQL" />
+		WHERE `item`.`delete_flg` = 0
+		ORDER BY `item`.`full_name` ASC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.Item"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `item`
+		(`plu_code1`,
+		`plu_code2`,
+		`plu_code3`,
+		`short_name`,
+		`full_name`,
+		`description`,
+		`item_category_id`,
+		`store_id`,
+		`supplier_id`,
+		`import_date`,
+		`price`,
+		`sale_price`,
+		`old_of_sale_price`,
+		`unit_of_price`,
+		`discount`,
+		`unit_of_discount`,
+		`tax_id`,
+		`saleable_flag`,
+		`manufacture_date`,
+		`expire_date`,
+		`weight`,
+		`weight_of_one_box`,
+		`total_weight`,
+		`total_remaining_weight_after_sell`,
+		`unit_of_weight`,
+		`thumbnail_url`,
+		`preview_image_url`,
+		`delete_flg`,
+		`created_at`,
+		`created_user_id`,
+		`updated_at`,
+		`updated_user_id`)
+		VALUES
+		(#{pLUCode1},
+		#{pLUCode2},
+		#{pLUCode3},
+		#{shortName},
+		#{fullName},
+		#{description},
+		#{itemCategory.id},
+		#{store.id},
+		#{supplier.id},
+		#{importDate},
+		#{price},
+		#{salePrice},
+		#{oldSalePrice},
+		#{unitOfSalePrice},
+		#{discount},
+		#{unitOfDiscount},
+		#{tax},
+		#{saleableFlg},
+		#{manufactureDate},
+		#{expireDate},
+		#{weight},
+		#{weightOfOneBox},
+		#{totalWeight},
+		#{totalRemainingWeightAfterSell},
+		#{unitOfWeight},
+		#{thumbnailUrl},
+		#{previewImageUrl},
+		#{deleteFlg},
+		#{createdAt},
+		#{createdUserId},
+		#{updatedAt},
+		#{updatedUserId});
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.Item">
+		UPDATE `item`
+		SET
+		`plu_code1` = #{pLUCode1},
+		`plu_code2` = #{pLUCode2},
+		`plu_code3` = #{pLUCode3},
+		`short_name` = #{shortName},
+		`full_name` = #{fullName},
+		`description` = #{description},
+		`item_category_id` = #{itemCategory.id},
+		`store_id` = #{store.id},
+		`supplier_id` = #{supplier.id},
+		`import_date` = #{importDate},
+		`price` = #{price},
+		`sale_price` = #{salePrice},
+		`old_of_sale_price` = #{oldSalePrice},
+		`unit_of_price` = #{unitOfSalePrice},
+		`discount` = #{discount},
+		`unit_of_discount` = #{unitOfDiscount},
+		`tax_id` = #{tax.id},
+		`saleable_flag` = #{saleableFlg},
+		`manufacture_date` = #{manufactureDate},
+		`expire_date` = #{expireDate},
+		`weight` = #{weight},
+		`weight_of_one_box` = #{weightOfOneBox},
+		`total_weight` = #{totalWeight},
+		`total_remaining_weight_after_sell` = #{totalRemainingWeightAfterSell},
+		`unit_of_weight` = #{unitOfWeight},
+		`thumbnail_url` = #{thumbnailUrl},
+		`preview_image_url` = #{previewImageUrl},
+		`delete_flg` = #{deleteFlg},
+		`updated_at` = NOW(),
+		`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `item`
+		SET
+		`delete_flg` = 1,
+		`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+</mapper>

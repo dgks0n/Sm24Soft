@@ -2,7 +2,7 @@ package com.sm24soft.entity;
 
 import java.util.Date;
 
-public abstract class Person extends BaseEntity {
+public class Person extends BaseEntity {
 
 	private String shortName;
 	private String fullName;
@@ -17,7 +17,7 @@ public abstract class Person extends BaseEntity {
 	private Date birthday;
 
 	public Person() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public String getShortName() {

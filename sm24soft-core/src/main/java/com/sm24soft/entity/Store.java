@@ -13,27 +13,23 @@ public class Store extends BaseEntity {
 	private String telephoneNumber1;
 	private String telephoneNumber2;
 	private String telephoneNumber3;
-	private String fax1;
-	private String fax2;
-	private String fax3;
+	private String faxNumber1;
+	private String faxNumber2;
+	private String faxNumber3;
 	private String taxRegistrationNumber;
 	private String businessLicenseNumber;
 	private Date dateOfIssue;
-	private String representativePersonCode;
-	private List<BusinessRegisteredField> businessRegisteredFields;
+	private RepresentativeOrContactPerson representativePerson;
+	private String businessRegisteredFields; // Intending storage under JSON String
 	private String operatingStatus; // 0 = Normal, 1 = Stopped;
 	private String websiteUrl;
-	private String logo;
-	private String bankNumber1;
-	private String bankName1;
-	private String bankNumber2;
-	private String bankName2;
-	private String bankNumber3;
-	private String bankName3;
+	private String logoUrl;
+	
+	// Extends
+	private List<BankAccount> listOfBanks;
 
 	public Store() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {
@@ -100,28 +96,28 @@ public class Store extends BaseEntity {
 		this.telephoneNumber3 = telephoneNumber3;
 	}
 
-	public String getFax1() {
-		return fax1;
+	public String getFaxNumber1() {
+		return faxNumber1;
 	}
 
-	public void setFax1(String fax1) {
-		this.fax1 = fax1;
+	public void setFaxNumber1(String faxNumber1) {
+		this.faxNumber1 = faxNumber1;
 	}
 
-	public String getFax2() {
-		return fax2;
+	public String getFaxNumber2() {
+		return faxNumber2;
 	}
 
-	public void setFax2(String fax2) {
-		this.fax2 = fax2;
+	public void setFaxNumber2(String faxNumber2) {
+		this.faxNumber2 = faxNumber2;
 	}
 
-	public String getFax3() {
-		return fax3;
+	public String getFaxNumber3() {
+		return faxNumber3;
 	}
 
-	public void setFax3(String fax3) {
-		this.fax3 = fax3;
+	public void setFaxNumber3(String faxNumber3) {
+		this.faxNumber3 = faxNumber3;
 	}
 
 	public String getTaxRegistrationNumber() {
@@ -148,19 +144,19 @@ public class Store extends BaseEntity {
 		this.dateOfIssue = dateOfIssue;
 	}
 
-	public String getRepresentativePersonCode() {
-		return representativePersonCode;
+	public RepresentativeOrContactPerson getRepresentativePerson() {
+		return representativePerson;
 	}
 
-	public void setRepresentativePersonCode(String representativePersonCode) {
-		this.representativePersonCode = representativePersonCode;
+	public void setRepresentativePerson(RepresentativeOrContactPerson representativePerson) {
+		this.representativePerson = representativePerson;
 	}
 
-	public List<BusinessRegisteredField> getBusinessRegisteredFields() {
+	public String getBusinessRegisteredFields() {
 		return businessRegisteredFields;
 	}
 
-	public void setBusinessRegisteredFields(List<BusinessRegisteredField> businessRegisteredFields) {
+	public void setBusinessRegisteredFields(String businessRegisteredFields) {
 		this.businessRegisteredFields = businessRegisteredFields;
 	}
 
@@ -180,60 +176,20 @@ public class Store extends BaseEntity {
 		this.websiteUrl = websiteUrl;
 	}
 
-	public String getLogo() {
-		return logo;
+	public String getLogoUrl() {
+		return logoUrl;
 	}
 
-	public void setLogo(String logo) {
-		this.logo = logo;
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
 	}
 
-	public String getBankNumber1() {
-		return bankNumber1;
+	public List<BankAccount> getListOfBanks() {
+		return listOfBanks;
 	}
 
-	public void setBankNumber1(String bankNumber1) {
-		this.bankNumber1 = bankNumber1;
-	}
-
-	public String getBankName1() {
-		return bankName1;
-	}
-
-	public void setBankName1(String bankName1) {
-		this.bankName1 = bankName1;
-	}
-
-	public String getBankNumber2() {
-		return bankNumber2;
-	}
-
-	public void setBankNumber2(String bankNumber2) {
-		this.bankNumber2 = bankNumber2;
-	}
-
-	public String getBankName2() {
-		return bankName2;
-	}
-
-	public void setBankName2(String bankName2) {
-		this.bankName2 = bankName2;
-	}
-
-	public String getBankNumber3() {
-		return bankNumber3;
-	}
-
-	public void setBankNumber3(String bankNumber3) {
-		this.bankNumber3 = bankNumber3;
-	}
-
-	public String getBankName3() {
-		return bankName3;
-	}
-
-	public void setBankName3(String bankName3) {
-		this.bankName3 = bankName3;
+	public void setListOfBanks(List<BankAccount> listOfBanks) {
+		this.listOfBanks = listOfBanks;
 	}
 
 }

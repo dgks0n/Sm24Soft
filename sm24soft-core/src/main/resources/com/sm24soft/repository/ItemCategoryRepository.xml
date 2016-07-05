@@ -1,5 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sm24soft.repository.ItemCategoryRepository">
+	<resultMap type="com.sm24soft.entity.ItemCategory" id="ItemCategoryResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="name" property="name" />
+		<result column="description" property="description" />
+		
+		<association column="supplier_id"
+			property="supplier"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findById" />
+		<association column="parent_category_id"
+			property="parentItemCategory"
+			javaType="com.sm24soft.entity.ItemCategory"
+			select="com.sm24soft.repository.ItemCategoryRepository.findById" />
+		<collection column="id"
+			property="listOfItemCategories"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.ItemCategory"
+			select="com.sm24soft.repository.ItemCategoryRepository.findAllByParentItemCategoryId" />
+		<collection column="id"
+			property="listOfItems"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.Item"
+			select="com.sm24soft.repository.ItemRepository.findAllByItemCategoryId" />
+	</resultMap>
 
+	<sql id="findItemCategorySQL">
+		SELECT `item_category`.`id`,
+		    `item_category`.`name`,
+		    `item_category`.`description`,
+		    `item_category`.`parent_category_id`,
+		    `item_category`.`supplier_id`,
+		    `item_category`.`delete_flg`,
+		    `item_category`.`created_at`,
+		    `item_category`.`created_user_id`,
+		    `item_category`.`updated_at`,
+		    `item_category`.`updated_user_id`
+		FROM `item_category`
+	</sql>
+	
+	<select id="findById" resultMap="ItemCategoryResultMap">
+		<include refid="findItemCategorySQL" />
+		WHERE `item_category`.`id` = #{id}
+			AND `item_category`.`delete_flg` = 0
+	</select>
+	
+	<select id="findAllBySupplierId" resultMap="ItemCategoryResultMap">
+		<include refid="findItemCategorySQL" />
+		WHERE `item_category`.`supplier_id` = #{id}
+			AND `item_category`.`delete_flg` = 0
+		ORDER BY `item_category`.`name` ASC;
+	</select>
+	
+	<select id="findAllByParentItemCategoryId" resultMap="ItemCategoryResultMap">
+		<include refid="findItemCategorySQL" />
+		WHERE `item_category`.`parent_category_id` = #{id}
+			AND `item_category`.`delete_flg` = 0
+		ORDER BY `item_category`.`name` ASC;
+	</select>
+	
+	<select id="findAll" resultMap="ItemCategoryResultMap">
+		<include refid="findItemCategorySQL" />
+		WHERE `item_category`.`delete_flg` = 0
+		ORDER BY `item_category`.`name` ASC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.ItemCategory"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `item_category`
+		(`name`,
+		`description`,
+		`parent_category_id`,
+		`supplier_id`,
+		`delete_flg`,
+		`created_at`,
+		`created_user_id`,
+		`updated_at`,
+		`updated_user_id`)
+		VALUES
+		(#{name},
+		#{description},
+		#{parentItemCategory.id},
+		#{supplier.id},
+		#{deleteFlg},
+		#{createdAt},
+		#{createdUserId},
+		#{updatedAt},
+		#{updatedUserId});
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.ItemCategory">
+		UPDATE `item_category`
+		SET
+		`name` = #{name},
+		`description` = #{description},
+		`parent_category_id` = #{parentItemCategory.id},
+		`supplier_id` = #{supplier.id},
+		`delete_flg` = #{deleteFlg},
+		`updated_at` = NOW(),
+		`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `item_category`
+		SET
+		`delete_flg` = 1,
+		`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
 </mapper>

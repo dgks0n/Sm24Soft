@@ -3,7 +3,12 @@
  */
 package com.sm24soft.entity;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author sondn
@@ -11,43 +16,60 @@ import java.util.Date;
  */
 public class Item extends BaseEntity {
 
-	private String pLUCode;
+	private String pLUCode1;
+	private String pLUCode2;
+	private String pLUCode3;
 	private String shortName;
 	private String fullName;
 	private String description;
-	private String itemCategoryCode;
-	private String warehouseCode;
-	private String storeCode;
-	private String supplierCode;
+	private ItemCategory itemCategory; // Belong to a item-category
+	private Store store;
+	private Supplier supplier;
 	private Date importDate;
 	private double price;
 	private double salePrice;
-	private String unitOfPrice; // VND, USD, ...etc
-	private String taxCode;
-	private String saleableFlg; // 0 or 1
-	private Date manufactureDate;
-	private Date expireDate;
-	private String color;
-	private String size;
-	private String unitOfSize;
-	private float weight;
-	private float totalWeight;
+	private double oldSalePrice;
+	private String unitOfSalePrice; // VND, USD, ...etc
+	private float discount;
+	private String unitOfDiscount;
+	private Tax tax;
+	private String saleableFlg; // 0: NOT_FOR_SALE, 1: SALE
+	private Date manufactureDate; // Ngay SX
+	private Date expireDate; // Ngay HH
+	private float weight; // Can nang / 1 kg
+	private String weightOfOneBox; // Danh sach can nang / 1 box. Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}
+	private float totalWeight; // Tong so can nang
+	private float totalRemainingWeightAfterSell; // Tong so can nang con lai sau khi da ban
 	private String unitOfWeight;
-	private String unitOfTotalWeight;
 	private String thumbnailUrl;
 	private String previewImageUrl;
 
 	public Item() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public String getpLUCode() {
-		return pLUCode;
+	public String getpLUCode1() {
+		return pLUCode1;
 	}
 
-	public void setpLUCode(String pLUCode) {
-		this.pLUCode = pLUCode;
+	public void setpLUCode1(String pLUCode1) {
+		this.pLUCode1 = pLUCode1;
+	}
+
+	public String getpLUCode2() {
+		return pLUCode2;
+	}
+
+	public void setpLUCode2(String pLUCode2) {
+		this.pLUCode2 = pLUCode2;
+	}
+
+	public String getpLUCode3() {
+		return pLUCode3;
+	}
+
+	public void setpLUCode3(String pLUCode3) {
+		this.pLUCode3 = pLUCode3;
 	}
 
 	public String getShortName() {
@@ -74,36 +96,28 @@ public class Item extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getItemCategoryCode() {
-		return itemCategoryCode;
+	public ItemCategory getItemCategory() {
+		return itemCategory;
 	}
 
-	public void setItemCategoryCode(String itemCategoryCode) {
-		this.itemCategoryCode = itemCategoryCode;
+	public void setItemCategory(ItemCategory itemCategory) {
+		this.itemCategory = itemCategory;
 	}
 
-	public String getWarehouseCode() {
-		return warehouseCode;
+	public Store getStore() {
+		return store;
 	}
 
-	public void setWarehouseCode(String warehouseCode) {
-		this.warehouseCode = warehouseCode;
+	public void setStore(Store store) {
+		this.store = store;
 	}
 
-	public String getStoreCode() {
-		return storeCode;
+	public Supplier getSupplier() {
+		return supplier;
 	}
 
-	public void setStoreCode(String storeCode) {
-		this.storeCode = storeCode;
-	}
-
-	public String getSupplierCode() {
-		return supplierCode;
-	}
-
-	public void setSupplierCode(String supplierCode) {
-		this.supplierCode = supplierCode;
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
 	}
 
 	public Date getImportDate() {
@@ -130,20 +144,44 @@ public class Item extends BaseEntity {
 		this.salePrice = salePrice;
 	}
 
-	public String getUnitOfPrice() {
-		return unitOfPrice;
+	public double getOldSalePrice() {
+		return oldSalePrice;
 	}
 
-	public void setUnitOfPrice(String unitOfPrice) {
-		this.unitOfPrice = unitOfPrice;
+	public void setOldSalePrice(double oldSalePrice) {
+		this.oldSalePrice = oldSalePrice;
 	}
 
-	public String getTaxCode() {
-		return taxCode;
+	public String getUnitOfSalePrice() {
+		return unitOfSalePrice;
 	}
 
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
+	public void setUnitOfSalePrice(String unitOfSalePrice) {
+		this.unitOfSalePrice = unitOfSalePrice;
+	}
+
+	public float getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(float discount) {
+		this.discount = discount;
+	}
+
+	public String getUnitOfDiscount() {
+		return unitOfDiscount;
+	}
+
+	public void setUnitOfDiscount(String unitOfDiscount) {
+		this.unitOfDiscount = unitOfDiscount;
+	}
+
+	public Tax getTax() {
+		return tax;
+	}
+
+	public void setTax(Tax tax) {
+		this.tax = tax;
 	}
 
 	public String getSaleableFlg() {
@@ -170,36 +208,27 @@ public class Item extends BaseEntity {
 		this.expireDate = expireDate;
 	}
 
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getUnitOfSize() {
-		return unitOfSize;
-	}
-
-	public void setUnitOfSize(String unitOfSize) {
-		this.unitOfSize = unitOfSize;
-	}
-
 	public float getWeight() {
 		return weight;
 	}
 
 	public void setWeight(float weight) {
 		this.weight = weight;
+	}
+
+	public List<BoxReference> getWeightOfOneBox() {
+		ObjectMapper mapper = new ObjectMapper();
+		List<BoxReference> boxes = null;
+		try {
+			boxes = mapper.readValue(weightOfOneBox, new TypeReference<List<BoxReference>>(){});
+		} catch (IOException ex) {
+			// TODO:
+		}
+		return boxes;
+	}
+
+	public void setWeightOfOneBox(String weightOfOneBox) {
+		this.weightOfOneBox = weightOfOneBox;
 	}
 
 	public float getTotalWeight() {
@@ -210,20 +239,20 @@ public class Item extends BaseEntity {
 		this.totalWeight = totalWeight;
 	}
 
+	public float getTotalRemainingWeightAfterSell() {
+		return totalRemainingWeightAfterSell;
+	}
+
+	public void setTotalRemainingWeightAfterSell(float totalRemainingWeightAfterSell) {
+		this.totalRemainingWeightAfterSell = totalRemainingWeightAfterSell;
+	}
+
 	public String getUnitOfWeight() {
 		return unitOfWeight;
 	}
 
 	public void setUnitOfWeight(String unitOfWeight) {
 		this.unitOfWeight = unitOfWeight;
-	}
-
-	public String getUnitOfTotalWeight() {
-		return unitOfTotalWeight;
-	}
-
-	public void setUnitOfTotalWeight(String unitOfTotalWeight) {
-		this.unitOfTotalWeight = unitOfTotalWeight;
 	}
 
 	public String getThumbnailUrl() {
@@ -241,5 +270,5 @@ public class Item extends BaseEntity {
 	public void setPreviewImageUrl(String previewImageUrl) {
 		this.previewImageUrl = previewImageUrl;
 	}
-
+	
 }
