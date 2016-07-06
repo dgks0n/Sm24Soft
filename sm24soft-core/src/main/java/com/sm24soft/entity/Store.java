@@ -20,8 +20,16 @@ public class Store extends BaseEntity {
 	private String businessLicenseNumber;
 	private Date dateOfIssue;
 	private RepresentativeOrContactPerson representativePerson;
-	private String businessRegisteredFields; // Intending storage under JSON String
-	private String operatingStatus; // 0 = Normal, 1 = Stopped;
+	
+	/*
+	 * Intending storage under JSON String
+	 */
+	private String businessRegisteredFields;
+	
+	/*
+	 * 0 = Normal, 1 = Stopped
+	 */
+	private String operatingStatus;
 	private String websiteUrl;
 	private String logoUrl;
 	

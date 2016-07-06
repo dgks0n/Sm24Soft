@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.InvoiceRepository">
+	<resultMap type="com.sm24soft.entity.Invoice" id="InvoiceResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="name" property="name" />
+		<result column="invoice_number" property="invoiceNumber" />
+		<result column="template_number" property="templateNumber" />
+		<result column="date_of_issue" property="dateOfIssue" />
+		<result column="returned_invoice_flg" property="returnedInvoiceFlg" />
+		<result column="total_price_before_vat" property="totalPriceBeforeVAT" />
+		<result column="value_added_tax" property="valueAddedTax" />
+		<result column="total_value_added_tax" property="totalValueAddedTax" />
+		<result column="total_price_after_vat" property="totalPriceAfterVAT" />
+		<result column="total_price_after_vat_as_string" property="totalPriceAfterTaxAsString" />
+		<result column="date_of_sale" property="dateOfSale" />
+		<result column="payment_code" property="paymentCode" />
+		<result column="actual_invoice_status" property="actualInvoiceStatus" />
+		<result column="expected_date_of_shipping" property="expectedDateOfShipping" />
+		<result column="expected_time_of_shipping" property="expectedTimeOfShipping" />
+		
+		<association column="origin_invoice_number"
+			property="originInvoice"
+			javaType="com.sm24soft.entity.Invoice"
+			select="com.sm24soft.repository.InvoiceRepository.findById" />
+		<collection column="id"
+			property="listOfItemDetails"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.ItemDetail"
+			select="com.sm24soft.repository.ItemDetailRepository.findAllByParentInvoiceId" />
+		<collection column="id"
+			property="listOfSubInvoices"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.Invoice"
+			select="com.sm24soft.repository.InvoiceRepository.findAllSubInvoicesByParentInvoiceId" />
+	</resultMap>
+	
+	<sql id="findInvoiceSQL">
+		SELECT `invoice`.`id`,
+		    `invoice`.`name`,
+		    `invoice`.`invoice_number`,
+		    `invoice`.`template_number`,
+		    `invoice`.`date_of_issue`,
+		    `invoice`.`store_id`,
+		    `invoice`.`customer_id`,
+		    `invoice`.`origin_invoice_number`,
+		    `invoice`.`returned_invoice_flg`,
+		    `invoice`.`total_price_before_vat`,
+		    `invoice`.`value_added_tax`,
+		    `invoice`.`total_value_added_tax`,
+		    `invoice`.`total_price_after_vat`,
+		    `invoice`.`total_price_after_vat_as_string`,
+		    `invoice`.`date_of_sale`,
+		    `invoice`.`seller_person_id`,
+		    `invoice`.`payment_code`,
+		    `invoice`.`actual_invoice_status`,
+		    `invoice`.`expected_date_of_shipping`,
+		    `invoice`.`expected_time_of_shipping`,
+		    `invoice`.`delete_flg`,
+		    `invoice`.`created_at`,
+		    `invoice`.`created_user_id`,
+		    `invoice`.`updated_at`,
+		    `invoice`.`updated_user_id`
+		FROM `invoice`
+	</sql>
+	
+	<select id="findById" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`id` = #{id}
+			AND `invoice`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findAllSubInvoicesByParentInvoiceId" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`origin_invoice_number` = #{id}
+			AND `invoice`.`returned_invoice_flg` = 0
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findAll" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findByActualStatus" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`actual_invoice_status` = #{actualStatus}
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findAllWaitingForConfirmInvoices" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`actual_invoice_status` = "1"
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findAllConfirmedAndWaitingForShipInvoices" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`actual_invoice_status` = "2"
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findAllShippedInvoices" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`actual_invoice_status` = "3"
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<select id="findAllCanceledInvoices" resultMap="InvoiceResultMap">
+		<include refid="findInvoiceSQL" />
+		WHERE `invoice`.`actual_invoice_status` = "4"
+			AND `invoice`.`delete_flg` = "0"
+		ORDER BY `invoice`.`invoice_number` ASC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.Invoice">
+		INSERT INTO `invoice`
+		(
+			`name`,
+			`invoice_number`,
+			`template_number`,
+			`date_of_issue`,
+			`store_id`,
+			`customer_id`,
+			`origin_invoice_number`,
+			`returned_invoice_flg`,
+			`total_price_before_vat`,
+			`value_added_tax`,
+			`total_value_added_tax`,
+			`total_price_after_vat`,
+			`total_price_after_vat_as_string`,
+			`date_of_sale`,
+			`seller_person_id`,
+			`payment_code`,
+			`actual_invoice_status`,
+			`expected_date_of_shipping`,
+			`expected_time_of_shipping`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{name},
+			#{invoiceNumber},
+			#{templateNumber},
+			#{dateOfIssue},
+			#{store.id},
+			#{customer.id},
+			#{originInvoice.id},
+			#{returnedInvoiceFlg},
+			#{totalPriceBeforeVAT},
+			#{valueAddedTax},
+			#{totalValueAddedTax},
+			#{totalPriceAfterVAT},
+			#{totalPriceAfterTaxAsString},
+			#{dateOfSale},
+			#{sellerPerson},
+			#{paymentCode},
+			#{actualInvoiceStatus},
+			#{expectedDateOfShipping},
+			#{expectedTimeOfShipping},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.Invoice">
+		UPDATE `invoice`
+		SET
+			`name` = #{name},
+			`invoice_number` = #{invoiceNumber},
+			`template_number` = #{templateNumber},
+			`date_of_issue` = #{dateOfIssue},
+			`store_id` = #{store.id},
+			`customer_id` = #{customer.id},
+			`origin_invoice_number` = #{originInvoice.id},
+			`returned_invoice_flg` = #{returnedInvoiceFlg},
+			`total_price_before_vat` = #{totalPriceBeforeVAT},
+			`value_added_tax` = #{valueAddedTax},
+			`total_value_added_tax` = #{totalValueAddedTax},
+			`total_price_after_vat` = #{totalPriceAfterVAT},
+			`total_price_after_vat_as_string` = #{totalPriceAfterTaxAsString},
+			`date_of_sale` = #{dateOfSale},
+			`seller_person_id` = #{sellerPerson.id},
+			`payment_code` = #{paymentCode},
+			`actual_invoice_status` = #{actualInvoiceStatus},
+			`expected_date_of_shipping` = #{expectedDateOfShipping},
+			`expected_time_of_shipping` = #{expectedTimeOfShipping},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `invoice`
+		SET
+		`delete_flg` = "1",
+		`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+</mapper>

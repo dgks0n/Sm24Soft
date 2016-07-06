@@ -22,24 +22,75 @@ public class Item extends BaseEntity {
 	private String shortName;
 	private String fullName;
 	private String description;
-	private ItemCategory itemCategory; // Belong to a item-category
+	
+	/*
+	 * Belong to a item-category
+	 */
+	private ItemCategory itemCategory;
+	
+	/*
+	 * Belong to a store
+	 */
 	private Store store;
+	
+	/*
+	 * Belong to a supplier
+	 */
 	private Supplier supplier;
+	
 	private Date importDate;
 	private double price;
 	private double salePrice;
 	private double oldSalePrice;
-	private String unitOfSalePrice; // VND, USD, ...etc
+	
+	/*
+	 * VND, USD, ...etc
+	 */
+	private String unitOfSalePrice;
 	private float discount;
 	private String unitOfDiscount;
+	
+	/*
+	 * NULL, 0: NON_TAX
+	 */
 	private Tax tax;
-	private String saleableFlg; // 0: NOT_FOR_SALE, 1: SALE
-	private Date manufactureDate; // Ngay SX
-	private Date expireDate; // Ngay HH
-	private float weight; // Can nang / 1 kg
-	private String weightOfOneBox; // Danh sach can nang / 1 box. Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}
-	private float totalWeight; // Tong so can nang
-	private float totalRemainingWeightAfterSell; // Tong so can nang con lai sau khi da ban
+	
+	/*
+	 * 0: NOT_FOR_SALE, 1: SALE
+	 */
+	private String saleableFlg;
+	
+	/*
+	 * Ngay SX
+	 */
+	private Date manufactureDate;
+	
+	/*
+	 * Ngay HH
+	 */
+	private Date expireDate;
+	
+	/*
+	 * Can nang / 1 kg
+	 */
+	private float weight;
+	
+	/*
+	 * Danh sach can nang / 1 box. 
+	 * 
+	 * Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}
+	 */
+	private String weightOfOneBox;
+	
+	/*
+	 * Tong so can nang
+	 */
+	private float totalWeight;
+	
+	/*
+	 * Tong so can nang con lai sau khi da ban
+	 */
+	private float totalRemainingWeightAfterSell;
 	private String unitOfWeight;
 	private String thumbnailUrl;
 	private String previewImageUrl;

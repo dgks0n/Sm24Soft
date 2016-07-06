@@ -7,6 +7,10 @@ public class MenuItem extends BaseEntity {
 	private int orderNumber;
 	private String orderType;
 	private String fullPathOfMenuItem;
+	
+	/*
+	 * 0: NON_ACTIVE, 1: ACTIVE
+	 */
 	private String actualStatus;
 	
 	public MenuItem() {

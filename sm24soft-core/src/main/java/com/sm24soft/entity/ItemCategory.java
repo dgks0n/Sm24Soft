@@ -7,7 +7,11 @@ public class ItemCategory extends BaseEntity {
 	private String name;
 	private String description;
 	private ItemCategory parentItemCategory;
-	private Supplier supplier; // Belong to what supplier
+	
+	/*
+	 * Belong to what supplier
+	 */
+	private Supplier supplier;
 	
 	// Extends
 	private List<ItemCategory> listOfItemCategories;

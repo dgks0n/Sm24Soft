@@ -1,6 +1,4 @@
-package com.sm24soft.encryption;
-
-import com.sm24soft.common.crypto.SHA512Encrypt;
+package com.sm24soft.common.crypto;
 
 public class EncryptedPassword extends Password {
 

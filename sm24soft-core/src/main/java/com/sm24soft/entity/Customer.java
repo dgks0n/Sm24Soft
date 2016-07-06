@@ -4,8 +4,10 @@ public class Customer extends Person {
 
 	private String taxRegistrationNumber;
 	
-	// Số điểm tích luỹ, điểm nhiều sẽ được ưu đãi cho những lần mua sau. 
-	// G/S chiết khấu cho những khách hàng có điểm > 1000
+	/*
+	 * Số điểm tích luỹ, điểm nhiều sẽ được ưu đãi cho những lần mua sau. G/S
+	 * chiết khấu cho những khách hàng có điểm > 1000
+	 */
 	private int loyaltyPoint;
 
 	public Customer() {

@@ -85,26 +85,26 @@
 	<select id="findById" resultMap="ItemResultMap">
 		<include refid="findItemSQL" />
 		WHERE `item`.`id` = #{id}
-			AND `item`.`delete_flg` = 0;
+			AND `item`.`delete_flg` = "0";
 	</select>
 	
 	<select id="findAllByItemCategoryId" resultMap="ItemResultMap">
 		<include refid="findItemSQL" />
 		WHERE `item`.`item_category_id` = #{id}
-			AND `item`.`delete_flg` = 0
+			AND `item`.`delete_flg` = "0"
 		ORDER BY `item`.`full_name` ASC;
 	</select>
 	
 	<select id="findAllBySupplierId" resultMap="ItemResultMap">
 		<include refid="findItemSQL" />
 		WHERE `item`.`supplier_id` = #{id}
-			AND `item`.`delete_flg` = 0
+			AND `item`.`delete_flg` = "0"
 		ORDER BY `item`.`full_name` ASC;
 	</select>
 	
 	<select id="findAll" resultMap="ItemResultMap">
 		<include refid="findItemSQL" />
-		WHERE `item`.`delete_flg` = 0
+		WHERE `item`.`delete_flg` = "0"
 		ORDER BY `item`.`full_name` ASC;
 	</select>
 	

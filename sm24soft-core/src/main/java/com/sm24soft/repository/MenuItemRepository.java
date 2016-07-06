@@ -11,5 +11,5 @@ public interface MenuItemRepository extends Repository<MenuItem, String> {
 	 * 
 	 * @return
 	 */
-	List<MenuItem> findAllMenuItem();
+	List<MenuItem> findAllMenuItems();
 }

@@ -2,13 +2,25 @@ package com.sm24soft.entity;
 
 public class ItemDetail extends BaseEntity {
 
-	private Item purchasedItem; // Original sell item
+	/*
+	 * Original sell item
+	 */
+	private Item purchasedItem;
 	private String unitOfSale;
 	private double price;
 	private int numberOfItem;
 	private double totalPrice;
 	private String unitOfTotalPrice;
 	
+	/*
+	 * 0 = Normal Item, 
+	 * 1 = Void Item (It means, the customer do not want to buy this one anymore)
+	 */
+	private String voidItemFlg;
+	
+	/*
+	 * Belong to an invoice
+	 */
 	private Invoice originalInvoice;
 	
 	public ItemDetail() {
@@ -61,6 +73,14 @@ public class ItemDetail extends BaseEntity {
 
 	public void setUnitOfTotalPrice(String unitOfTotalPrice) {
 		this.unitOfTotalPrice = unitOfTotalPrice;
+	}
+
+	public String getVoidItemFlg() {
+		return voidItemFlg;
+	}
+
+	public void setVoidItemFlg(String voidItemFlg) {
+		this.voidItemFlg = voidItemFlg;
 	}
 
 	public Invoice getOriginalInvoice() {

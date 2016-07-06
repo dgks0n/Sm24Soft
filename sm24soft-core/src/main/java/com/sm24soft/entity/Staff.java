@@ -5,8 +5,16 @@ import java.util.Date;
 public class Staff extends Person {
 
 	private Date signedContractDate;
-	private String kindOfContract; // 6 months, 1 year, 2 years, and so on
-	private String workingTime; // full-time or part-time
+	
+	/*
+	 * 6 months, 1 year, 2 years, and so on
+	 */
+	private String kindOfContract;
+	
+	/*
+	 * full-time or part-time
+	 */
+	private String workingTime;
 
 	public Staff() {
 		super();

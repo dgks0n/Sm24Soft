@@ -1,4 +1,4 @@
-package com.sm24soft.encryption;
+package com.sm24soft.common.crypto;
 
 public abstract class Password {
 

@@ -1,6 +1,6 @@
 package com.sm24soft.entity;
 
-import com.sm24soft.encryption.EncryptedPassword;
+import com.sm24soft.common.crypto.EncryptedPassword;
 
 public class Account extends BaseEntity {
 
@@ -8,14 +8,42 @@ public class Account extends BaseEntity {
 	private EncryptedPassword encryptedPassword;
 	private String confirmationCode;
 	private int role;
-	private String status; // 0 = NON_ACTIVE, 1 = ACTIVE
-	private String staffOrCustomerFlg; // 0 = Customer, 1 = Staff
+	
+	/*
+	 * 0 = NON_ACTIVE, 1 = ACTIVE
+	 */
+	private String status;
+	
+	/*
+	 * 0 = Customer, 1 = Staff
+	 */
+	private String staffOrCustomerFlg;
 	private Person staffOrCustomer;
 	private Store store;
-	private String signedUpWithFacebookFlg; // 0 = Normal Account, 1 = Facebook Account
-	private String signedUpWithGoogleFlg; // 0 = Normal Account, 1 = Google Account
-	private String sharingBlogUrl1; // blog URL
+	
+	/*
+	 * 0 = Normal Account, 1 = Facebook Account
+	 */
+	private String signedUpWithFacebookFlg;
+	
+	/*
+	 * 0 = Normal Account, 1 = Google Account
+	 */
+	private String signedUpWithGoogleFlg;
+	
+	/*
+	 * Blog's URL
+	 */
+	private String sharingBlogUrl1;
+	
+	/*
+	 * Blog's URL
+	 */
 	private String sharingBlogUrl2;
+	
+	/*
+	 * Blog's URL
+	 */
 	private String sharingBlogUrl3;
 	
 	public Account() {

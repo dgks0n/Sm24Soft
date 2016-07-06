@@ -4,7 +4,10 @@ import java.util.Date;
 
 public class BaseEntity extends Entity {
 
-	private String deleteFlg; // 0 = Normal, 1 = Deleted
+	/*
+	 * 0 = Normal, 1 = Deleted
+	 */
+	private String deleteFlg;
 	
 	private String createdUserId;
 	private Date createdAt;

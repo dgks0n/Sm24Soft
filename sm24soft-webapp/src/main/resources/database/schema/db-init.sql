@@ -132,7 +132,7 @@ CREATE TABLE `invoice` (
   `seller_person_id` int(8) unsigned zerofill DEFAULT NULL,
   `payment_code` varchar(1) NOT NULL,
   `actual_invoice_status` varchar(1) NOT NULL,
-  `expected_daate_of_shipping` datetime NOT NULL,
+  `expected_date_of_shipping` datetime NOT NULL,
   `expected_time_of_shipping` datetime NOT NULL,
   `delete_flg` varchar(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
@@ -253,7 +253,7 @@ DROP TABLE IF EXISTS `item_detail`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_detail` (
   `id` int(8) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `purchased_ttem` int(8) unsigned zerofill NOT NULL,
+  `purchased_item_id` int(8) unsigned zerofill NOT NULL,
   `unit_of_sale` varchar(10) NOT NULL,
   `price` double NOT NULL DEFAULT '0',
   `number_of_item` int(11) NOT NULL DEFAULT '0',

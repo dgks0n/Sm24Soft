@@ -11,26 +11,61 @@ public class Invoice extends BaseEntity {
 	private Date dateOfIssue;
 	private Store store;
 	private Customer customer;
-	private List<ItemDetail> itemDetails;
 	private Invoice originInvoice;
-	private String returnedInvoiceFlg; // 0 = Normal Sale, 1 = Return Invoice
-	private double totalPriceBeforeVAT; // tổng giá trị trước thuế
-	private String valueAddedTax; // thuế giá trị gia tăng - VAT Code. Ex: 10%
-	private double totalValueAddedTax; // thuế giá trị gia tăng - VAT. Ex: 10%
-	private double totalPriceAfterVAT; // tổng giá trị sau thuế
-	private String totalPriceAfterTaxAsString; // tổng giá trị sau thuế - viết bằng chữ
+	
+	/*
+	 * 0 = Normal Sale, 1 = Return Invoice
+	 */
+	private String returnedInvoiceFlg;
+	
+	/*
+	 * Tổng giá trị trước thuế
+	 */
+	private double totalPriceBeforeVAT;
+	
+	/*
+	 * Thuế giá trị gia tăng - VAT Code. Ex: 10%
+	 */
+	private String valueAddedTax;
+	
+	/*
+	 * Thuế giá trị gia tăng - VAT. Ex: 10%
+	 */
+	private double totalValueAddedTax;
+	
+	/*
+	 * Tổng giá trị sau thuế
+	 */
+	private double totalPriceAfterVAT;
+	
+	/*
+	 * Tổng giá trị sau thuế - viết bằng chữ
+	 */
+	private String totalPriceAfterTaxAsString;
 	private Date dateOfSale;
 	private Account sellerPerson; // Seller person or Staff
-	private String paymentCode; // hình thức thanh toán
 	
-	// tình trạng thực tế của hoá đơn 
-	// 1: WAITING_FOR_CONFIRM, 2: CONFIRMED_AND_WAITING_FOR_SHIP, 3: SHIPPED, 4: CANCELED 
-	// (trường hợp khách hàng ko nhận hàng, hoặc ko thể liên lạc với khách hàng khi ship hàng, etc….)
+	/*
+	 * Hình thức thanh toán
+	 * 
+	 * 1: CASH
+	 * 2: BANK
+	 * 3: OTHERS
+	 */
+	private String paymentCode;
+	
+	/*
+	 * Tình trạng thực tế của hoá đơn 
+	 * 
+	 * 1: WAITING_FOR_CONFIRM, 2: CONFIRMED_AND_WAITING_FOR_SHIP, 3: SHIPPED, 4: CANCELED 
+	 * Trường hợp khách hàng ko nhận hàng, hoặc ko thể liên lạc với khách hàng khi ship hàng, etc….
+	 */
 	private String actualInvoiceStatus;
 	private Date expectedDateOfShipping;
 	private Date expectedTimeOfShipping;
 	
 	private List<Invoice> listOfSubInvoices;
+	private List<ItemDetail> listOfItemDetails;
 
 	public Invoice() {
 		super();
@@ -84,12 +119,12 @@ public class Invoice extends BaseEntity {
 		this.customer = customer;
 	}
 
-	public List<ItemDetail> getItemDetails() {
-		return itemDetails;
+	public List<ItemDetail> getListOfItemDetails() {
+		return listOfItemDetails;
 	}
 
-	public void setItemDetails(List<ItemDetail> itemDetails) {
-		this.itemDetails = itemDetails;
+	public void setListOfItemDetails(List<ItemDetail> listOfItemDetails) {
+		this.listOfItemDetails = listOfItemDetails;
 	}
 
 	public Invoice getOriginInvoice() {

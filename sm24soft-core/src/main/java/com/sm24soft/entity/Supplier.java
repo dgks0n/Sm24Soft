@@ -6,8 +6,17 @@ public class Supplier extends BaseEntity {
 
 	private String companyName;
 	private String companyTradingName;
+	
+	/*
+	 * Người đại diện pháp lý của Trang Trại 
+	 */
 	private RepresentativeOrContactPerson representativePerson;
+	
+	/*
+	 * Người liên lạc
+	 */
 	private RepresentativeOrContactPerson contactPerson;
+	
 	private String address1;
 	private String address2;
 	private String email;
@@ -17,8 +26,14 @@ public class Supplier extends BaseEntity {
 	private String faxNumber1;
 	private String faxNumber2;
 	private String faxNumber3;
-	private int loyaltyAccumulatedPoint;
 	
+	/*
+	 * Điểm tích luỹ của Trang trại.
+	 * 
+	 * TH có nhiều sản phẩm của Trang Trại được bán, điều này đồng nghĩa
+	 * với việc Trang Trại sẽ được cộng điểm.
+	 */
+	private int loyaltyAccumulatedPoint;
 	private List<ItemCategory> listOfItemCategories;
 	private List<Item> listOfItems;
 
