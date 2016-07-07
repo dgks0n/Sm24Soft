@@ -23,7 +23,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-lazy-init="true">
     
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
-	<resources mapping="/Assets/**" location="/Assets/" cache-period="31556926" />
+	<resources mapping="/assets/**" location="/assets/" cache-period="31556926" />
 	
 	<!-- 
 	  This bean sets up the Velocity environment for us based on a root path for templates.
@@ -31,7 +31,7 @@
 	  environment, but the defaults are pretty sane for file based template loading.
 	-->
 	<beans:bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-		<beans:property name="configLocation" value="/WEB-INF/Velocity/velocity.properties" />
+		<beans:property name="configLocation" value="/WEB-INF/velocity-config/velocity.properties" />
 	</beans:bean>
 
 	<!-- 
@@ -40,35 +40,29 @@
 	-->
 	<beans:bean class="com.sm24soft.common.view.velocity.VelocityMultipleViewResolver">
 		<beans:property name="viewClass" value="com.sm24soft.common.view.velocity.VelocityToolsView" />
-		<beans:property name="toolboxConfigLocation" value="/WEB-INF/Velocity/tools.xml" />
+		<beans:property name="toolboxConfigLocation" value="/WEB-INF/velocity-config/tools.xml" />
 		<beans:property name="numberToolAttribute" value="numberTool" />
 		<beans:property name="cache" value="false" />
-		<beans:property name="prefix" value="/Pages/" />
+		<beans:property name="prefix" value="/pages/" />
 		<beans:property name="suffix" value=".html" />
 		<beans:property name="screenContentKey" value="bodyContent" />
 		<beans:property name="mappings">
 			<beans:map>
-				<beans:entry key="Login" value="/Templates/Login.html" />
-<!-- 				<beans:entry key="Password/Reset" value="/Templates/TemplateChangePassword.html" /> -->
-<!-- 				<beans:entry key="Error/MaxUploadSizeExceededException" value="/Templates/TemplateNothing.html" /> -->
-				<!-- 
-					The view resolver goes through the mappings map from top to bottom. 
-					The first mapping it matches it uses so don't put below configuration
-					at the top or none of the other mappings will be used.
-				 -->
-				<beans:entry key="*" value="/Templates/Default.html" />
+				<beans:entry key="bo/authen/login" value="/layouts/bo/login.html" />
+				<beans:entry key="bo/*" value="/layouts/bo/default.html" />
+				<beans:entry key="error/*" value="/layouts/defaultError.html" />
+				
 			</beans:map>
 		</beans:property>
 		
 		<beans:property name="contentType" value="text/html;charset=UTF-8" />
 		
-<!-- 		<beans:property name="attributesMap"> -->
-<!-- 			<beans:map> -->
-<!-- 				<beans:entry key="loggedInUserInfo" value-ref="POSASoftLoggedInUserInfo" /> -->
-<!-- 				<beans:entry key="menu" value-ref="POSASoftMenuComponent" /> -->
-<!-- 				<beans:entry key="project" value-ref="POSASoftVersion" /> -->
-<!-- 			</beans:map> -->
-<!-- 		</beans:property> -->
+		<beans:property name="attributesMap">
+			<beans:map>
+				<beans:entry key="principal" value-ref="AuthenticationInterceptor" />
+				<beans:entry key="default" value-ref="DefaultProperties" />
+			</beans:map>
+		</beans:property>
 	</beans:bean>
 	
 </beans:beans>

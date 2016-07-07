@@ -13,23 +13,98 @@
 	
 	<sql id="findMenuItemSQL">
 		SELECT `menu`.`id`,
-	    `menu`.`full_name_of_menu_item`,
-	    `menu`.`role_of_menu_item`,
-	    `menu`.`order_number`,
-	    `menu`.`order_type`,
-	    `menu`.`full_path_of_menu_item`,
-	    `menu`.`actual_status`,
-	    `menu`.`delete_flg`,
-	    `menu`.`created_at`,
-	    `menu`.`created_user_id`,
-	    `menu`.`updated_at`,
-	    `menu`.`updated_user_id`
-	FROM `menu`
+		    `menu`.`full_name_of_menu_item`,
+		    `menu`.`role_of_menu_item`,
+		    `menu`.`order_number`,
+		    `menu`.`order_type`,
+		    `menu`.`full_path_of_menu_item`,
+		    `menu`.`actual_status`,
+		    `menu`.`delete_flg`,
+		    `menu`.`created_at`,
+		    `menu`.`created_user_id`,
+		    `menu`.`updated_at`,
+		    `menu`.`updated_user_id`
+		FROM `menu`
 	</sql>
 	
-	<select id="findAllMenuItems" resultMap="MenuItemResultMap">
+	<sql id="findAllMenuItemsSQL">
 		<include refid="findMenuItemSQL" />
-		WHERE `menu`.`delete_flg` = 0
+		WHERE `menu`.`delete_flg` = "0"
 		ORDER BY `menu`.`order_number` ASC;
+	</sql>
+	
+	<select id="findById" resultMap="MenuItemResultMap">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu`.`id` = #{id}
+			AND `menu`.`delete_flg` = "0";
 	</select>
+	
+	<select id="findAllMenuItems" resultMap="MenuItemResultMap">
+		<include refid="findAllMenuItemsSQL" />
+	</select>
+	
+	<select id="findAll" resultMap="MenuItemResultMap">
+		<include refid="findAllMenuItemsSQL" />
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.MenuItem">
+		INSERT INTO `menu`
+		(
+			`full_name_of_menu_item`,
+			`role_of_menu_item`,
+			`order_number`,
+			`order_type`,
+			`full_path_of_menu_item`,
+			`actual_status`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{fullNameOfMenuItem},
+			#{roleOfMenuItem},
+			#{orderNumber},
+			#{orderType},
+			#{fullPathOfMenuItem},
+			#{actualStatus},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);		
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.MenuItem">
+		UPDATE `menu`
+		SET
+			`full_name_of_menu_item` = #{fullNameOfMenuItem},
+			`role_of_menu_item` = #{roleOfMenuItem},
+			`order_number` = #{orderNumber},
+			`order_type` = #{orderType},
+			`full_path_of_menu_item` = #{fullPathOfMenuItem},
+			`actual_status` = #{actualStatus},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+			SELECT LAST_INSERT_ID() AS `id`;
+		</selectKey>
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `menu`
+		SET
+			`delete_flg` = "1",
+			`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+	
 </mapper>

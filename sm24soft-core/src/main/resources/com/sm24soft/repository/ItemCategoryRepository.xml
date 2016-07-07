@@ -43,26 +43,26 @@
 	<select id="findById" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
 		WHERE `item_category`.`id` = #{id}
-			AND `item_category`.`delete_flg` = 0
+			AND `item_category`.`delete_flg` = "0"
 	</select>
 	
 	<select id="findAllBySupplierId" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
 		WHERE `item_category`.`supplier_id` = #{id}
-			AND `item_category`.`delete_flg` = 0
+			AND `item_category`.`delete_flg` = "0"
 		ORDER BY `item_category`.`name` ASC;
 	</select>
 	
 	<select id="findAllByParentItemCategoryId" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
 		WHERE `item_category`.`parent_category_id` = #{id}
-			AND `item_category`.`delete_flg` = 0
+			AND `item_category`.`delete_flg` = "0"
 		ORDER BY `item_category`.`name` ASC;
 	</select>
 	
 	<select id="findAll" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
-		WHERE `item_category`.`delete_flg` = 0
+		WHERE `item_category`.`delete_flg` = "0"
 		ORDER BY `item_category`.`name` ASC;
 	</select>
 	
@@ -112,7 +112,7 @@
 	<delete id="deleteById">
 		UPDATE `item_category`
 		SET
-		`delete_flg` = 1,
+		`delete_flg` = "1",
 		`updated_at` = NOW()
 		WHERE `id` = #{id};
 	</delete>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- HTTP basic authentication in Spring Security -->
+	<http auto-config="false" entry-point-ref="loginUrlAuthenticationEntryPoint" access-decision-manager-ref="accessDecisionManager">
+        <!-- ログイン時の画面制御 -->
+        <custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
+        <custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter" />
+        
+        <!-- Configure URL for Controller Mapping here!!! -->
+		
+		<!-- /Dashboard -->
+		<intercept-url pattern="/Dashboard**" access="ROLE_ADMIN,ROLE_CENTRAL,ROLE_PROVINCE,ROLE_DISTRICT,ROLE_VILLAGE" requires-channel="http" />
+		
+		<!-- NONE AUTHENTICATE -->
+		<!-- 全ての画面に対してROLE_USERのみアクセス可能に -->
+		<intercept-url pattern="/j_spring_security_check" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- Resource Configuration -->
+		<intercept-url pattern="/assets/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		
+		<intercept-url pattern="/*" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		
+		<port-mappings>
+			<port-mapping http="80" https="443" />
+			<port-mapping http="8080" https="443" />
+		</port-mappings>
+		
+        <!-- ログアウト時の画面制御 -->
+		<logout logout-url="/logout" success-handler-ref="logoutSuccessHandler" invalidate-session="true" delete-cookies="JSESSIONID" />
+		
+		<!-- Handles an access denied failure -->
+		<access-denied-handler ref="accessDeniedHandler" />
+		
+		<session-management invalid-session-url="/" session-authentication-strategy-ref="sessionAuthenticationStrategy" />
+	</http>
+	
+	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+        <beans:constructor-arg name="expiredUrl" value="/" />
+        <beans:property name="logoutHandlers">
+        	<beans:list>
+        		<beans:ref bean="securityContextLogoutHandler" />
+        	</beans:list>
+        </beans:property>
+    </beans:bean>
+	
+	<!-- Configures a custom logout success handler that returns HTTP status code 200 -->
+    <beans:bean id="logoutSuccessHandler" class="com.sm24soft.security.web.authentication.Sm24SoftUrlLogoutSuccessHandler" />
+	<beans:bean id="accessDeniedHandler" class="com.sm24soft.security.web.access.Sm24SoftAccessDeniedHandler" />
+	
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	<beans:bean id="loginUrlAuthenticationEntryPoint" class="com.sm24soft.security.web.authentication.Sm24SoftLoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="${org.springframework.security.web.authentication.loginFormUrl}" />
+    </beans:bean>
+    
+    <!-- A logout handler which clears a defined list of cookies, using the context path as the cookie path -->
+    <beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+    <beans:bean id="usernamePasswordAuthenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <beans:property name="sessionAuthenticationStrategy" ref="sessionAuthenticationStrategy" />
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="authenticationFailureHandler" ref="failureHandler" />
+        <beans:property name="authenticationSuccessHandler" ref="successHandler" />
+        
+        <beans:property name="postOnly" value="true" />
+    </beans:bean>
+
+    <beans:bean id="sessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+        <beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+
+	    <!-- It means how many concurrent session per user is allowed -->
+	    <!-- Most secure system like online banking portals allow just one authenticate session per user -->
+        <beans:property name="maximumSessions" value="${org.springframework.security.web.authentication.session.maximumSessions}" />
+    </beans:bean>
+    
+    <beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:constructor-arg name="defaultFailureUrl" value="${org.springframework.security.web.authentication.defaultFailureUrl}" />
+        <beans:property name="allowSessionCreation" value="${org.springframework.security.web.authentication.allowSessionCreation}" />
+    </beans:bean>
+
+	<beans:bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="${org.springframework.security.web.authentication.defaultTargetUrl}" />
+	</beans:bean>
+	
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<beans:constructor-arg value="512" />
+		<beans:property name="encodeHashAsBase64" value="false" />
+	</beans:bean>
+	
+	<beans:bean id="simpleAccount" class="com.sm24soft.security.web.authentication.Sm24SoftSimpleAccount">
+		<beans:constructor-arg name="username" value="${default.authc.username}" />
+		<beans:constructor-arg name="password" value="${default.authc.password}" />
+	</beans:bean>
+
+    <!-- Spring Security Authentication Manager -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder ref="passwordEncoder" />
+		</authentication-provider>
+	</authentication-manager>
+</beans:beans>

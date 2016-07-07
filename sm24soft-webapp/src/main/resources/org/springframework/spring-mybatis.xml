@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Mapperクラスのインジェクション -->
+	<!-- @see https://mybatis.github.io/spring/apidocs/reference/org/mybatis/spring/mapper/MapperScannerConfigurer.html -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<!-- カンマやセミコロンで区切れば複数のPathが記述可能 -->
+        <property name="basePackage" value="com.sm24soft.repository" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    
+    <!-- MyBatisのSqlSeessionFactoryの定義 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionFactory">
+        	<bean class="org.mybatis.spring.transaction.SpringManagedTransactionFactory" />
+        </property>
+        <!-- カンマやセミコロンで区切れば複数のPathが記述可能 -->
+        <property name="typeAliasesPackage" value="com.sm24soft.entity" />
+        
+        <!-- Refer to: http://www.mybatis.org/spring/factorybean.html -->
+        <property name="configuration">
+        	<!-- To be fixed bug: "N+1 Selects Problem"
+        		Refer to: http://zale.site/articles/2016/04/MyBatis-Advanced.html -->
+        	<bean class="org.apache.ibatis.session.Configuration">
+        		<property name="lazyLoadingEnabled" value="true" />
+        		<property name="aggressiveLazyLoading" value="false" />
+        	</bean>
+        </property>
+    </bean>
+</beans>

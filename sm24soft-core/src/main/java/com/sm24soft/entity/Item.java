@@ -78,7 +78,7 @@ public class Item extends BaseEntity {
 	/*
 	 * Danh sach can nang / 1 box. 
 	 * 
-	 * Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}
+	 * Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}]
 	 */
 	private String weightOfOneBox;
 	
@@ -266,12 +266,16 @@ public class Item extends BaseEntity {
 	public void setWeight(float weight) {
 		this.weight = weight;
 	}
+	
+	public String getWeightOfOneBox() {
+		return weightOfOneBox;
+	}
 
-	public List<BoxReference> getWeightOfOneBox() {
+	public List<BoxReference> getListOfBoxReferences() {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BoxReference> boxes = null;
 		try {
-			boxes = mapper.readValue(weightOfOneBox, new TypeReference<List<BoxReference>>(){});
+			boxes = mapper.readValue(getWeightOfOneBox(), new TypeReference<List<BoxReference>>(){});
 		} catch (IOException ex) {
 			// TODO:
 		}

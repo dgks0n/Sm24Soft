@@ -35,11 +35,11 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath*:org/springframework/database-cfg.xml
-			classpath*:org/springframework/spring-mybatis-cfg.xml
-			classpath*:org/springframework/spring-context-cfg.xml
-			classpath*:org/springframework/spring-security-acl-cfg.xml
-			classpath*:org/springframework/spring-security-cfg.xml
+			classpath*:org/springframework/database.xml
+			classpath*:org/springframework/spring-mybatis.xml
+			classpath*:org/springframework/spring-context.xml
+			classpath*:org/springframework/spring-security-acl.xml
+			classpath*:org/springframework/spring-security.xml
 		</param-value>
 	</context-param>
 	
@@ -120,12 +120,12 @@
 
 	<error-page>
 		<error-code>500</error-code>
-		<location>/Error/500</location>
+		<location>/error/500</location>
 	</error-page>
 	
 	<error-page>
 		<error-code>404</error-code>
-		<location>/Error/404</location>
+		<location>/error/404</location>
 	</error-page>
 	
 </web-app>

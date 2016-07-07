@@ -73,7 +73,7 @@
 	<select id="findAllSubInvoicesByParentInvoiceId" resultMap="InvoiceResultMap">
 		<include refid="findInvoiceSQL" />
 		WHERE `invoice`.`origin_invoice_number` = #{id}
-			AND `invoice`.`returned_invoice_flg` = 0
+			AND `invoice`.`returned_invoice_flg` = "0"
 			AND `invoice`.`delete_flg` = "0"
 		ORDER BY `invoice`.`invoice_number` ASC;
 	</select>
@@ -163,7 +163,7 @@
 			#{totalPriceAfterVAT},
 			#{totalPriceAfterTaxAsString},
 			#{dateOfSale},
-			#{sellerPerson},
+			#{sellerPerson.id},
 			#{paymentCode},
 			#{actualInvoiceStatus},
 			#{expectedDateOfShipping},

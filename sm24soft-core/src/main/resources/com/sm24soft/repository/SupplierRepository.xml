@@ -99,14 +99,14 @@
 	
 	<select id="findAll" resultMap="SupplierResultMap">
 		<include refid="findSupplierSQL" />
-		WHERE `supplier`.`delete_flg` = 0
+		WHERE `supplier`.`delete_flg` = "0"
 		ORDER BY `supplier`.`loyalty_accumulated_point` DESC;
 	</select>
 	
 	<select id="findById" parameterType="java.lang.String" resultMap="SupplierResultMap">
 		<include refid="findSupplierSQL" />
 		WHERE `supplier`.`id` = #{id}
-			AND `supplier`.`delete_flg` = 0;
+			AND `supplier`.`delete_flg` = "0";
 	</select>
 	
 	<insert id="save" parameterType="com.sm24soft.entity.Supplier" 
@@ -185,7 +185,7 @@
 	<delete id="deleteById">
 		UPDATE `supplier`
 		SET
-		`delete_flg` = 1,
+		`delete_flg` = "1",
 		`updated_at` = NOW()
 		WHERE `id` = #{id};
 	</delete>

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.sm24soft.entity.MenuItem;
 
-public interface MenuItemRepository extends Repository<MenuItem, String> {
+public interface MenuItemRepository extends CrudRepository<MenuItem, String> {
 
 	/**
 	 * Returns all instances of the type.

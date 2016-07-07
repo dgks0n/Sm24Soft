@@ -57,7 +57,7 @@ public class Sm24SoftUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
         SecurityContextHolder.getContext().setAuthentication(null);
 		SecurityContextHolder.clearContext();
     	
-    	super.onLogoutSuccess(request, response, authentication);
+    	super.onLogoutSuccess(request, response, null);
     }
 
 	public List<String> getCookiesToClear() {
