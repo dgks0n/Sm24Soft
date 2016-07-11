@@ -1,18 +1,13 @@
-package com.sm24soft.interceptor;
+package com.sm24soft.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 
-import com.sm24soft.component.IAuthenticationFacade;
-
-@org.springframework.stereotype.Component("AuthenticationInterceptor")
-public class AuthenticationInterceptor {
+public class AuthenticationComponent extends Component {
 
 	private IAuthenticationFacade authenticationFacade;
 	
-	@Autowired
-	public AuthenticationInterceptor(IAuthenticationFacade authenticationFacade) {
+	public AuthenticationComponent(IAuthenticationFacade authenticationFacade) {
 		this.authenticationFacade = authenticationFacade;
 	}
 	

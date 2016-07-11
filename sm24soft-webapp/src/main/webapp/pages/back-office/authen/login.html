@@ -3,7 +3,7 @@
 	<div class="login_wrapper">
 		<div class="animate form login_form">
 			<section class="login_content">
-				<form class="frm-bo-authen" action="${request.contextPath}/j_spring_security_check" method="post">
+				<form action="${request.contextPath}/j_spring_security_check" method="post">
 					<h1>Đăng nhập Gala.vn</h1>
 					<div>
 						<input type="text" name="j_username" class="form-control" placeholder="Tài khoản" required="" />
@@ -12,8 +12,8 @@
 						<input type="password" name="j_password" class="form-control" placeholder="Mật khẩu" required="" />
 					</div>
 					<div>
-						<a class="btn btn-default submit" href="javascript:;">Đăng nhập</a> 
-						<a class="reset_pass" href="javascript:;">Quên mật khẩu?</a>
+						<button class="btn btn-default submit">Đăng nhập</button> 
+						<a class="reset_pass">Quên mật khẩu?</a>
 					</div>
 					<div class="clearfix"></div>
 					<div class="separator">
@@ -23,7 +23,7 @@
 							<h1>
 								<i class="fa fa-paw"></i> Gala.vn
 							</h1>
-							<p>©2016 Bản quyền thuộc Gala.vn</p>
+							<p>$!pageUtil.pageCopyright</p>
 						</div>
 					</div>
 				</form>
@@ -31,13 +31,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- jQuery -->
-<script src="#springUrl('/assets/template/gentelella-1.3.0/vendors/jquery/dist/jquery.min.js')"></script>
-<script>
-$(function() {
-	$("a.submit").click(function() {
-		$("form.frm-bo-authen").submit();
-	});
-});
-</script>

@@ -180,9 +180,6 @@
 			#{updatedAt},
 			#{updatedUserId}
 		);
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.Item">
@@ -219,9 +216,6 @@
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}
 		WHERE `id` = #{id};
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
 	</update>
 	
 	<delete id="deleteById">

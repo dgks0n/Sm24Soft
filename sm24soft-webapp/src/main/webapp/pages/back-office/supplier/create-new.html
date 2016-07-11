@@ -1,0 +1,211 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Trang trại</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>
+							Thông tin chi tiết
+						</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/supplier')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<!-- Smart Wizard -->
+						<p>Nhập thông tin của Trang trại</p>
+						<div id="wizard" class="form_wizard wizard_horizontal">
+							<ul class="wizard_steps">
+								<li>
+									<a href="#step-farm-info"> 
+										<span class="step_no">1</span> 
+										<span class="step_descr"> Step 1<br /> <small>Thông tin Trang trại / Nhà cung cấp</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step-representative-person"> 
+										<span class="step_no">2</span> 
+										<span class="step_descr"> Step 2<br /> <small>Người đại diện của Trang trại (không bắt buộc)</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step-contact-person"> 
+										<span class="step_no">3</span> 
+										<span class="step_descr"> Step 3<br /> <small>Người liên hệ trực tiếp (không bắt buộc)</small></span>
+									</a>
+								</li>
+							</ul>
+							<form class="form-horizontal form-label-left form-create-supplier"
+								action="#springUrl('/admin/supplier/create-new-one')" method="post">
+								<div id="step-farm-info">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="company-name">Tên <span class="required">*</span>
+										</label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="company-name" name="companyName" 
+												required="required" class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="company-trading-name">Tên giao dịch <span class="required">*</span>
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="company-trading-name" name="companyTradingName"
+												required="required" class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="email">Email <span class="required">*</span>
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="email"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="email" required="required" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="telephone-number1">Số điện thoại <span class="required">*</span>
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="telephone-number1"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="telephoneNumber1" required="required" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="address1">Địa chỉ <span class="required">*</span>
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="address1"
+												class="form-control col-md-7 col-xs-12" type="text"
+												name="address1">
+										</div>
+									</div>
+								</div>
+								
+								<!-- Representative Person -->
+								<div id="step-representative-person">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="representative-shortName">Tên
+										</label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="representative-shortName" 
+												name="representativePerson[shortName]" class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="representative-fullName">Tên đầy đủ
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="representative-fullName" 
+												name="representativePerson[fullName]" class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="representative-email">Email
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="representative-email"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="representativePerson[email]" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="representative-phone-number1">Số điện thoại
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="representative-phone-number1"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="representativePerson[phoneNumber1]" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="representative-address1">Địa chỉ
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="representative-address1"
+												class="form-control col-md-7 col-xs-12" type="text"
+												name="representativePerson[address1]">
+										</div>
+									</div>
+								</div>
+								
+								<!-- Contact Person -->
+								<div id="step-contact-person">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="contact-shortName">Tên
+										</label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="contact-shortName" name="contactPerson[shortName]" 
+												class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="contact-fullName">Tên đầy đủ
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="contact-fullName" name="contactPerson[fullName]"
+												class="form-control col-md-7 col-xs-12">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="contact-email">Email
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="contact-email"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="contactPerson[email]" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="contact-phone-number1">Số điện thoại
+										</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="contact-phone-number1"
+												class="date-picker form-control col-md-7 col-xs-12"
+												name="contactPerson[phoneNumber1]" type="text">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"
+											for="contact-address1">Địa chỉ
+										</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="contact-address1"
+												class="form-control col-md-7 col-xs-12" type="text"
+												name="contactPerson[address1]">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- End SmartWizard Content -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springErrorMessage( "fails-create-supplier-dialog" "Thông báo" "" "Không thể thêm mới Trang trại hoặc Nhà cung cấp. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/assets/js/back-office/jquery.supplier.js')"></script>

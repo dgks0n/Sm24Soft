@@ -119,7 +119,8 @@
 		ORDER BY `invoice`.`invoice_number` ASC;
 	</select>
 	
-	<insert id="save" parameterType="com.sm24soft.entity.Invoice">
+	<insert id="save" parameterType="com.sm24soft.entity.Invoice"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO `invoice`
 		(
 			`name`,
@@ -174,9 +175,6 @@
 			#{updatedAt},
 			#{updatedUserId}
 		);
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.Invoice">
@@ -205,9 +203,6 @@
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}
 		WHERE `id` = #{id};
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
 	</update>
 	
 	<delete id="deleteById">

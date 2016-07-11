@@ -23,7 +23,10 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-lazy-init="true">
     
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
-	<resources mapping="/assets/**" location="/assets/" cache-period="31556926" />
+	<resources mapping="/assets/css/**" location="/assets/css/" cache-period="31556926" />
+	<resources mapping="/assets/images/**" location="/assets/images/" cache-period="31556926" />
+	<resources mapping="/assets/js/**" location="/assets/js/" cache-period="31556926" />
+	<resources mapping="/assets/template/**" location="/assets/template/" cache-period="31556926" />
 	
 	<!-- 
 	  This bean sets up the Velocity environment for us based on a root path for templates.
@@ -46,21 +49,19 @@
 		<beans:property name="prefix" value="/pages/" />
 		<beans:property name="suffix" value=".html" />
 		<beans:property name="screenContentKey" value="bodyContent" />
+		<beans:property name="exposeSpringMacroHelpers" value="true" />
+		<beans:property name="contentType" value="text/html;charset=UTF-8" />
 		<beans:property name="mappings">
 			<beans:map>
-				<beans:entry key="bo/authen/login" value="/layouts/bo/login.html" />
-				<beans:entry key="bo/*" value="/layouts/bo/default.html" />
-				<beans:entry key="error/*" value="/layouts/defaultError.html" />
+				<beans:entry key="back-office/authen/login" value="/layouts/back-office/login.html" />
+				<beans:entry key="back-office/*" value="/layouts/back-office/default.html" />
 				
+				<beans:entry key="error/*" value="/layouts/defaultError.html" />
 			</beans:map>
 		</beans:property>
-		
-		<beans:property name="contentType" value="text/html;charset=UTF-8" />
-		
 		<beans:property name="attributesMap">
 			<beans:map>
-				<beans:entry key="principal" value-ref="AuthenticationInterceptor" />
-				<beans:entry key="default" value-ref="DefaultProperties" />
+				<beans:entry key="pageUtil" value-ref="PageComponent" />
 			</beans:map>
 		</beans:property>
 	</beans:bean>

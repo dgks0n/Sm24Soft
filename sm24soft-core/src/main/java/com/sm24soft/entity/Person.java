@@ -107,5 +107,4 @@ public class Person extends BaseEntity {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-
 }

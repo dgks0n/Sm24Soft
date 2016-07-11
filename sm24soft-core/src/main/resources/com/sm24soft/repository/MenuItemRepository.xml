@@ -30,12 +30,24 @@
 	<sql id="findAllMenuItemsSQL">
 		<include refid="findMenuItemSQL" />
 		WHERE `menu`.`delete_flg` = "0"
-		ORDER BY `menu`.`order_number` ASC;
+		ORDER BY `menu`.`order_number`, `menu`.`full_name_of_menu_item` ASC;
 	</sql>
 	
 	<select id="findById" resultMap="MenuItemResultMap">
 		<include refid="findMenuItemSQL" />
 		WHERE `menu`.`id` = #{id}
+			AND `menu`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findByFullName" resultMap="MenuItemResultMap">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu`.`full_name_of_menu_item` = #{fullName}
+			AND `menu`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findByFullPath" resultMap="MenuItemResultMap">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu`.`full_path_of_menu_item` = #{fullPath}
 			AND `menu`.`delete_flg` = "0";
 	</select>
 	
@@ -47,7 +59,8 @@
 		<include refid="findAllMenuItemsSQL" />
 	</select>
 	
-	<insert id="save" parameterType="com.sm24soft.entity.MenuItem">
+	<insert id="save" parameterType="com.sm24soft.entity.MenuItem"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO `menu`
 		(
 			`full_name_of_menu_item`,
@@ -75,10 +88,7 @@
 			#{createdUserId},
 			#{updatedAt},
 			#{updatedUserId}
-		);		
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
+		);
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.MenuItem">
@@ -94,17 +104,12 @@
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}
 		WHERE `id` = #{id};
-		<selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
-			SELECT LAST_INSERT_ID() AS `id`;
-		</selectKey>
 	</update>
 	
 	<delete id="deleteById">
-		UPDATE `menu`
-		SET
-			`delete_flg` = "1",
-			`updated_at` = NOW()
-		WHERE `id` = #{id};
+		DELETE FROM `menu`
+		WHERE `id` = #{id}
+			AND `delete_flg` = "0";
 	</delete>
 	
 </mapper>

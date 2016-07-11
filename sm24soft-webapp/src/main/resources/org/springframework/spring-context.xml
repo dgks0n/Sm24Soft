@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<context:annotation-config />
@@ -16,17 +16,13 @@
 		<context:include-filter type="regex" expression=".*service\.[^.]*" />
 		<context:include-filter type="regex" expression=".*component\.[^.]*" />
 		<context:include-filter type="regex" expression=".*interceptor\.[^.]*" />
+		
+		<context:exclude-filter type="regex" expression=".*component\.AuthenticationComponent.*" />
 	</context:component-scan>
     
 	<!-- @Controller の付いたクラスを Controller として登録。 -->
 	<mvc:annotation-driven />
 	
-	<!-- Enables annotation-driven task scheduling; detects @Scheduled- and 
-        @Async-annotated process methods to be invoked via proxy -->
-<!-- 	<task:scheduler id="taskScheduler" /> -->
-<!-- 	<task:executor id="taskExecutor" pool-size="1" /> -->
-<!-- 	<task:annotation-driven executor="taskExecutor" scheduler="taskScheduler" /> -->
-    
     <!-- Root Context: defines shared resources visible to all other web components -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
@@ -48,7 +44,8 @@
 		current Servlet mapping is used. For example, if a Servlet is mapped using 
 		/testing/* and the alwaysUseFullPath property is set to true, /testing/viewPage.html 
 		is used, whereas if the property is set to false, /viewPage.html is used. -->
-    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+    <bean id="handlerMapping" 
+    	class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="alwaysUseFullPath" value="true" />
 	</bean>
 	
@@ -70,11 +67,36 @@
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 	
-	<bean id="jacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	<!-- Spring MVC:  setting objectMapper in converter MappingJackson2HttpMessageConverter-->
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<bean id="jacksonHttpMessageConverter" 
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="objectMapper" ref="jackson2ObjectMapper" />
+	</bean>
+	
+	<bean id="requestMappingHandlerAdapter" 
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
 			<list>
 				<ref bean="jacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	<!--Jackson - objectMapper format date setting -->
+	<bean id="jackson2ObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+		p:indentOutput="true" p:simpleDateFormat="yyyy-MM-dd'T'HH:mm:ss.SSSZ">
+		<property name="featuresToDisable">
+			<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES" />
+		</property>
+	</bean>
+	
+	<!--Jackson - registerModule JodaModule -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+		p:targetObject-ref="jackson2ObjectMapper" p:targetMethod="registerModule">
+		<property name="arguments">
+			<list>
+				<bean class="com.fasterxml.jackson.datatype.joda.JodaModule" />
 			</list>
 		</property>
 	</bean>
@@ -98,5 +120,6 @@
 
 	<bean id="siteAssetsFacade" class="com.sm24soft.component.SiteAssetsFacade">
 		<constructor-arg name="pageTitle" value="${default.pageTitle}" />
+		<constructor-arg name="pageCopyright" value="${default.pageCopyright}" />
 	</bean>
 </beans>

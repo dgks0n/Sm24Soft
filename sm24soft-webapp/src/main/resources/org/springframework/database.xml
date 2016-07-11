@@ -47,7 +47,7 @@
 	<bean id="databaseInitializer" class="org.springframework.jdbc.datasource.init.DataSourceInitializer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="databasePopulator" ref="databasePopulator" />
-		<property name="enabled" value="true" />
+		<property name="enabled" value="false" />
 	</bean>
 	
     <!-- アノテーションベースのトランザクション管理を有効にする -->

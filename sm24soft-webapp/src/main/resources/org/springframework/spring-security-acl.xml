@@ -84,7 +84,8 @@
         <beans:constructor-arg ref="aclService" />
     </beans:bean>
 
-    <beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+    <beans:bean id="expressionHandler" 
+    	class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
         <beans:property name="permissionEvaluator" ref="aclPermissionEvaluator" />
         <beans:property name="permissionCacheOptimizer" ref="aclPermissionCacheOptimizer" />
     </beans:bean>

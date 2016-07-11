@@ -1,16 +1,16 @@
 package com.sm24soft.repository;
 
-import java.io.Serializable;
+import java.util.List;
 
-public interface CrudRepository<T, ID extends Serializable> extends Repository<T, ID> {
+public interface CrudRepository<T, PK> extends Repository<T, PK> {
 	
-	<S extends T> ID save(S entity);
+	<S extends T> void save(S entity);
 	
-	<S extends T> ID update(S entity);
+	<S extends T> void update(S entity);
 	
-	T findById(ID id);
+	T findById(PK id);
 	
-	Iterable<T> findAll();
+	List<T> findAll();
 	
-	void deleteById(ID id);
+	void deleteById(PK id);
 }

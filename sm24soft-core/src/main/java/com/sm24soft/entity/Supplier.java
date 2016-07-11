@@ -2,21 +2,12 @@ package com.sm24soft.entity;
 
 import java.util.List;
 
+import com.sm24soft.common.util.StringFormatUtil;
+
 public class Supplier extends BaseEntity {
 
 	private String companyName;
 	private String companyTradingName;
-	
-	/*
-	 * Người đại diện pháp lý của Trang Trại 
-	 */
-	private RepresentativeOrContactPerson representativePerson;
-	
-	/*
-	 * Người liên lạc
-	 */
-	private RepresentativeOrContactPerson contactPerson;
-	
 	private String address1;
 	private String address2;
 	private String email;
@@ -27,15 +18,42 @@ public class Supplier extends BaseEntity {
 	private String faxNumber2;
 	private String faxNumber3;
 	
-	/*
+	/**
 	 * Điểm tích luỹ của Trang trại.
 	 * 
 	 * TH có nhiều sản phẩm của Trang Trại được bán, điều này đồng nghĩa
 	 * với việc Trang Trại sẽ được cộng điểm.
 	 */
-	private int loyaltyAccumulatedPoint;
+	private int loyaltyAccumulatedPoint = 0;
+	
+	/**
+	 * Người đại diện pháp lý của Trang Trại 
+	 */
+	private RepresentativeOrContactPerson representativePerson;
+	
+	/**
+	 * Người liên lạc
+	 */
+	private RepresentativeOrContactPerson contactPerson;
+	
 	private List<ItemCategory> listOfItemCategories;
 	private List<Item> listOfItems;
+	
+	// Added more information by SONDN
+	// Modified on 2016-11-07
+	
+	/**
+	 * Danh sách tin tức của Trang trại & Nhà cung cấp 
+	 */
+	private List<News> listOfNews;
+	private String logoUrl;
+	
+	/**
+	 * Should use Text Editor for this field at client side
+	 */
+	private String description;
+	private List<String> listOfImages;
+	private List<CertificationStandard> listOfCertificationStandards;
 
 	public Supplier() {
 		super();
@@ -152,7 +170,7 @@ public class Supplier extends BaseEntity {
 	public void setLoyaltyAccumulatedPoint(int loyaltyAccumulatedPoint) {
 		this.loyaltyAccumulatedPoint = loyaltyAccumulatedPoint;
 	}
-
+	
 	public List<ItemCategory> getListOfItemCategories() {
 		return listOfItemCategories;
 	}
@@ -169,4 +187,49 @@ public class Supplier extends BaseEntity {
 		this.listOfItems = listOfItems;
 	}
 
+	@Override
+	public String getIdWithPADZero() {
+		return StringFormatUtil.formatString(4, getId());
+	}
+	
+	public List<News> getListOfNews() {
+		return listOfNews;
+	}
+
+	public void setListOfNews(List<News> listOfNews) {
+		this.listOfNews = listOfNews;
+	}
+
+	public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<String> getListOfImages() {
+		return listOfImages;
+	}
+
+	public void setListOfImages(List<String> listOfImages) {
+		this.listOfImages = listOfImages;
+	}
+
+	public List<CertificationStandard> getListOfCertificationStandards() {
+		return listOfCertificationStandards;
+	}
+
+	public void setListOfCertificationStandards(List<CertificationStandard> listOfCertificationStandards) {
+		this.listOfCertificationStandards = listOfCertificationStandards;
+	}
+ 
 }
