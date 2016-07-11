@@ -1,6 +1,9 @@
 *.class
 *.DS_Store
 
+# Commit without content under /bin folder
+*/bin
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
