@@ -3,6 +3,7 @@ package com.sm24soft.controller.backoffice;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +33,33 @@ public class DefaultAdministrativeController extends ApplicationController imple
 		this.authenticationFacade = authenticationFacade;
 	}
 	
-	@RequestMapping(path = { "" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "", "/" }, method = RequestMethod.GET)
 	public String renderBackOfficeLoginPage() {
-		Authentication authentication = authenticationFacade.getAuthentication();
 		logger.info("Call renderBackOfficeLoginPage()");
+		
+		Authentication authentication = authenticationFacade.getAuthentication();
 		if (null != authentication && authentication.isAuthenticated()) {
 			return "back-office/index";
 		}
-		
 		return "back-office/authen/login";
 	}
-
-	@RequestMapping(path = { "/index" }, method = RequestMethod.GET)
-	public String renderAdministrationIndexPage() {
-		logger.info("Call renderAdministrationIndexPage()");
-		return "back-office/index";
-	}
 	
-	@RequestMapping(path = { "/index" }, method = RequestMethod.POST)
-	public @ResponseBody HttpResponse<String> updateActivingMenuItem(final HttpServletRequest request,
-			@RequestParam("active_menu_item") String activeMenuItem) {
+	@RequestMapping(path = { "" }, method = RequestMethod.POST)
+	public @ResponseBody HttpResponse<String> updateActivingMenuItem(
+			@RequestParam(value = "act_menu", required = false, defaultValue = "") String activeMenuItem, 
+			@RequestParam(value = "act_child_menu", required = false, defaultValue = "") String activeChildMenuItem, 
+			final HttpServletRequest request) {
 		logger.info("Call updateActivingMenuItem()");
+		
 		final HttpSession session = request.getSession();
-		session.setAttribute(PageComponent.DEFAULT_ACTIVING_MENU_ITEM, activeMenuItem);
+		if (StringUtils.isNotEmpty(activeMenuItem)) {
+			session.setAttribute(PageComponent.DEFAULT_ACTIVING_MENU_ITEM, activeMenuItem);
+			session.removeAttribute(PageComponent.DEFAULT_ACTIVING_CHILD_MENU_ITEM);
+		}
+		
+		if (StringUtils.isNotEmpty(activeChildMenuItem)) {
+			session.setAttribute(PageComponent.DEFAULT_ACTIVING_CHILD_MENU_ITEM, activeChildMenuItem);
+		}
 		return new HttpResponse<String>(HttpStatus.OK, null, null);
 	}
 }

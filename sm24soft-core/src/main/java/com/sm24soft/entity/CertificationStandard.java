@@ -1,5 +1,7 @@
 package com.sm24soft.entity;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CertificationStandard extends BaseEntity {
 
 	private String name;
@@ -22,6 +24,14 @@ public class CertificationStandard extends BaseEntity {
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public String getShortDescription() {
+		if (StringUtils.isEmpty(description)) {
+			return null;
+		}
+		// Default is get 70 first characters
+		return description.substring(0, 70) + "...";
 	}
 
 	public void setDescription(String description) {

@@ -10,6 +10,8 @@ import java.io.IOException;
  *
  */
 public class FileUtil {
+	
+	public static final String DEFAULT_GALA_HOME_DIRECTORY = "Gala/Resources";
 
 	/**
 	 * Delete a file or directory
@@ -43,5 +45,22 @@ public class FileUtil {
 			// if file, then delete it
 			file.delete();
 		}
+	}
+	
+	/**
+	 * Get home directory
+	 * 
+	 * @return
+	 */
+	public static String getHomeDirectory(String dirName) {
+		return getRootDirectory() + File.separator + dirName;
+	}
+	
+	public static String getHomeDirectory() {
+		return getRootDirectory() + File.separator + DEFAULT_GALA_HOME_DIRECTORY;
+	}
+	
+	private static String getRootDirectory() {
+		return System.getProperty("user.home");
 	}
 }

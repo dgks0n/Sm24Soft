@@ -2,6 +2,9 @@ package com.sm24soft.entity;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.sm24soft.common.util.StringFormatUtil;
 
 public class Supplier extends BaseEntity {
@@ -46,13 +49,13 @@ public class Supplier extends BaseEntity {
 	 * Danh sách tin tức của Trang trại & Nhà cung cấp 
 	 */
 	private List<News> listOfNews;
-	private String logoUrl;
+	private Image logoUrl;
 	
 	/**
 	 * Should use Text Editor for this field at client side
 	 */
 	private String description;
-	private List<String> listOfImages;
+	private List<Image> listOfImages;
 	private List<CertificationStandard> listOfCertificationStandards;
 
 	public Supplier() {
@@ -200,11 +203,11 @@ public class Supplier extends BaseEntity {
 		this.listOfNews = listOfNews;
 	}
 
-	public String getLogoUrl() {
+	public Image getLogoUrl() {
 		return logoUrl;
 	}
 
-	public void setLogoUrl(String logoUrl) {
+	public void setLogoUrl(Image logoUrl) {
 		this.logoUrl = logoUrl;
 	}
 
@@ -216,11 +219,11 @@ public class Supplier extends BaseEntity {
 		this.description = description;
 	}
 
-	public List<String> getListOfImages() {
+	public List<Image> getListOfImages() {
 		return listOfImages;
 	}
 
-	public void setListOfImages(List<String> listOfImages) {
+	public void setListOfImages(List<Image> listOfImages) {
 		this.listOfImages = listOfImages;
 	}
 
@@ -230,6 +233,41 @@ public class Supplier extends BaseEntity {
 
 	public void setListOfCertificationStandards(List<CertificationStandard> listOfCertificationStandards) {
 		this.listOfCertificationStandards = listOfCertificationStandards;
+	}
+	
+	/**
+	 * Get operation image for the supplier
+	 * by using index of field ID
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Image getOperationImageByIndex(int index) {
+		if (CollectionUtils.isEmpty(getListOfImages())) {
+			return null;
+		}
+		int size = getListOfImages().size();
+		if (index > size) {
+			return null;
+		}
+		return getListOfImages().get(index - 1);
+	}
+	
+	public Image getOperationImageByFieldId(String fieldId) {
+		if (CollectionUtils.isEmpty(getListOfImages())) {
+			return null;
+		}
+		
+		if (StringUtils.isEmpty(fieldId)) {
+			return null;
+		}
+		
+		for (Image image : listOfImages) {
+			if (null != image && fieldId.equals(image.getImageFieldId())) {
+				return image;
+			}
+		}
+		return null;
 	}
  
 }

@@ -49,7 +49,7 @@ public class MenuItemController extends ApplicationController implements Control
 		
 		model.addAttribute("listOfMenuItems", listOfMenuItems);
 		
-		return "back-office/menu-item/index";
+		return "back-office/menu-item/list";
 	}
 	
 	@RequestMapping(path = { "/create-new-one" }, method = RequestMethod.GET)
@@ -91,7 +91,7 @@ public class MenuItemController extends ApplicationController implements Control
 		}
 	}
 	
-	@RequestMapping(path = { "/update/{id}" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
 	public String renderUpdateOneMenuItemPage(@PathVariable("id") String id, final Model model) {
 		if (StringUtils.isEmpty(id)) {
 			throw new ObjectNotFoundException("Updating object's id must not be null and empty");

@@ -1,0 +1,60 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Danh mục</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Thông tin chi tiết</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/menu-item/create-new-one')"><i class="fa fa-plus"></i> Thêm mới</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<input type="hidden" name="selectedMenuItem" value="" />
+						<table class="table table-hover table-menu-item" data-selected-id="">
+							<thead>
+								<tr>
+									<th width="5%">Stt</th>
+									<th width="25%">Tên</th>
+									<th width="5%">Vị trí</th>
+									<th width="12%">Quyền truy cập</th>
+									<th width="25%">Đường dẫn</th>
+									<th width="10%">Trạng thái</th>
+									<th width="13%"></th>
+								</tr>
+							</thead>
+							<tbody>
+								#foreach ($menuItem in $!listOfMenuItems)
+								<tr>
+									<th scope="row">$velocityCount</th>
+									<td>$!menuItem.fullNameOfMenuItem</td>
+									<td>$!menuItem.orderNumber</td>
+									<td>$!menuItem.roleOfMenuItemAsString</td>
+									<td>$!menuItem.fullPathOfMenuItem</td>
+									<td>$!menuItem.actualStatusAsString</td>
+									<td>
+										<a class="btn btn-default btn-xs btn-edit" 
+											data-id="$!menuItem.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
+										<a class="btn btn-warning btn-xs btn-trash" 
+											data-id="$!menuItem.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
+									</td>
+								</tr>
+								#end
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springConfirmMessage( "confirm-delete-menu-dialog" "Xác nhận" "" "Bạn muốn xoá Danh mục này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-delete-menu-dialog" "Thông báo" "" "Không thể xoá Danh mục này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/assets/javascripts/back-office/jquery.menu-item.js')"></script>

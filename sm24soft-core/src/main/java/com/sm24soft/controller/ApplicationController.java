@@ -48,4 +48,5 @@ public abstract class ApplicationController {
 	protected <T> HttpResponse<T> getErrorStatus() {
 		return new HttpResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR, null, null);
 	}
+	
 }

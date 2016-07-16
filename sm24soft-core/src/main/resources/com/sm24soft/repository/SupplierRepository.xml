@@ -15,6 +15,7 @@
 		<result column="fax_number2" property="faxNumber2" />
 		<result column="fax_number3" property="faxNumber3" />
 		<result column="loyalty_accumulated_point" property="loyaltyAccumulatedPoint" />
+		<result column="description" property="description" />
 		
 		<association column="representative_person_id"
 			columnPrefix="represent_"
@@ -26,6 +27,10 @@
 			property="contactPerson"
 			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
 			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
+		<association column="email_address"
+			property="logoUrl"
+			javaType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findLogoBySupplierEmailAddressAndDefaultFieldId" />
 		<collection column="id"
 			property="listOfItemCategories"
 			javaType="ArrayList"
@@ -36,6 +41,21 @@
 			javaType="ArrayList"
 			ofType="com.sm24soft.entity.Item"
 			select="com.sm24soft.repository.ItemRepository.findAllBySupplierId" />
+		<collection column="email_address"
+			property="listOfCertificationStandards"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.CertificationStandard"
+			select="com.sm24soft.repository.CertificationStandardRepository.findAllBySupplierEmailAddress" />
+		<collection column="email_address"
+			property="listOfNews"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.News"
+			select="com.sm24soft.repository.NewsRepository.findAllBySupplierEmailAddress" />
+		<collection column="email_address"
+			property="listOfImages"
+			javaType="ArrayList"
+			ofType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findOperationImagesBySupplierEmailAddress" />
 	</resultMap>
 	
 	<sql id="findSupplierSQL">
@@ -54,6 +74,7 @@
 		    `supplier`.`fax_number2`,
 		    `supplier`.`fax_number3`,
 		    `supplier`.`loyalty_accumulated_point`,
+		    `supplier`.`description`,
 		    `supplier`.`created_at`,
 		    `supplier`.`created_user_id`,
 		    `supplier`.`updated_at`,
@@ -103,7 +124,7 @@
 		ORDER BY `supplier`.`loyalty_accumulated_point` DESC;
 	</select>
 	
-	<select id="findById" parameterType="String" resultMap="SupplierResultMap">
+	<select id="findById" resultMap="SupplierResultMap">
 		<include refid="findSupplierSQL" />
 		WHERE `supplier`.`id` = #{id}
 			AND `supplier`.`delete_flg` = "0";
@@ -114,6 +135,12 @@
 		WHERE `supplier`.`delete_flg` = "0"
 		ORDER BY `supplier`.`loyalty_accumulated_point` DESC
 		LIMIT #{limitation};
+	</select>
+	
+	<select id="findByEmailAddress" resultMap="SupplierResultMap">
+		<include refid="findSupplierSQL" />
+		WHERE `supplier`.`email_address` = #{emailAddress}
+			AND `supplier`.`delete_flg` = "0";
 	</select>
 	
 	<insert id="save" parameterType="com.sm24soft.entity.Supplier" 
@@ -134,6 +161,7 @@
 			`fax_number2`,
 			`fax_number3`,
 			`loyalty_accumulated_point`,
+			`description`,
 			`delete_flg`,
 			`created_at`,
 			`created_user_id`,
@@ -156,6 +184,7 @@
 			#{faxNumber2},
 			#{faxNumber3},
 			#{loyaltyAccumulatedPoint},
+			#{description},
 			#{deleteFlg},
 			#{createdAt},
 			#{createdUserId},
@@ -181,6 +210,7 @@
 			`fax_number2` = #{faxNumber2},
 			`fax_number3` = #{faxNumber3},
 			`loyalty_accumulated_point` = #{loyaltyAccumulatedPoint},
+			`description` = #{description},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}

@@ -28,4 +28,8 @@ public interface ISupplierService extends IService {
 	List<Supplier> findTopSuppliersByLimitation(int limitation);
 	
 	void deleteById(String id);
+	
+	String uploadRepresentativeLogo(String emailAddress, String logoFieldId, String logoUrl);
+	
+	String uploadOperationImage(String emailAddress, String imageFieldId, String imageUrl);
 }

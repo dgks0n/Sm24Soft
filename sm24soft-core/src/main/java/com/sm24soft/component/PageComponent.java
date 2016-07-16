@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PageComponent extends AuthenticationComponent {
 	
 	public static final String DEFAULT_ACTIVING_MENU_ITEM = "activeMenuItem";
+	public static final String DEFAULT_ACTIVING_CHILD_MENU_ITEM = "activeChildMenuItem";
 	
 	private HttpServletRequest request;
 	private ISiteAssetsFacade siteAssetsFacade;
@@ -24,7 +25,11 @@ public class PageComponent extends AuthenticationComponent {
 	}
 	
 	public String getActivingMenuItem() {
-		return getCurrentActivingMenuItem();
+		return getCurrentActivingMenuItem(DEFAULT_ACTIVING_MENU_ITEM);
+	}
+	
+	public String getActiveChildMenuItem() {
+		return getCurrentActivingMenuItem(DEFAULT_ACTIVING_CHILD_MENU_ITEM);
 	}
 	
 	public String getCurrentPageTitle() {
@@ -39,13 +44,13 @@ public class PageComponent extends AuthenticationComponent {
 		return siteAssetsFacade.getPageCopyright();
 	}
 	
-	private String getCurrentActivingMenuItem() {
+	private String getCurrentActivingMenuItem(String attribute) {
 		if (null == request) {
 			throw new NullPointerException("The HttpServletRequest is null");
 		}
 		final HttpSession session = request.getSession();
 		if (null != session) {
-			final Object object = session.getAttribute(DEFAULT_ACTIVING_MENU_ITEM);
+			final Object object = session.getAttribute(attribute);
 			if (null != object) {
 				return (String) object;
 			}
