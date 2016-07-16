@@ -2,19 +2,26 @@ package com.sm24soft.entity;
 
 import java.util.List;
 
+import com.sm24soft.common.util.StringFormatUtil;
+
 public class ItemCategory extends BaseEntity {
 
 	private String name;
 	private String description;
-	private ItemCategory parentItemCategory;
+	
+	/*
+	 * Belong to what menu item
+	 */
+	private MenuItem menuItem;
 	
 	/*
 	 * Belong to what supplier
 	 */
 	private Supplier supplier;
 	
-	// Extends
-	private List<ItemCategory> listOfItemCategories;
+	/*
+	 * List of items (products)
+	 */
 	private List<Item> listOfItems;
 
 	public ItemCategory() {
@@ -37,12 +44,12 @@ public class ItemCategory extends BaseEntity {
 		this.description = description;
 	}
 
-	public ItemCategory getParentItemCategory() {
-		return parentItemCategory;
+	public MenuItem getMenuItem() {
+		return menuItem;
 	}
 
-	public void setParentItemCategory(ItemCategory parentItemCategory) {
-		this.parentItemCategory = parentItemCategory;
+	public void setMenuItem(MenuItem menuItem) {
+		this.menuItem = menuItem;
 	}
 
 	public Supplier getSupplier() {
@@ -53,20 +60,17 @@ public class ItemCategory extends BaseEntity {
 		this.supplier = supplier;
 	}
 
-	public List<ItemCategory> getListOfItemCategories() {
-		return listOfItemCategories;
-	}
-
-	public void setListOfItemCategories(List<ItemCategory> listOfItemCategories) {
-		this.listOfItemCategories = listOfItemCategories;
-	}
-
 	public List<Item> getListOfItems() {
 		return listOfItems;
 	}
 
 	public void setListOfItems(List<Item> listOfItems) {
 		this.listOfItems = listOfItems;
+	}
+	
+	@Override
+	public String getIdWithPADZero() {
+		return StringFormatUtil.formatString(4, getId());
 	}
 
 }

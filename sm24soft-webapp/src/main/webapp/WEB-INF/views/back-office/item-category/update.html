@@ -1,0 +1,82 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Nhóm Sản phẩm</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Thông tin chi tiết</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/item-category')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<br>
+						<form data-parsley-validate class="form-update-group-item form-horizontal form-label-left"
+							action="#springUrl('/admin/item-category/')$!itemCategory.id" novalidate>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu-item">
+									Danh mục trực thuộc <span class="required">*</span>
+								</label>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<select id="menu-item" name="menuItem[id]" class="form-control" required="required">
+										<option value=""></option>
+									#foreach ($menuItem in $!listOfMenuItems)
+										<option value="$!menuItem.id" $!pageUtil.getSelectedElementFormCurrentValue($!menuItem.id, $!itemCategory.menuItem.id)>$!menuItem.fullNameOfMenuItem</option>
+									#end
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">
+									Trang trại trực thuộc <span class="required">*</span>
+								</label>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
+										<option value=""></option>
+									#foreach ($supplier in $!listOfSuppliers)
+										<option value="$!supplier.id" $!pageUtil.getSelectedElementFormCurrentValue($!supplier.id, $!itemCategory.supplier.id)>$!supplier.companyName</option>
+									#end
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+									Tên Nhóm Sản phẩm <span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<input type="text" name="name" id="name" 
+										required="required" class="form-control col-md-7 col-xs-12" value="$!itemCategory.name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">
+									Mô tả
+								</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<textarea name="description" class="form-control col-md-9 col-xs-12" 
+										placeholder="" rows="5">$!itemCategory.description</textarea>
+								</div>
+							</div>
+							<div class="ln_solid"></div>
+							<div class="form-group">
+								<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+									<a class="btn btn-default btn-cancel">Huỷ</a>
+									<a class="btn btn-default btn-update">Đồng ý</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springErrorMessage( "fails-create-certification-dialog" "Thông báo" "" "Không thể thêm mới Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/assets/javascripts/back-office/jquery.item-category.js')"></script>

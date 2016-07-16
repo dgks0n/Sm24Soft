@@ -14,4 +14,11 @@ public class StringFormatUtil {
 	public static String formatString(final int PADS, String value) {
 		return StringUtils.leftPad(value, PADS, PAD_CHAR);
 	}
+	
+	public static String appendPercentToLeftAndRight(String value) {
+		StringBuilder searchPatter = new StringBuilder("%");
+		searchPatter.append(value);
+		searchPatter.append("%");
+		return searchPatter.toString();
+	}
 }

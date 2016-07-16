@@ -13,11 +13,11 @@
 		$("form").validate({
 			rules: {
 				fullNameOfMenuItem: "required",
-				fullPathOfMenuItem: "required"
+				description: "required"
 			},
 			messages: {
 				fullNameOfMenuItem: "Thông tin bắt buộc",
-				fullPathOfMenuItem: "Thông tin bắt buộc"
+				description: "Thông tin bắt buộc"
 			},
 			submitHandler: function(form) {
 				var action = $(form).attr("action");

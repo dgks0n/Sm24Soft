@@ -43,19 +43,10 @@ public class MenuItemService implements IMenuItemService {
 			throw new IllegalArgumentException("The fullname of item must not be null and empty");
 		}
 		
-		if (StringUtils.isEmpty(menuItem.getFullPathOfMenuItem())) {
-			throw new IllegalArgumentException("The fullpath of item must not be null and empty");
-		}
-		
 		// Checking existing or not
 		MenuItem tempMenuItem = menuItemRepository.findByFullName(menuItem.getFullNameOfMenuItem());
 		if (tempMenuItem != null) {
 			throw new DuplicateKeyException("The name of menu item already existing in the database");
-		}
-		
-		tempMenuItem = menuItemRepository.findByFullPath(menuItem.getFullPathOfMenuItem());
-		if (tempMenuItem != null) {
-			throw new DuplicateKeyException("The path of menu item already existing in the database");
 		}
 		
 		// if does not exist in the database
@@ -79,14 +70,11 @@ public class MenuItemService implements IMenuItemService {
 			throw new IllegalArgumentException("The fullname of item must not be null and empty");
 		}
 		
-		if (StringUtils.isEmpty(menuItem.getFullPathOfMenuItem())) {
-			throw new IllegalArgumentException("The fullpath of item must not be null and empty");
-		}
-		
 		MenuItem oldMenuItem = menuItemRepository.findById(menuItem.getId());
 		if (oldMenuItem == null || StringUtils.isEmpty(menuItem.getId())) {
 			throw new ObjectNotFoundException("Object not found");
 		}
+		
 		menuItem.setUpdatedAt(DateUtil.now());
 		menuItem.setUpdatedUserIdAsDefault();
 		menuItemRepository.update(menuItem);

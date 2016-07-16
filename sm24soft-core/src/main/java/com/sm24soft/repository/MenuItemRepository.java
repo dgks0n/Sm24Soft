@@ -15,5 +15,4 @@ public interface MenuItemRepository extends CrudRepository<MenuItem, String> {
 	
 	MenuItem findByFullName(String fullName);
 	
-	MenuItem findByFullPath(String fullPath);
 }

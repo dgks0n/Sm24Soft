@@ -13,11 +13,14 @@
         <custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter" />
         
         <!-- Configure URL for Controller Mapping here!!! -->
-		<intercept-url pattern="/admin/menu-item" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/menu-item*" access="ROLE_ADMIN" requires-channel="http" />
 		<intercept-url pattern="/admin/menu-item/**" access="ROLE_ADMIN" requires-channel="http" />
-		<intercept-url pattern="/admin/supplier" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/supplier*" access="ROLE_ADMIN" requires-channel="http" />
 		<intercept-url pattern="/admin/supplier/**" access="ROLE_ADMIN" requires-channel="http" />
-		<intercept-url pattern="/admin/supplier/upload-logo/**" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/supplier/upload-logo*" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/supplier/upload-image*" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/certification*" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/certification/**" access="ROLE_ADMIN" requires-channel="http" />
 		
 		<!-- NONE AUTHENTICATE -->
 		<intercept-url pattern="/admin" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />

@@ -12,7 +12,7 @@ public class MenuItem extends BaseEntity {
 	private int roleOfMenuItem = 0;
 	private int orderNumber;
 	private String orderType = "ASC";
-	private String fullPathOfMenuItem;
+	private String description;
 	
 	/*
 	 * 0: NON_ACTIVE, 1: ACTIVE
@@ -62,12 +62,12 @@ public class MenuItem extends BaseEntity {
 		this.orderType = orderType;
 	}
 
-	public String getFullPathOfMenuItem() {
-		return fullPathOfMenuItem;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setFullPathOfMenuItem(String fullPathOfMenuItem) {
-		this.fullPathOfMenuItem = fullPathOfMenuItem;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getActualStatus() {
@@ -76,10 +76,10 @@ public class MenuItem extends BaseEntity {
 	
 	public String getActualStatusAsString() {
 		StringBuilder builder = new StringBuilder("<button type=\"button\" class=\"btn ");
-		if ("0".equals(getActualStatus())) {
-			builder.append("btn-warning btn-xs\">Active");
+		if ("1".equals(getActualStatus())) {
+			builder.append("btn-success btn-xs\">Active");
 		} else {
-			builder.append("btn-success btn-xs\">Non-Active");
+			builder.append("btn-warning btn-xs\">Non-Active");
 		}
 		builder.append("</button>");
 		return builder.toString();

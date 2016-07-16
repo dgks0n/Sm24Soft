@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.util.DateUtil;
+import com.sm24soft.common.util.StringFormatUtil;
 import com.sm24soft.entity.CertificationStandard;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.repository.CertificationStandardRepository;
@@ -32,11 +33,7 @@ public class CertificationStandardService implements ICertificationStandardServi
 
 	@Override
 	public List<CertificationStandard> findAllBySupplierName(String supplierName) {
-		if (supplierName == null) {
-			throw new IllegalArgumentException("Keyword must not be null");
-		}
-		
-		String searchKeyword = getSearchKeywordPattern(supplierName);
+		String searchKeyword = StringFormatUtil.appendPercentToLeftAndRight(supplierName);
 		return certificationRepository.findAllBySupplierName(searchKeyword);
 	}
 
@@ -108,19 +105,6 @@ public class CertificationStandardService implements ICertificationStandardServi
 		}
 		certificationRepository.deleteById(id);
 	}
-	
-	/**
-	 * Preparing search keyword pattern for the given keyword
-	 * 
-	 * @param keyword
-	 * @return
-	 */
-	private String getSearchKeywordPattern(String keyword) {
-		StringBuilder searchPatter = new StringBuilder("%");
-		searchPatter.append(keyword);
-		searchPatter.append("%");
-		return searchPatter.toString();
-	}
 
 	@Override
 	public CertificationStandard findById(String id) {
@@ -128,5 +112,10 @@ public class CertificationStandardService implements ICertificationStandardServi
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
 		return certificationRepository.findById(id);
+	}
+
+	@Override
+	public List<CertificationStandard> findAll() {
+		return certificationRepository.findAll();
 	}
 }

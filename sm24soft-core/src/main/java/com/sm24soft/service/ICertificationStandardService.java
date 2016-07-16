@@ -12,6 +12,8 @@ public interface ICertificationStandardService extends IService {
 	
 	String updateCertificationStandard(CertificationStandard certification);
 	
+	List<CertificationStandard> findAll();
+	
 	List<CertificationStandard> findAllBySupplierName(String supplierName);
 	
 	void deleteById(String id);

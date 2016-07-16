@@ -2,6 +2,7 @@ package com.sm24soft.controller.backoffice;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,17 @@ public class CertificationStandardController extends ApplicationController imple
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String renderCertificationStandardResultPage(
-			@RequestParam(value = "keyword", defaultValue = "") String keyword, final Model model) {
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+			final Model model) {
 		logger.info("Call renderCertificationStandardResultPage()");
 		
 		List<CertificationStandard> listOfCertificationStandards = null;
 		try {
-			listOfCertificationStandards = certificationStandardService.findAllBySupplierName(keyword);
+			if (StringUtils.isEmpty(keyword)) {
+				listOfCertificationStandards = certificationStandardService.findAll();
+			} else {
+				listOfCertificationStandards = certificationStandardService.findAllBySupplierName(keyword);
+			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}

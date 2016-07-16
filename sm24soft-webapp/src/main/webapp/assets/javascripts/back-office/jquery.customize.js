@@ -19,8 +19,7 @@
 			if (!url) {
 				return this.getContextPath();
 			}
-			return this.getContextPath()
-					+ ('/' == url.charAt(0) ? url : this.addSlashToUrl(url));
+			return this.getContextPath() + ('/' == url.charAt(0) ? url : this.addSlashToUrl(url));
 		},
 
 		/**
@@ -55,19 +54,11 @@
 		},
 		
 		showMessageDialog: function(clazz) {
-			$(document).find(clazz).modal('show');
+			$(clazz).modal('show');
 		},
 		
 		hideMessageDialog: function(clazz) {
-			$(document).find(clazz).modal('hide');
-		},
-		
-		addClassToNavigation: function(obj, param) {
-			var item = $(obj).attr("class")
-								.replace("active", "")
-								.replace("current-page", "");
-			var path = $(obj).attr("data-path");
-			addClassToSelectedItem(path, item, param);
+			$(clazz).modal('hide');
 		}
 	};
 	window.Util = namespace;
@@ -81,38 +72,4 @@
 	// Private methods
 	// #############################################################
 	
-	// Default is not click
-	var isClickedOnNavigation = false;
-	
-	function addClassToSelectedItem(item, itemClazz, requestParam) {
-		// if the child navigation already done by click
-		// then do not need to trigger parent navigation one more time
-		if (isClickedOnNavigation && requestParam === "act_menu") {
-			return false;
-		}
-		
-		if (requestParam === "act_child_menu") {
-			isClickedOnNavigation = true;
-		}
-		
-		var action = Util.getRealPath("/admin?");
-		action += requestParam;
-		action += "=";
-		action += itemClazz;
-		
-		$.log(action);
-		$.ajax({
-			url: action,
-			type: "PUT",
-			dataType: "json",
-			success: function(data) {
-				if (data.status == 200) {
-					Util.redirectUrl("/admin/" + item);
-				}
-			},
-			error: function(e) {
-				$.log(e.message);
-			}
-		});
-	}
 })(window.jQuery);

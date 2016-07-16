@@ -10,15 +10,10 @@
 			property="supplier"
 			javaType="com.sm24soft.entity.Supplier"
 			select="com.sm24soft.repository.SupplierRepository.findById" />
-		<association column="parent_category_id"
-			property="parentItemCategory"
-			javaType="com.sm24soft.entity.ItemCategory"
-			select="com.sm24soft.repository.ItemCategoryRepository.findById" />
-		<collection column="id"
-			property="listOfItemCategories"
-			javaType="ArrayList"
-			ofType="com.sm24soft.entity.ItemCategory"
-			select="com.sm24soft.repository.ItemCategoryRepository.findAllByParentItemCategoryId" />
+		<association column="parent_menu_item_id"
+			property="menuItem"
+			javaType="com.sm24soft.entity.MenuItem"
+			select="com.sm24soft.repository.MenuItemRepository.findById" />
 		<collection column="id"
 			property="listOfItems"
 			javaType="ArrayList"
@@ -30,7 +25,7 @@
 		SELECT `item_category`.`id`,
 		    `item_category`.`name`,
 		    `item_category`.`description`,
-		    `item_category`.`parent_category_id`,
+		    `item_category`.`parent_menu_item_id`,
 		    `item_category`.`supplier_id`,
 		    `item_category`.`delete_flg`,
 		    `item_category`.`created_at`,
@@ -53,10 +48,20 @@
 		ORDER BY `item_category`.`name` ASC;
 	</select>
 	
-	<select id="findAllByParentItemCategoryId" resultMap="ItemCategoryResultMap">
+	<select id="findAllByMenuItemId" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
-		WHERE `item_category`.`parent_category_id` = #{id}
+		WHERE `item_category`.`parent_menu_item_id` = #{id}
 			AND `item_category`.`delete_flg` = "0"
+		ORDER BY `item_category`.`name` ASC;
+	</select>
+	
+	<select id="findAllBySupplierName" resultMap="ItemCategoryResultMap">
+		<include refid="findItemCategorySQL" />
+		INNER JOIN `supplier`
+			ON `item_category`.`supplier_id` = `supplier`.`id`
+		WHERE `supplier`.`supplier_name` LIKE #{supplierName}
+			AND `item_category`.`delete_flg` = "0"
+			AND `supplier`.`delete_flg` = "0"
 		ORDER BY `item_category`.`name` ASC;
 	</select>
 	
@@ -71,7 +76,7 @@
 		INSERT INTO `item_category`
 		(`name`,
 		`description`,
-		`parent_category_id`,
+		`parent_menu_item_id`,
 		`supplier_id`,
 		`delete_flg`,
 		`created_at`,
@@ -81,7 +86,7 @@
 		VALUES
 		(#{name},
 		#{description},
-		#{parentItemCategory.id},
+		#{menuItem.id},
 		#{supplier.id},
 		#{deleteFlg},
 		#{createdAt},
@@ -95,7 +100,7 @@
 		SET
 		`name` = #{name},
 		`description` = #{description},
-		`parent_category_id` = #{parentItemCategory.id},
+		`parent_menu_item_id` = #{menuItem.id},
 		`supplier_id` = #{supplier.id},
 		`delete_flg` = #{deleteFlg},
 		`updated_at` = NOW(),

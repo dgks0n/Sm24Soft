@@ -7,48 +7,42 @@
 		<result column="role_of_menu_item" property="roleOfMenuItem" />
 		<result column="order_number" property="orderNumber" />
 		<result column="order_type" property="orderType" />
-		<result column="full_path_of_menu_item" property="fullPathOfMenuItem" />
+		<result column="description" property="description" />
 		<result column="actual_status" property="actualStatus" />
 	</resultMap>
 	
 	<sql id="findMenuItemSQL">
-		SELECT `menu`.`id`,
-		    `menu`.`full_name_of_menu_item`,
-		    `menu`.`role_of_menu_item`,
-		    `menu`.`order_number`,
-		    `menu`.`order_type`,
-		    `menu`.`full_path_of_menu_item`,
-		    `menu`.`actual_status`,
-		    `menu`.`delete_flg`,
-		    `menu`.`created_at`,
-		    `menu`.`created_user_id`,
-		    `menu`.`updated_at`,
-		    `menu`.`updated_user_id`
-		FROM `menu`
+		SELECT `menu_item`.`id`,
+		    `menu_item`.`full_name_of_menu_item`,
+		    `menu_item`.`role_of_menu_item`,
+		    `menu_item`.`order_number`,
+		    `menu_item`.`order_type`,
+		    `menu_item`.`description`,
+		    `menu_item`.`actual_status`,
+		    `menu_item`.`delete_flg`,
+		    `menu_item`.`created_at`,
+		    `menu_item`.`created_user_id`,
+		    `menu_item`.`updated_at`,
+		    `menu_item`.`updated_user_id`
+		FROM `menu_item`
 	</sql>
 	
 	<sql id="findAllMenuItemsSQL">
 		<include refid="findMenuItemSQL" />
-		WHERE `menu`.`delete_flg` = "0"
-		ORDER BY `menu`.`order_number`, `menu`.`full_name_of_menu_item` ASC;
+		WHERE `menu_item`.`delete_flg` = "0"
+		ORDER BY `menu_item`.`order_number`, `menu_item`.`full_name_of_menu_item` ASC;
 	</sql>
 	
 	<select id="findById" resultMap="MenuItemResultMap">
 		<include refid="findMenuItemSQL" />
-		WHERE `menu`.`id` = #{id}
-			AND `menu`.`delete_flg` = "0";
+		WHERE `menu_item`.`id` = #{id}
+			AND `menu_item`.`delete_flg` = "0";
 	</select>
 	
 	<select id="findByFullName" resultMap="MenuItemResultMap">
 		<include refid="findMenuItemSQL" />
-		WHERE `menu`.`full_name_of_menu_item` = #{fullName}
-			AND `menu`.`delete_flg` = "0";
-	</select>
-	
-	<select id="findByFullPath" resultMap="MenuItemResultMap">
-		<include refid="findMenuItemSQL" />
-		WHERE `menu`.`full_path_of_menu_item` = #{fullPath}
-			AND `menu`.`delete_flg` = "0";
+		WHERE `menu_item`.`full_name_of_menu_item` = #{fullName}
+			AND `menu_item`.`delete_flg` = "0";
 	</select>
 	
 	<select id="findAllMenuItems" resultMap="MenuItemResultMap">
@@ -61,13 +55,13 @@
 	
 	<insert id="save" parameterType="com.sm24soft.entity.MenuItem"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		INSERT INTO `menu`
+		INSERT INTO `menu_item`
 		(
 			`full_name_of_menu_item`,
 			`role_of_menu_item`,
 			`order_number`,
 			`order_type`,
-			`full_path_of_menu_item`,
+			`description`,
 			`actual_status`,
 			`delete_flg`,
 			`created_at`,
@@ -81,7 +75,7 @@
 			#{roleOfMenuItem},
 			#{orderNumber},
 			#{orderType},
-			#{fullPathOfMenuItem},
+			#{description},
 			#{actualStatus},
 			#{deleteFlg},
 			#{createdAt},
@@ -92,13 +86,13 @@
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.MenuItem">
-		UPDATE `menu`
+		UPDATE `menu_item`
 		SET
 			`full_name_of_menu_item` = #{fullNameOfMenuItem},
 			`role_of_menu_item` = #{roleOfMenuItem},
 			`order_number` = #{orderNumber},
 			`order_type` = #{orderType},
-			`full_path_of_menu_item` = #{fullPathOfMenuItem},
+			`description` = #{description},
 			`actual_status` = #{actualStatus},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),
@@ -107,7 +101,7 @@
 	</update>
 	
 	<delete id="deleteById">
-		DELETE FROM `menu`
+		DELETE FROM `menu_item`
 		WHERE `id` = #{id}
 			AND `delete_flg` = "0";
 	</delete>
