@@ -21,13 +21,13 @@ public class CertificationStandardService implements ICertificationStandardServi
 
 	private SupplierRepository supplierRepository;
 	
-	private CertificationStandardRepository certificationStandardRepository;
+	private CertificationStandardRepository certificationRepository;
 	
 	@Autowired
 	public CertificationStandardService(SupplierRepository supplierRepository,
-			CertificationStandardRepository certificationStandardRepository) {
+			CertificationStandardRepository certificationRepository) {
 		this.supplierRepository = supplierRepository;
-		this.certificationStandardRepository = certificationStandardRepository;
+		this.certificationRepository = certificationRepository;
 	}
 
 	@Override
@@ -37,22 +37,22 @@ public class CertificationStandardService implements ICertificationStandardServi
 		}
 		
 		String searchKeyword = getSearchKeywordPattern(supplierName);
-		return certificationStandardRepository.findAllBySupplierName(searchKeyword);
+		return certificationRepository.findAllBySupplierName(searchKeyword);
 	}
 
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String createNewCertificationStandard(CertificationStandard certificationStandard) {
-		if (certificationStandard == null) {
+	public String createNewCertificationStandard(CertificationStandard certification) {
+		if (certification == null) {
 			throw new IllegalArgumentException("The object must not be null");
 		}
 		
-		if (StringUtils.isEmpty(certificationStandard.getName())) {
+		if (StringUtils.isEmpty(certification.getName())) {
 			throw new IllegalArgumentException("The name must not be null and empty");
 		}
 		
-		Supplier belongToSupplier = certificationStandard.getSupplier();
+		Supplier belongToSupplier = certification.getSupplier();
 		if (belongToSupplier == null || StringUtils.isEmpty(belongToSupplier.getId())) {
 			throw new IllegalArgumentException(
 					"Cannot create any certification standard object if current "
@@ -65,37 +65,37 @@ public class CertificationStandardService implements ICertificationStandardServi
 			throw new ObjectNotFoundException("Belong to supplier object does not exist");
 		}
 		
-		certificationStandard.setSupplier(belongToSupplier);
-		certificationStandard.setCreatedAt(DateUtil.now());
-		certificationStandard.setCreatedUserIdAsDefault();
-		certificationStandard.setUpdatedAt(DateUtil.now());
-		certificationStandard.setUpdatedUserIdAsDefault();
+		certification.setSupplier(belongToSupplier);
+		certification.setCreatedAt(DateUtil.now());
+		certification.setCreatedUserIdAsDefault();
+		certification.setUpdatedAt(DateUtil.now());
+		certification.setUpdatedUserIdAsDefault();
 		
-		certificationStandardRepository.save(certificationStandard);
-		return certificationStandard.getIdWithPADZero();
+		certificationRepository.save(certification);
+		return certification.getIdWithPADZero();
 	}
 
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String updateCertificationStandard(CertificationStandard certificationStandard) {
-		if (certificationStandard == null || StringUtils.isEmpty(certificationStandard.getId())) {
+	public String updateCertificationStandard(CertificationStandard certification) {
+		if (certification == null || StringUtils.isEmpty(certification.getId())) {
 			throw new IllegalArgumentException("The update object is invalid OR does not exist in database");
 		}
 		
-		CertificationStandard oldCertificationStandard = certificationStandardRepository.findById(
-				certificationStandard.getId());
+		CertificationStandard oldCertificationStandard = certificationRepository.findById(
+				certification.getId());
 		if (oldCertificationStandard == null) {
 			throw new ObjectNotFoundException("The update object does not exist in database");
 		}
 		
-		oldCertificationStandard.setName(certificationStandard.getName());
-		oldCertificationStandard.setDescription(certificationStandard.getDescription());
-		oldCertificationStandard.setDetailsLinkUrl(certificationStandard.getDetailsLinkUrl());
+		oldCertificationStandard.setName(certification.getName());
+		oldCertificationStandard.setDescription(certification.getDescription());
+		oldCertificationStandard.setDetailsLinkUrl(certification.getDetailsLinkUrl());
 		oldCertificationStandard.setUpdatedAt(DateUtil.now());
 		oldCertificationStandard.setUpdatedUserIdAsDefault();
 		
-		certificationStandardRepository.update(oldCertificationStandard);
+		certificationRepository.update(oldCertificationStandard);
 		return oldCertificationStandard.getIdWithPADZero();
 	}
 
@@ -106,7 +106,7 @@ public class CertificationStandardService implements ICertificationStandardServi
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		certificationStandardRepository.deleteById(id);
+		certificationRepository.deleteById(id);
 	}
 	
 	/**
@@ -127,6 +127,6 @@ public class CertificationStandardService implements ICertificationStandardServi
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		return certificationStandardRepository.findById(id);
+		return certificationRepository.findById(id);
 	}
 }

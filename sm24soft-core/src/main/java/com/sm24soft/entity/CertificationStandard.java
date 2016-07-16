@@ -30,6 +30,9 @@ public class CertificationStandard extends BaseEntity {
 		if (StringUtils.isEmpty(description)) {
 			return null;
 		}
+		if (description.length() < 70) {
+			return description;
+		}
 		// Default is get 70 first characters
 		return description.substring(0, 70) + "...";
 	}

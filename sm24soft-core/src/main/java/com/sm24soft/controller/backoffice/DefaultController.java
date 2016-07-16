@@ -22,18 +22,18 @@ import com.sm24soft.http.response.HttpResponse;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/admin")
-public class DefaultAdministrativeController extends ApplicationController implements Controllable {
+public class DefaultController extends ApplicationController implements Controllable {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultAdministrativeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultController.class);
 	
 	private IAuthenticationFacade authenticationFacade;
 	
 	@Autowired
-	public DefaultAdministrativeController(IAuthenticationFacade authenticationFacade) {
+	public DefaultController(IAuthenticationFacade authenticationFacade) {
 		this.authenticationFacade = authenticationFacade;
 	}
 	
-	@RequestMapping(path = { "", "/" }, method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String renderBackOfficeLoginPage() {
 		logger.info("Call renderBackOfficeLoginPage()");
 		
@@ -44,7 +44,7 @@ public class DefaultAdministrativeController extends ApplicationController imple
 		return "back-office/authen/login";
 	}
 	
-	@RequestMapping(path = { "" }, method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public @ResponseBody HttpResponse<String> updateActivingMenuItem(
 			@RequestParam(value = "act_menu", required = false, defaultValue = "") String activeMenuItem, 
 			@RequestParam(value = "act_child_menu", required = false, defaultValue = "") String activeChildMenuItem, 

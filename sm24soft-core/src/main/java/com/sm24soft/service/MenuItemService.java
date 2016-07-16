@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sm24soft.common.exception.DuplicateKeyException;
+import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.util.DateUtil;
 import com.sm24soft.entity.MenuItem;
 import com.sm24soft.repository.MenuItemRepository;
@@ -37,13 +38,6 @@ public class MenuItemService implements IMenuItemService {
 		if (null == menuItem) {
 			throw new NullArgumentException("The object is null");
 		}
-		
-		// Do not need check the object's id because
-		// it will be created automatically in the database
-		// by using auto_increment setting
-//		if (StringUtils.isEmpty(menuItem.getId())) {
-//			throw new IllegalArgumentException("The Id must not be null and empty");
-//		}
 		
 		if (StringUtils.isEmpty(menuItem.getFullNameOfMenuItem())) {
 			throw new IllegalArgumentException("The fullname of item must not be null and empty");
@@ -89,6 +83,10 @@ public class MenuItemService implements IMenuItemService {
 			throw new IllegalArgumentException("The fullpath of item must not be null and empty");
 		}
 		
+		MenuItem oldMenuItem = menuItemRepository.findById(menuItem.getId());
+		if (oldMenuItem == null || StringUtils.isEmpty(menuItem.getId())) {
+			throw new ObjectNotFoundException("Object not found");
+		}
 		menuItem.setUpdatedAt(DateUtil.now());
 		menuItem.setUpdatedUserIdAsDefault();
 		menuItemRepository.update(menuItem);

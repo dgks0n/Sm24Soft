@@ -37,10 +37,11 @@ public class MenuItemController extends ApplicationController implements Control
 		this.menuItemService = menuItemService;
 	}
 
-	@RequestMapping(path = { "" }, method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String renderMenuItemsPage(final HttpServletRequest request, final Model model) {
-		List<MenuItem> listOfMenuItems = new ArrayList<>();
+		logger.info("Call renderMenuItemsPage()");
 		
+		List<MenuItem> listOfMenuItems = new ArrayList<>();
 		try {
 			listOfMenuItems = menuItemService.findAllMenuItems();
 		} catch (Exception ex) {
@@ -48,16 +49,15 @@ public class MenuItemController extends ApplicationController implements Control
 		}
 		
 		model.addAttribute("listOfMenuItems", listOfMenuItems);
-		
 		return "back-office/menu-item/list";
 	}
 	
-	@RequestMapping(path = { "/create-new-one" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/create-new" }, method = RequestMethod.GET)
 	public String renderCreateNewOneMenuItemPage() {
 		return "back-office/menu-item/create-new";
 	}
 	
-	@RequestMapping(path = { "/create-new-one" }, method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> createNewOneMenuItem(@RequestBody MenuItem menuItem) {
 		if (null == menuItem) {
 			return getErrorStatus();
@@ -76,7 +76,7 @@ public class MenuItemController extends ApplicationController implements Control
 		}
 	}
 	
-	@RequestMapping(path = { "/delete/{id}" }, method = RequestMethod.POST)
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
 	public @ResponseBody HttpResponse<String> deleteOneMenuItem(@PathVariable("id") String id) {
 		if (StringUtils.isEmpty(id)) {
 			return getErrorStatus();
@@ -84,11 +84,11 @@ public class MenuItemController extends ApplicationController implements Control
 		
 		try {
 			menuItemService.deleteById(id);
-			return getOKStatus();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			return getErrorStatus(ex);
 		}
+		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
@@ -105,12 +105,12 @@ public class MenuItemController extends ApplicationController implements Control
 		} finally {
 			model.addAttribute("menuItem", menuItem);
 		}
-		
 		return "back-office/menu-item/update";
 	}
 	
-	@RequestMapping(path = { "/update/{id}" }, method = RequestMethod.POST)
-	public @ResponseBody HttpResponse<String> updateOneMenuItem(@PathVariable("id") String id, @RequestBody MenuItem menuItem) {
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.PUT)
+	public @ResponseBody HttpResponse<String> updateOneMenuItem(@PathVariable("id") String id, 
+			@RequestBody MenuItem menuItem) {
 		if (StringUtils.isEmpty(id)) {
 			throw new ObjectNotFoundException("Updating object's id must not be null and empty");
 		}
@@ -118,11 +118,10 @@ public class MenuItemController extends ApplicationController implements Control
 		try {
 			menuItem.setId(id);
 			menuItemService.updateMenuItem(menuItem);
-			
-			return getOKStatus();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			return getErrorStatus(ex);
 		}
+		return getOKStatus();
 	}
 }

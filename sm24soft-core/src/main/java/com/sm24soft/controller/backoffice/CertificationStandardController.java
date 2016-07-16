@@ -22,7 +22,7 @@ import com.sm24soft.service.ICertificationStandardService;
 import com.sm24soft.service.ISupplierService;
 
 @org.springframework.stereotype.Controller
-@RequestMapping("/admin/supplier")
+@RequestMapping("/admin/certification")
 public class CertificationStandardController extends ApplicationController implements Controllable {
 
 	private static final Logger logger = LoggerFactory.getLogger(CertificationStandardController.class);
@@ -38,24 +38,7 @@ public class CertificationStandardController extends ApplicationController imple
 		this.certificationStandardService = certificationStandardService;
 	}
 	
-	@RequestMapping(path = { "/certification-standard" }, method = RequestMethod.GET)
-	public String renderCertificationStandardPage(final Model model) {
-		logger.info("Call renderCertificationStandardPage()");
-		
-		List<CertificationStandard> listOfCertificationStandards = null;
-		try {
-			String defaultKeyword = "";
-			listOfCertificationStandards = certificationStandardService.findAllBySupplierName(defaultKeyword);
-		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
-		}
-		
-		model.addAttribute("listOfCertificationStandards", listOfCertificationStandards);
-		
-		return "back-office/supplier/certification-standard/list";
-	}
-	
-	@RequestMapping(path = { "/certification-standard/search" }, method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String renderCertificationStandardResultPage(
 			@RequestParam(value = "keyword", defaultValue = "") String keyword, final Model model) {
 		logger.info("Call renderCertificationStandardResultPage()");
@@ -70,10 +53,10 @@ public class CertificationStandardController extends ApplicationController imple
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("listOfCertificationStandards", listOfCertificationStandards);
 		
-		return "back-office/supplier/certification-standard/list";
+		return "back-office/certification-standard/list";
 	}
 	
-	@RequestMapping(path = { "/certification-standard/create-new" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/create-new" }, method = RequestMethod.GET)
 	public String renderCreateNewCertificationStandardPage(final Model model) {
 		logger.info("Call renderCreateNewCertificationStandardPage()");
 		
@@ -85,11 +68,10 @@ public class CertificationStandardController extends ApplicationController imple
 			
 			model.addAttribute("listOfSuppliers", null);
 		}
-		
-		return "back-office/supplier/certification-standard/create-new";
+		return "back-office/certification-standard/create-new";
 	}
 	
-	@RequestMapping(path = { "/certification-standard/create-new" }, method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> createNewCertificationStandard(
 			@RequestBody CertificationStandard certificationStandard) {
 		logger.info("Call createNewCertificationStandard()");
@@ -103,7 +85,7 @@ public class CertificationStandardController extends ApplicationController imple
 		return getOKStatus();
 	}
 
-	@RequestMapping(path = { "/certification-standard/{id}" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
 	public String renderUpdateCertificationStandardPage(@PathVariable("id") String id, final Model model) {
 		logger.info("Call renderUpdateCertificationStandardPage()");
 		
@@ -121,6 +103,39 @@ public class CertificationStandardController extends ApplicationController imple
 			model.addAttribute("listOfSuppliers", null);
 			model.addAttribute("certificationStandard", null);
 		}
-		return "back-office/supplier/certification-standard/update";
+		return "back-office/certification-standard/update";
 	}
+	
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
+	public @ResponseBody HttpResponse<String> deleteCertificationStandard(@PathVariable("id") String id) {
+		logger.info("Call deleteCertificationStandard()");
+		
+		try {
+			certificationStandardService.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
+		}
+		
+		return getOKStatus();
+	}
+	
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.PUT)
+	public @ResponseBody HttpResponse<String> updateCertificationStandard(
+			@PathVariable("id") String id,
+			@RequestBody CertificationStandard certification) {
+		logger.info("Call updateCertificationStandard()");
+		
+		try {
+			certification.setId(id);
+			certificationStandardService.updateCertificationStandard(certification);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
+		}
+		return getOKStatus();
+	}
+	
 }

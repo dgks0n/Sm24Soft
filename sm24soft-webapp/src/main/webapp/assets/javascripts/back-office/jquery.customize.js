@@ -58,6 +58,10 @@
 			$(document).find(clazz).modal('show');
 		},
 		
+		hideMessageDialog: function(clazz) {
+			$(document).find(clazz).modal('hide');
+		},
+		
 		addClassToNavigation: function(obj, param) {
 			var item = $(obj).attr("class")
 								.replace("active", "")
@@ -99,7 +103,7 @@
 		$.log(action);
 		$.ajax({
 			url: action,
-			type: "POST",
+			type: "PUT",
 			dataType: "json",
 			success: function(data) {
 				if (data.status == 200) {

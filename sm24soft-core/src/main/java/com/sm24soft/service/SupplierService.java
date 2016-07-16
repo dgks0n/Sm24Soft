@@ -123,7 +123,7 @@ public class SupplierService implements ISupplierService {
 		
 		// get update object from database
 		Supplier oldSupplier = findById(supplier.getId());
-		if (oldSupplier == null) {
+		if (oldSupplier == null || StringUtils.isEmpty(oldSupplier.getId())) {
 			throw new ObjectNotFoundException("Object not found");
 		}
 		

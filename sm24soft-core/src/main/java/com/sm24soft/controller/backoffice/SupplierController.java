@@ -37,7 +37,7 @@ public class SupplierController extends ApplicationController implements Control
 		this.supplierService = supplierService;
 	}
 
-	@RequestMapping(path = { "" }, method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String renderListOfSuppliersPage(final Model model) {
 		logger.info("Call renderListOfSuppliersPage()");
 		
@@ -49,30 +49,30 @@ public class SupplierController extends ApplicationController implements Control
 			model.addAttribute("listOfSuppliers", suppliers);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			model.addAttribute("listOfSuppliers", CollectionUtils.EMPTY_COLLECTION);
 		}
 		return "back-office/supplier/list";
 	}
 	
-	@RequestMapping(path = { "/create-new-one" }, method = RequestMethod.GET)
+	@RequestMapping(path = { "/create-new" }, method = RequestMethod.GET)
 	public String renderCreateNewOneSupplier() {
 		logger.info("Call renderCreateNewOneSupplier()");
 		
 		return "back-office/supplier/create-new";
 	}
 	
-	@RequestMapping(path = { "/create-new-one" }, method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> createNewSupplier(@RequestBody Supplier supplier) {
 		logger.info("Call createNewSupplier()");
 		
 		try {
 			supplierService.createNewSupplier(supplier);
-			
-			return getOKStatus();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			return getErrorStatus(ex);
 		}
+		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/upload-logo" }, method = RequestMethod.POST)
@@ -158,7 +158,7 @@ public class SupplierController extends ApplicationController implements Control
 		return getOKStatus();
 	}
 	
-	@RequestMapping(path = { "/delete/{id}" }, method = RequestMethod.POST)
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
 	public @ResponseBody HttpResponse<String> deleteOneSupplier(@PathVariable("id") String id) {
 		logger.info("Call deleteOneSupplier()");
 		
@@ -195,7 +195,7 @@ public class SupplierController extends ApplicationController implements Control
 		return "back-office/supplier/update";
 	}
 	
-	@RequestMapping(path = { "/update/{id}" }, method = RequestMethod.POST)
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.PUT)
 	public @ResponseBody HttpResponse<String> updateSupplierPage(@PathVariable("id") String id, 
 			@RequestBody Supplier supplier) {
 		logger.info("Call updateSupplierPage()");
@@ -205,11 +205,6 @@ public class SupplierController extends ApplicationController implements Control
 		}
 		
 		try {
-			Supplier updatingObj = supplierService.findById(id);
-			if (updatingObj == null) {
-				return getErrorStatus();
-			}
-			
 			supplier.setId(id);
 			// push to underlying database
 			supplierService.updateSupplier(supplier);

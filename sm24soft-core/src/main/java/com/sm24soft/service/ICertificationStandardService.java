@@ -8,9 +8,9 @@ public interface ICertificationStandardService extends IService {
 	
 	static final String SERVICE_ID = "certificationStandardService";
 
-	String createNewCertificationStandard(CertificationStandard certificationStandard);
+	String createNewCertificationStandard(CertificationStandard certification);
 	
-	String updateCertificationStandard(CertificationStandard certificationStandard);
+	String updateCertificationStandard(CertificationStandard certification);
 	
 	List<CertificationStandard> findAllBySupplierName(String supplierName);
 	

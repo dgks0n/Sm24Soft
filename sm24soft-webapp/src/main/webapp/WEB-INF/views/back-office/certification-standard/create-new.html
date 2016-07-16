@@ -12,14 +12,14 @@
 					<div class="x_title">
 						<h2>Thông tin chi tiết</h2>
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="btn btn-default" href="#springUrl('/admin/supplier/certification-standard')"><i class="fa fa-reply"></i> Quay lại</a></li>
+							<li><a class="btn btn-default" href="#springUrl('/admin/certification')"><i class="fa fa-reply"></i> Quay lại</a></li>
 						</ul>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<br>
-						<form data-parsley-validate class="form-create-menu form-horizontal form-label-left"
-							action="#springUrl('/admin/supplier/certification-standard/create-new')" method="post" novalidate>
+						<form data-parsley-validate class="form-create-certification form-horizontal form-label-left"
+							action="#springUrl('/admin/certification/create-new')" method="post" novalidate>
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">
 									Trang trại trực thuộc <span class="required">*</span>
@@ -28,7 +28,7 @@
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($supplier in $!listOfSuppliers)
-										<option value="$!supplier.id" selected="#if($!supplier.id == $!certificationStandard.supplier.id) selected#end">$!supplier.companyName</option>
+										<option value="$!supplier.id">$!supplier.companyName</option>
 									#end
 									</select>
 								</div>
@@ -39,8 +39,7 @@
 								</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input type="text" name="name" id="name" 
-										required="required" class="form-control col-md-7 col-xs-12"
-										value="$!certificationStandard.name">
+										required="required" class="form-control col-md-7 col-xs-12">
 								</div>
 							</div>
 							<div class="form-group">
@@ -49,7 +48,7 @@
 								</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
 									<textarea name="description" class="form-control col-md-9 col-xs-12" 
-										placeholder="">$!certificationStandard.description</textarea>
+										placeholder=""></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -58,7 +57,7 @@
 								</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
 									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" 
-										class="form-control col-md-2 col-xs-12" value="$!certificationStandard.detailsLinkUrl">
+										class="form-control col-md-2 col-xs-12">
 								</div>
 							</div>
 							<div class="ln_solid"></div>

@@ -97,6 +97,18 @@ public class Supplier extends BaseEntity {
 	public String getAddress1() {
 		return address1;
 	}
+	
+	public String getShortAddress1() {
+		if (StringUtils.isEmpty(address1)) {
+			return null;
+		}
+		
+		if (address1.length() < 35) {
+			return address1;
+		}
+		
+		return address1.substring(0, 35) + "...";
+	}
 
 	public void setAddress1(String address1) {
 		this.address1 = address1;
@@ -104,6 +116,16 @@ public class Supplier extends BaseEntity {
 
 	public String getAddress2() {
 		return address2;
+	}
+	
+	public String getShortAddress2() {
+		if (StringUtils.isEmpty(address2)) {
+			return null;
+		}
+		if (address2.length() < 35) {
+			return address2;
+		}
+		return address2.substring(0, 35) + "...";
 	}
 
 	public void setAddress2(String address2) {

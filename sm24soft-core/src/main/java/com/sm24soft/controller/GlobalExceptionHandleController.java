@@ -15,12 +15,14 @@ public class GlobalExceptionHandleController extends ApplicationController imple
 	@RequestMapping(value = { "/error/500" }, method = RequestMethod.GET)
 	public String handleInternalServerError(IOException ex) {
 		logger.info("Call handleInternalServerError()");
+		
 		return "error/500";
 	}
 	
 	@RequestMapping(value = { "/error/404" }, method = RequestMethod.GET)
 	public String handleNotFoundError() {
 		logger.info("Call handleNotFoundError()");
+		
 		return "error/404";
 	}
 

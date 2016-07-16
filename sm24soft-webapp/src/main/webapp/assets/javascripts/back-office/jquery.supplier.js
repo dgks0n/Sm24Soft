@@ -79,28 +79,31 @@
 		
 		$("form").submit(function(event) {
 			event.preventDefault();
-			var _this = $(this),
-				action = _this.attr("action");
+			
+			var action = $(this).attr("action");
+			var isUpdateForm = $(this).hasClass("form-update-supplier");
 			// evaluate the form using generic validating
-			var jSONData = Util.toJSONString(_this.serializeJSON());
+			var jSONData = Util.toJSONString($(this).serializeJSON());
 			
 			$.log(jSONData);
 			$.ajax({
 				url: action,
-				type: "POST",
+				type: isUpdateForm ? "PUT" : "POST",
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
 				data: jSONData,
 				success: function(data) {
 					if (data.status == 200) {
 						location.href = Util.getRealPath("/admin/supplier");
-					} else {
-						Util.showMessageDialog(".fails-create-supplier-dialog");
 					}
 				},
 				error: function(e) {
 					$.log(e.message);
-					Util.showMessageDialog(".fails-create-supplier-dialog");
+					if (isUpdateForm) {
+						Util.showMessageDialog(".fails-update-supplier-dialog");
+					} else {
+						Util.showMessageDialog(".fails-create-supplier-dialog");
+					}
 				}
 			});
 		});
@@ -122,19 +125,19 @@
 		$("div.confirm-delete-supplier-dialog").on("click", "button", function(e) {
 			var _this = $(this);
 			if (_this.hasClass("btn-agreement")) {
+				Util.hideMessageDialog(".confirm-delete-supplier-dialog");
+				
 				var selectedItemId = $("table.table-supplier").attr("data-selected-id");
-				var action = Util.getRealPath("/admin/supplier/delete/");
+				var action = Util.getRealPath("/admin/supplier/");
 				action += selectedItemId;
 				
 				$.ajax({
 					url: action,
-					type: "POST",
+					type: "DELETE",
 					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/supplier");
-						} else {
-							Util.showMessageDialog(".fails-delete-supplier-dialog");
 						}
 					},
 					error: function(e) {

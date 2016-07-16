@@ -57,4 +57,15 @@ public class PageComponent extends AuthenticationComponent {
 		}
 		return StringUtils.EMPTY;
 	}
+	
+	public String getSelectedElementFormCurrentValue(String sourceVal, String targetVal) {
+		if (StringUtils.isEmpty(sourceVal)) {
+			return StringUtils.EMPTY;
+		}
+		
+		if (sourceVal.equals(targetVal)) {
+			return "selected";
+		}
+		return StringUtils.EMPTY;
+	}
 }

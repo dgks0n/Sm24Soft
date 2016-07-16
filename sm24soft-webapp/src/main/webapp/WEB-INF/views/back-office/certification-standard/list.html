@@ -5,8 +5,8 @@
 				<h3>Tiêu chuẩn & Chứng chỉ</h3>
 			</div>
 			<div class="title_right">
-				<div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right top_search">
-					<form class="form-search-certification" action="#springUrl('/admin/supplier/certification-standard/search')" method="get">
+				<div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
+					<form class="form-search-certification" action="#springUrl('/admin/certification')" method="get">
 						<div class="input-group">
 							<input type="text" class="form-control" name="keyword" value="$!keyword" 
 								placeholder="Tên Trang trại...">
@@ -25,7 +25,7 @@
 					<div class="x_title">
 						<h2>Thông tin chi tiết</h2>
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="btn btn-default" href="#springUrl('/admin/supplier/certification-standard/create-new')"><i class="fa fa-plus"></i> Thêm mới</a></li>
+							<li><a class="btn btn-default" href="#springUrl('/admin/certification/create-new')"><i class="fa fa-plus"></i> Thêm mới</a></li>
 						</ul>
 						<div class="clearfix"></div>
 					</div>
@@ -64,4 +64,6 @@
 		</div>
 	</div>
 </div>
+#springConfirmMessage( "confirm-delete-certification-dialog" "Xác nhận" "" "Bạn muốn xoá Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-delete-certification-dialog" "Thông báo" "" "Không thể xoá Tiêu chuẩn & Chứng chỉ này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.certification-standard.js')"></script>
