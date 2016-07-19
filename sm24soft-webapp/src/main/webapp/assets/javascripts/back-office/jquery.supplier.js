@@ -4,10 +4,18 @@
 	
 	//jQuery DOM Ready
 	$(function() {
-		$("#wizard").smartWizard({
-			labelNext: "Tiếp theo",
+		$("#create-new-wizard").smartWizard({
+			labelNext: "Bỏ qua",
 			labelPrevious: "Quay lại",
-			labelFinish: "Kết thúc",
+			labelFinish: "Tạo mới",
+			onLeaveStep: leaveAStepCallback,
+			onFinish: onFinishCallback
+		});
+		
+		$("#update-wizard").smartWizard({
+			labelNext: "Bỏ qua",
+			labelPrevious: "Quay lại",
+			labelFinish: "Cập nhật",
 			onLeaveStep: leaveAStepCallback,
 			onFinish: onFinishCallback
 		});
@@ -123,8 +131,8 @@
 		});
 		
 		$("div.confirm-delete-supplier-dialog").on("click", "button", function(e) {
-			var _this = $(this);
-			if (_this.hasClass("btn-agreement")) {
+			var $this = $(this);
+			if ($this.hasClass("btn-agreement")) {
 				Util.hideMessageDialog(".confirm-delete-supplier-dialog");
 				
 				var selectedItemId = $("table.table-supplier").attr("data-selected-id");

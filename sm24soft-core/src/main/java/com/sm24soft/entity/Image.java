@@ -9,7 +9,7 @@ public class Image extends BaseEntity {
 	public static final String ITEM_TYPE = "2";
 	
 	/**
-	 * The IMAGE table have serveral fields:
+	 * The IMAGE table have several fields:
 	 * 
 	 * id
 	 * image_field_id
@@ -39,6 +39,10 @@ public class Image extends BaseEntity {
 	 * 		OPERATION_IMAGE_08
 	 * 		OPERATION_IMAGE_09
 	 * 		OPERATION_IMAGE_10
+	 * ITEM:
+	 * 		PREVIEW_IMAGE_01 (It's thumbnail also)
+	 * 		PREVIEW_IMAGE_02
+	 * 		PREVIEW_IMAGE_03
 	 */
 	private String imageFieldId;
 	
@@ -84,7 +88,7 @@ public class Image extends BaseEntity {
 
 	@Override
 	public String getIdWithPADZero() {
-		return StringFormatUtil.formatString(11, getId());
+		return StringFormatUtil.formatString(12, getId());
 	}
 	
 }

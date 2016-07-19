@@ -94,8 +94,8 @@
 		});
 		
 		$("div.confirm-delete-item-category-dialog").on("click", "button", function(e) {
-			var _this = $(this);
-			if (_this.hasClass("btn-agreement")) {
+			var $this = $(this);
+			if ($this.hasClass("btn-agreement")) {
 				Util.hideMessageDialog(".confirm-delete-item-category-dialog");
 				
 				var itemId = $("table.table-item-category").attr("data-selected-id");

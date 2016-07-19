@@ -14,51 +14,51 @@
 	</resultMap>
 	
 	<sql id="findCertificationStandardSQL">
-		SELECT `certification_standard`.`id`,
-		    `certification_standard`.`name`,
-		    `certification_standard`.`description`,
-		    `certification_standard`.`details_link_url`,
-		    `certification_standard`.`supplier_email_address`,
-		    `certification_standard`.`delete_flg`,
-		    `certification_standard`.`created_at`,
-		    `certification_standard`.`created_user_id`,
-		    `certification_standard`.`updated_at`,
-		    `certification_standard`.`updated_user_id`
-		FROM `certification_standard`
+		SELECT `certificate`.`id`,
+		    `certificate`.`name`,
+		    `certificate`.`description`,
+		    `certificate`.`details_link_url`,
+		    `certificate`.`supplier_email_address`,
+		    `certificate`.`delete_flg`,
+		    `certificate`.`created_at`,
+		    `certificate`.`created_user_id`,
+		    `certificate`.`updated_at`,
+		    `certificate`.`updated_user_id`
+		FROM `certificate`
 	</sql>
 	
 	<select id="findAll" resultMap="CertificationStandardResultMap">
 		<include refid="findCertificationStandardSQL" />
-		WHERE `certification_standard`.`delete_flg` = "0"
-		ORDER BY `certification_standard`.`name` ASC;
+		WHERE `certificate`.`delete_flg` = "0"
+		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
 	<select id="findById" resultMap="CertificationStandardResultMap">
 		<include refid="findCertificationStandardSQL" />
-		WHERE `certification_standard`.`id` = #{id}
-			AND `certification_standard`.`delete_flg` = "0";
+		WHERE `certificate`.`id` = #{id}
+			AND `certificate`.`delete_flg` = "0";
 	</select>
 	
 	<select id="findAllBySupplierEmailAddress" resultMap="CertificationStandardResultMap">
 		<include refid="findCertificationStandardSQL" />
-		WHERE `certification_standard`.`supplier_email_address` = #{emailAddress}
-			AND `certification_standard`.`delete_flg` = "0"
-		ORDER BY `certification_standard`.`name` ASC;
+		WHERE `certificate`.`supplier_email_address` = #{emailAddress}
+			AND `certificate`.`delete_flg` = "0"
+		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
 	<select id="findAllBySupplierName" resultMap="CertificationStandardResultMap">
 		<include refid="findCertificationStandardSQL" />
 		INNER JOIN `supplier`
-			ON `certification_standard`.`supplier_email_address` = `supplier`.`email_address`
+			ON `certificate`.`supplier_email_address` = `supplier`.`email_address`
 		WHERE `supplier`.`supplier_name` LIKE #{supplierName}
-			AND `certification_standard`.`delete_flg` = "0"
+			AND `certificate`.`delete_flg` = "0"
 			AND `supplier`.`delete_flg` = "0"
-		ORDER BY `certification_standard`.`name` ASC;
+		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
 	<insert id="save" parameterType="com.sm24soft.entity.CertificationStandard"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		INSERT INTO `certification_standard`
+		INSERT INTO `certificate`
 		(
 			`name`,
 			`description`,
@@ -85,7 +85,7 @@
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.CertificationStandard">
-		UPDATE `certification_standard`
+		UPDATE `certificate`
 		SET
 			`name` = #{name},
 			`description` = #{description},
@@ -98,7 +98,7 @@
 	</update>
 	
 	<delete id="deleteById">
-		UPDATE `certification_standard`
+		UPDATE `certificate`
 		SET
 			`delete_flg` = "1",
 			`updated_at` = NOW()

@@ -19,30 +19,37 @@
 		<result column="saleable_flag" property="saleableFlg" />
 		<result column="manufacture_date" property="manufactureDate" />
 		<result column="expire_date" property="expireDate" />
-		<result column="weight" property="weight" />
+		<result column="weight_for_sale_price" property="weightOfSalePrice" />
 		<result column="weight_of_one_box" property="weightOfOneBox" />
+		<result column="unit_of_one_box" property="unitOfOneBox" />
 		<result column="total_weight" property="totalWeight" />
 		<result column="total_remaining_weight_after_sell" property="totalRemainingWeightAfterSell" />
 		<result column="unit_of_weight" property="unitOfWeight" />
-		<result column="thumbnail_url" property="thumbnailUrl" />
-		<result column="preview_image_url" property="previewImageUrl" />
 		
 		<association column="item_category_id" 
 			property="itemCategory"
 			javaType="com.sm24soft.entity.ItemCategory"
 			select="com.sm24soft.repository.ItemCategoryRepository.findById" />
-<!-- 		<association column="store_id"  -->
-<!-- 			property="store" -->
-<!-- 			javaType="com.sm24soft.entity.Store" -->
-<!-- 			select="com.sm24soft.repository.StoreRepository.findById" /> -->
 		<association column="supplier_id" 
 			property="supplier"
 			javaType="com.sm24soft.entity.Supplier"
 			select="com.sm24soft.repository.SupplierRepository.findById" />
-<!-- 		<association column="tax_id"  -->
-<!-- 			property="tax" -->
-<!-- 			javaType="com.sm24soft.entity.Tax" -->
-<!-- 			select="com.sm24soft.repository.TaxRepository.findById" /> -->
+		<association column="thumbnail_id" 
+			property="thumbnail"
+			javaType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findById" />
+		<association column="preview_image_id1" 
+			property="previewImage1"
+			javaType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findById" />
+		<association column="preview_image_id2" 
+			property="previewImage2"
+			javaType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findById" />
+		<association column="preview_image_id3" 
+			property="previewImage3"
+			javaType="com.sm24soft.entity.Image"
+			select="com.sm24soft.repository.ImageRepository.findById" />
 	</resultMap>
 	
 	<sql id="findItemSQL">
@@ -67,13 +74,16 @@
 		    `item`.`saleable_flag`,
 		    `item`.`manufacture_date`,
 		    `item`.`expire_date`,
-		    `item`.`weight`,
+		    `item`.`weight_for_sale_price`,
 		    `item`.`weight_of_one_box`,
+		    `item`.`unit_of_one_box`,
 		    `item`.`total_weight`,
 		    `item`.`total_remaining_weight_after_sell`,
 		    `item`.`unit_of_weight`,
-		    `item`.`thumbnail_url`,
-		    `item`.`preview_image_url`,
+		    `item`.`thumbnail_id`,
+		    `item`.`preview_image_id1`,
+		    `item`.`preview_image_id2`,
+		    `item`.`preview_image_id3`,
 		    `item`.`delete_flg`,
 		    `item`.`created_at`,
 		    `item`.`created_user_id`,
@@ -108,6 +118,16 @@
 		ORDER BY `item`.`full_name` ASC;
 	</select>
 	
+	<select id="findAllBySupplierName" resultMap="ItemResultMap">
+		<include refid="findItemSQL" />
+		INNER JOIN `supplier`
+			ON `item`.`supplier_id` = `supplier`.`id`
+		WHERE `supplier`.`supplier_name` LIKE #{supplierName}
+			AND `item`.`delete_flg` = "0"
+			AND `supplier`.`delete_flg` = "0"
+		ORDER BY `item`.`short_name` ASC;
+	</select>
+	
 	<insert id="save" parameterType="com.sm24soft.entity.Item"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO `item`
@@ -132,13 +152,16 @@
 			`saleable_flag`,
 			`manufacture_date`,
 			`expire_date`,
-			`weight`,
+			`weight_for_sale_price`,
 			`weight_of_one_box`,
+			`unit_of_one_box`,
 			`total_weight`,
 			`total_remaining_weight_after_sell`,
 			`unit_of_weight`,
-			`thumbnail_url`,
-			`preview_image_url`,
+			`thumbnail_id`,
+			`preview_image_id1`,
+			`preview_image_id2`,
+			`preview_image_id3`,
 			`delete_flg`,
 			`created_at`,
 			`created_user_id`,
@@ -167,13 +190,16 @@
 			#{saleableFlg},
 			#{manufactureDate},
 			#{expireDate},
-			#{weight},
+			#{weightOfSalePrice},
 			#{weightOfOneBox},
+			#{unitOfOneBox},
 			#{totalWeight},
 			#{totalRemainingWeightAfterSell},
 			#{unitOfWeight},
-			#{thumbnailUrl},
-			#{previewImageUrl},
+			#{thumbnail.id},
+			#{previewImage1.id},
+			#{previewImage2.id},
+			#{previewImage3.id},
 			#{deleteFlg},
 			#{createdAt},
 			#{createdUserId},
@@ -205,13 +231,16 @@
 			`saleable_flag` = #{saleableFlg},
 			`manufacture_date` = #{manufactureDate},
 			`expire_date` = #{expireDate},
-			`weight` = #{weight},
+			`weight_for_sale_price` = #{weightOfSalePrice},
 			`weight_of_one_box` = #{weightOfOneBox},
+			`unit_of_one_box` = #{unitOfOneBox},
 			`total_weight` = #{totalWeight},
 			`total_remaining_weight_after_sell` = #{totalRemainingWeightAfterSell},
 			`unit_of_weight` = #{unitOfWeight},
-			`thumbnail_url` = #{thumbnailUrl},
-			`preview_image_url` = #{previewImageUrl},
+			`thumbnail_id` = #{thumbnail.id},
+			`preview_image_id1` = #{previewImage1.id},
+			`preview_image_id2` = #{previewImage2.id},
+			`preview_image_id3` = #{previewImage3.id},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}

@@ -25,5 +25,12 @@ public class GlobalExceptionHandleController extends ApplicationController imple
 		
 		return "error/404";
 	}
+	
+	@RequestMapping(value = { "/error/403" }, method = RequestMethod.GET)
+	public String handleAccessDeniedError() {
+		logger.info("Call handleAccessDeniedError()");
+		
+		return "error/403";
+	}
 
 }

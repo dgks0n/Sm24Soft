@@ -80,7 +80,11 @@ public class ItemCategoryService implements IItemCategoryService {
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The id must not be null and empty");
 		}
-		return itemCategoryRepository.findById(id);
+		ItemCategory itemCategory = itemCategoryRepository.findById(id);
+		if (itemCategory == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		return itemCategory;
 	}
 
 	@Override

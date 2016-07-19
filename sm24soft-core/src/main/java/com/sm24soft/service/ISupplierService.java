@@ -12,6 +12,10 @@ public interface ISupplierService extends IService {
 	
 	String updateSupplier(Supplier supplier);
 	
+	String uploadRepresentativeLogo(String emailAddress, String logoFieldId, String logoUrl);
+	
+	String uploadOperationImage(String emailAddress, String imageFieldId, String imageUrl);
+	
 	Supplier findById(String id);
 	
 	List<Supplier> findAllSuppliers();
@@ -29,7 +33,4 @@ public interface ISupplierService extends IService {
 	
 	void deleteById(String id);
 	
-	String uploadRepresentativeLogo(String emailAddress, String logoFieldId, String logoUrl);
-	
-	String uploadOperationImage(String emailAddress, String imageFieldId, String imageUrl);
 }

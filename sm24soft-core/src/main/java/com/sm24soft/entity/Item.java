@@ -3,18 +3,43 @@
  */
 package com.sm24soft.entity;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
+
+import com.sm24soft.common.util.DateUtil;
 
 /**
+ * This is important enity.
+ * 
  * @author sondn
- *
  */
 public class Item extends BaseEntity {
+	
+	public static final String DEFAULT_UNIT_OF_SALE = "vnđ";
+	public static final String DEFAULT_UNIT_OF_DISCOUNT = "vnđ";
+	public static final String DEFAULT_UNIT_OF_WEIGHT = "kg";
+	
+	public static final String DEFAULT_SALEABLE_FLAG = "1";
+	
+	/**
+	 * NOTE: Formula for how to calculate price of an item as below described
+	 * 
+	 * ( salePrice / weight ) * weightOfOneBox = price for one box.
+	 * Example:
+	 * 		(150000 / 1) * 3 = (150.000VND / 1kg) * 3kg (1box) = 450000VND/1box
+	 * 
+	 * Dien giai:
+	 * -----------
+	 * 
+	 * Gia tien cua san pham nay la 150.000VND cho 1kg. Tuy nhien, san pham nay duoc
+	 * dong theo HOP (box) va HOP nay co trong luong 3kg. Nhu vay gia tien cua mot
+	 * HOP san pham nay la 150.000 * 3 = 450.000VND.
+	 * 
+	 * Neu khach hang muon mua 3 hoac 4 HOP (box) thi gia tien se la:
+	 * Gia tien 1 HOP (box) * so luong HOP (box) = ???
+	 * 
+	 */
 
 	private String pLUCode1;
 	private String pLUCode2;
@@ -29,41 +54,77 @@ public class Item extends BaseEntity {
 	private ItemCategory itemCategory;
 	
 	/*
-	 * Belong to a store
+	 * Belong to a store (optional)
+	 * 
+	 * Default is NULL. 
 	 */
 	private Store store;
 	
 	/*
-	 * Belong to a supplier
+	 * Belong to a supplier (MUST)
 	 */
 	private Supplier supplier;
 	
+	/*
+	 * Ngay nhap
+	 */
 	private Date importDate;
-	private double price;
-	private double salePrice;
-	private double oldSalePrice;
 	
 	/*
-	 * VND, USD, ...etc
+	 * Gia nhap tren 1 don vi (NOTE: Luon Luon la 1 don vi).
+	 * 
+	 * Ex: 140000 VND/1kg
+	 */
+	private double price = 0;
+	
+	/*
+	 * Gia ban hien tai tren 1 don vi.
+	 * 
+	 * Ex: 150000 VND/1kg
+	 */
+	private double salePrice = 0;
+	
+	/*
+	 * Gia ban cu tren 1 don vi kg.
+	 * 
+	 * Ex: 160000 VND/1kg
+	 * 
+	 * NOTE: Gia nay se duoc tinh dua tren % chiet khau
+	 */
+	private double oldSalePrice = 0;
+	
+	/*
+	 * Don vi cua gia ban tren 1 don vi.
+	 * Ex: VND (default)
 	 */
 	private String unitOfSalePrice;
-	private float discount;
+	
+	/*
+	 * Chiet khau
+	 */
+	private float discount = 0;
+	
+	/*
+	 * Don vi cua chiet khau
+	 */
 	private String unitOfDiscount;
 	
 	/*
 	 * NULL, 0: NON_TAX
+	 * 
+	 * Default is NULL (NON_TAX)
 	 */
 	private Tax tax;
 	
 	/*
 	 * 0: NOT_FOR_SALE, 1: SALE
 	 */
-	private String saleableFlg;
+	private String saleableFlg = "1";
 	
 	/*
 	 * Ngay SX
 	 */
-	private Date manufactureDate;
+	private Date manufactureDate = DateUtil.now();
 	
 	/*
 	 * Ngay HH
@@ -71,29 +132,57 @@ public class Item extends BaseEntity {
 	private Date expireDate;
 	
 	/*
-	 * Can nang / 1 kg
-	 */
-	private float weight;
-	
-	/*
-	 * Danh sach can nang / 1 box. 
+	 * Can nang / 1 kg.
 	 * 
-	 * Ex: [{size: "small", weight: 0.5}, {size: "middle", weight: 1}]
+	 * NOTE: Default is 1, su dung don vi nay de tinh tien.
 	 */
-	private String weightOfOneBox;
+	private float weightOfSalePrice = 1;
 	
 	/*
-	 * Tong so can nang
+	 * Can nang cua box.
+	 * Ex: box A: 0.5, box B: 1kg, box C: 3kg, box D: 5kg
+	 * 
+	 * Default is 1.
+	 */
+	private float weightOfOneBox = 1;
+	
+	/*
+	 * Don vi cua box 
+	 */
+	private String unitOfOneBox;
+	
+	/*
+	 * Tong so can nang cua san pham nay.
+	 * 
+	 * Ex: 100
 	 */
 	private float totalWeight;
 	
 	/*
-	 * Tong so can nang con lai sau khi da ban
+	 * Tong so can nang con lai sau khi da ban.
+	 * 
+	 * Ex: 10
 	 */
 	private float totalRemainingWeightAfterSell;
-	private String unitOfWeight;
-	private String thumbnailUrl;
-	private String previewImageUrl;
+	
+	/*
+	 * Don vi khoi luong.
+	 * 
+	 * Default is Kg.
+	 */
+	private String unitOfWeight = "kg";
+	
+	/*
+	 * Hinh anh dai dien
+	 */
+	private Image thumbnail;
+	
+	/*
+	 * Hinh anh hien thi
+	 */
+	private Image previewImage1;
+	private Image previewImage2;
+	private Image previewImage3;
 
 	public Item() {
 		super();
@@ -140,7 +229,10 @@ public class Item extends BaseEntity {
 	}
 
 	public String getDescription() {
-		return description;
+		if (StringUtils.isEmpty(description)) {
+			return description;
+		}
+		return description.trim();
 	}
 
 	public void setDescription(String description) {
@@ -258,32 +350,29 @@ public class Item extends BaseEntity {
 	public void setExpireDate(Date expireDate) {
 		this.expireDate = expireDate;
 	}
-
-	public float getWeight() {
-		return weight;
-	}
-
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
 	
-	public String getWeightOfOneBox() {
+	public float getWeightOfSalePrice() {
+		return weightOfSalePrice;
+	}
+
+	public void setWeightOfSalePrice(float weightOfSalePrice) {
+		this.weightOfSalePrice = weightOfSalePrice;
+	}
+
+	public float getWeightOfOneBox() {
 		return weightOfOneBox;
 	}
-
-	public List<BoxReference> getListOfBoxReferences() {
-		ObjectMapper mapper = new ObjectMapper();
-		List<BoxReference> boxes = null;
-		try {
-			boxes = mapper.readValue(getWeightOfOneBox(), new TypeReference<List<BoxReference>>(){});
-		} catch (IOException ex) {
-			// TODO:
-		}
-		return boxes;
+	
+	public void setWeightOfOneBox(float weightOfOneBox) {
+		this.weightOfOneBox = weightOfOneBox;
 	}
 
-	public void setWeightOfOneBox(String weightOfOneBox) {
-		this.weightOfOneBox = weightOfOneBox;
+	public String getUnitOfOneBox() {
+		return unitOfOneBox;
+	}
+
+	public void setUnitOfOneBox(String unitOfOneBox) {
+		this.unitOfOneBox = unitOfOneBox;
 	}
 
 	public float getTotalWeight() {
@@ -309,21 +398,48 @@ public class Item extends BaseEntity {
 	public void setUnitOfWeight(String unitOfWeight) {
 		this.unitOfWeight = unitOfWeight;
 	}
-
-	public String getThumbnailUrl() {
-		return thumbnailUrl;
+	
+	public Image getThumbnail() {
+		return thumbnail;
 	}
 
-	public void setThumbnailUrl(String thumbnailUrl) {
-		this.thumbnailUrl = thumbnailUrl;
+	public void setThumbnail(Image thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
-	public String getPreviewImageUrl() {
-		return previewImageUrl;
+	public Image getPreviewImage1() {
+		return previewImage1;
 	}
 
-	public void setPreviewImageUrl(String previewImageUrl) {
-		this.previewImageUrl = previewImageUrl;
+	public void setPreviewImage1(Image previewImage1) {
+		this.previewImage1 = previewImage1;
+	}
+
+	public Image getPreviewImage2() {
+		return previewImage2;
+	}
+
+	public void setPreviewImage2(Image previewImage2) {
+		this.previewImage2 = previewImage2;
+	}
+
+	public Image getPreviewImage3() {
+		return previewImage3;
+	}
+
+	public void setPreviewImage3(Image previewImage3) {
+		this.previewImage3 = previewImage3;
+	}
+
+	public String getActualStatusAsString() {
+		StringBuilder builder = new StringBuilder("<button type=\"button\" class=\"btn ");
+		if (getTotalRemainingWeightAfterSell() > 0) {
+			builder.append("btn-success btn-xs\">Còn hàng");
+		} else {
+			builder.append("btn-warning btn-xs\">Hết hàng");
+		}
+		builder.append("</button>");
+		return builder.toString();
 	}
 	
 }

@@ -17,28 +17,28 @@
 	</resultMap>
 	
 	<sql id="findRepresentativeOrContactPersonSQL">
-	SELECT `representative_or_contact_person`.`id`,
-	    `representative_or_contact_person`.`short_name`,
-	    `representative_or_contact_person`.`full_name`,
-	    `representative_or_contact_person`.`birthday`,
-	    `representative_or_contact_person`.`address1`,
-	    `representative_or_contact_person`.`address2`,
-	    `representative_or_contact_person`.`email_address`,
-	    `representative_or_contact_person`.`national`,
-	    `representative_or_contact_person`.`identity_card_number`,
-	    `representative_or_contact_person`.`telephone_number1`,
-	    `representative_or_contact_person`.`telephone_number2`,
-	    `representative_or_contact_person`.`telephone_number3`,
-	    `representative_or_contact_person`.`created_at`,
-	    `representative_or_contact_person`.`created_user_id`,
-	    `representative_or_contact_person`.`updated_at`,
-	    `representative_or_contact_person`.`updated_user_id`
-	FROM `representative_or_contact_person`
+	SELECT `person`.`id`,
+	    `person`.`short_name`,
+	    `person`.`full_name`,
+	    `person`.`birthday`,
+	    `person`.`address1`,
+	    `person`.`address2`,
+	    `person`.`email_address`,
+	    `person`.`national`,
+	    `person`.`identity_card_number`,
+	    `person`.`telephone_number1`,
+	    `person`.`telephone_number2`,
+	    `person`.`telephone_number3`,
+	    `person`.`created_at`,
+	    `person`.`created_user_id`,
+	    `person`.`updated_at`,
+	    `person`.`updated_user_id`
+	FROM `person`
 	</sql>
 	
 	<insert id="save" parameterType="com.sm24soft.entity.RepresentativeOrContactPerson"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		INSERT INTO `representative_or_contact_person`
+		INSERT INTO `person`
 		(
 			`short_name`,
 			`full_name`,
@@ -79,7 +79,7 @@
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.RepresentativeOrContactPerson">
-		UPDATE `representative_or_contact_person`
+		UPDATE `person`
 		SET
 			`short_name` = #{shortName},
 			`full_name` = #{fullName},
@@ -107,11 +107,11 @@
 	<select id="findAll" resultMap="RepresentativeOrContactPersonResultMap">
 		<include refid="findRepresentativeOrContactPersonSQL" />
 		WHERE `delete_flg` = "0"
-		ORDER BY `representative_or_contact_person`.`short_name` ASC;
+		ORDER BY `person`.`short_name` ASC;
 	</select>
 	
 	<delete id="deleteById">
-		DELETE FROM `representative_or_contact_person`
+		DELETE FROM `person`
 		WHERE `id` = #{id};
 	</delete>
 	

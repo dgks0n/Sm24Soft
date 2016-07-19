@@ -59,6 +59,10 @@
 		
 		hideMessageDialog: function(clazz) {
 			$(clazz).modal('hide');
+		},
+		
+		resetSelectBox: function (selectorClazzOrId) {
+			$(selectorClazzOrId).html("<option value=\"\"></option>");
 		}
 	};
 	window.Util = namespace;

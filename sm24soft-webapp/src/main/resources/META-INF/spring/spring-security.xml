@@ -21,6 +21,8 @@
 		<intercept-url pattern="/admin/supplier/upload-image*" access="ROLE_ADMIN" requires-channel="http" />
 		<intercept-url pattern="/admin/certification*" access="ROLE_ADMIN" requires-channel="http" />
 		<intercept-url pattern="/admin/certification/**" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/item-category*" access="ROLE_ADMIN" requires-channel="http" />
+		<intercept-url pattern="/admin/item-category/**" access="ROLE_ADMIN" requires-channel="http" />
 		
 		<!-- NONE AUTHENTICATE -->
 		<intercept-url pattern="/admin" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />

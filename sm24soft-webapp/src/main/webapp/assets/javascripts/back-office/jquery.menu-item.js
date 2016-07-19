@@ -52,14 +52,14 @@
 		});
 		
 		$("table.table-menu-item").on("click", "a", function(e) {
-			var _this = $(this);
-			var itemId = _this.attr("data-id");
-			var table = _this.closest("table.table-menu-item");
+			var $this = $(this);
+			var itemId = $this.attr("data-id");
+			var table = $this.closest("table.table-menu-item");
 			
 			// mark current is selecting menu item
 			table.attr("data-selected-id", itemId);
 			
-			if (_this.hasClass("btn-edit")) {
+			if ($this.hasClass("btn-edit")) {
 				location.href = Util.getRealPath("/admin/menu-item/") + itemId;
 			} else {
 				Util.showMessageDialog(".confirm-delete-menu-dialog");
@@ -67,8 +67,8 @@
 		});
 		
 		$("div.confirm-delete-menu-dialog").on("click", "button", function(e) {
-			var _this = $(this);
-			if (_this.hasClass("btn-agreement")) {
+			var $this = $(this);
+			if ($this.hasClass("btn-agreement")) {
 				Util.hideMessageDialog(".confirm-delete-menu-dialog");
 				
 				var itemId = $("table.table-menu-item").attr("data-selected-id");

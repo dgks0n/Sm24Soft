@@ -28,7 +28,7 @@
 									<select id="menu-item" name="menuItem[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($menuItem in $!listOfMenuItems)
-										<option value="$!menuItem.id" $!pageUtil.getSelectedElementFormCurrentValue($!menuItem.id, $!itemCategory.menuItem.id)>$!menuItem.fullNameOfMenuItem</option>
+										<option value="$!menuItem.id" $!pageUtil.markSelectElement($!menuItem.id, $!itemCategory.menuItem.id)>$!menuItem.fullNameOfMenuItem</option>
 									#end
 									</select>
 								</div>
@@ -41,7 +41,7 @@
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($supplier in $!listOfSuppliers)
-										<option value="$!supplier.id" $!pageUtil.getSelectedElementFormCurrentValue($!supplier.id, $!itemCategory.supplier.id)>$!supplier.companyName</option>
+										<option value="$!supplier.id" $!pageUtil.markSelectElement($!supplier.id, $!itemCategory.supplier.id)>$!supplier.companyName</option>
 									#end
 									</select>
 								</div>

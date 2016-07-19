@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
 import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.CertificationStandard;
@@ -46,6 +47,7 @@ public class CertificationStandardController extends ApplicationController imple
 		logger.info("Call renderCertificationStandardResultPage()");
 		
 		List<CertificationStandard> listOfCertificationStandards = null;
+		
 		try {
 			if (StringUtils.isEmpty(keyword)) {
 				listOfCertificationStandards = certificationStandardService.findAll();
@@ -96,13 +98,15 @@ public class CertificationStandardController extends ApplicationController imple
 		logger.info("Call renderUpdateCertificationStandardPage()");
 		
 		try {
-			// (1)
 			List<Supplier> listOfSuppliers = supplierService.findAllSuppliers();
 			model.addAttribute("listOfSuppliers", listOfSuppliers);
 			
-			// (2)
 			CertificationStandard certificationStandard = certificationStandardService.findById(id);
 			model.addAttribute("certificationStandard", certificationStandard);
+		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getRedirectTo404Page();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -123,7 +127,6 @@ public class CertificationStandardController extends ApplicationController imple
 			
 			return getErrorStatus(ex);
 		}
-		
 		return getOKStatus();
 	}
 	

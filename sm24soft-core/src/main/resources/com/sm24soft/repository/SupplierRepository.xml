@@ -112,9 +112,9 @@
 		    `contact`.`updated_at`				AS `contact_updated_at`,
 		    `contact`.`updated_user_id`			AS `contact_updated_user_id`
 		FROM `supplier`
-		LEFT JOIN `representative_or_contact_person` AS `represent`
+		LEFT JOIN `person` AS `represent`
 			ON `represent`.`id` = `supplier`.`representative_person_id`
-		LEFT JOIN `representative_or_contact_person` AS `contact`
+		LEFT JOIN `person` AS `contact`
 			ON `contact`.`id` = `supplier`.`contact_person_id`
 	</sql>
 	

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
 import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.ItemCategory;
@@ -139,6 +140,10 @@ public class ItemCategoryController extends ApplicationController implements Con
 		try {
 			ItemCategory itemCategory = itemCategoryService.findById(id);
 			model.addAttribute("itemCategory", itemCategory);
+		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getRedirectTo404Page();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -160,4 +165,5 @@ public class ItemCategoryController extends ApplicationController implements Con
 		
 		return "back-office/item-category/update";
 	}
+	
 }

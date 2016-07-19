@@ -26,6 +26,10 @@ public abstract class ApplicationController {
 		return new HttpResponse<T>(HttpStatus.OK, null, null);
 	}
 	
+	protected <T> HttpResponse<T> getOKStatus(T result) {
+		return new HttpResponse<T>(HttpStatus.OK, null, result);
+	}
+	
 	/**
 	 * Create new Error status for response
 	 * 
@@ -49,4 +53,15 @@ public abstract class ApplicationController {
 		return new HttpResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR, null, null);
 	}
 	
+	protected String getRedirectTo404Page() {
+		return "redirect:/error/404";
+	}
+	
+	protected String getRedirectTo403Page() {
+		return "redirect:/error/403";
+	}
+	
+	protected String getRedirectTo500Page() {
+		return "redirect:/error/500";
+	}
 }

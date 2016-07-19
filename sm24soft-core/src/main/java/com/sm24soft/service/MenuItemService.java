@@ -86,7 +86,11 @@ public class MenuItemService implements IMenuItemService {
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		return menuItemRepository.findById(id);
+		MenuItem menuItem = menuItemRepository.findById(id);
+		if (menuItem == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		return menuItem;
 	}
 
 	@Override

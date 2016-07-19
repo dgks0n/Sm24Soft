@@ -3,6 +3,8 @@ package com.sm24soft.entity;
 import com.sm24soft.common.util.StringFormatUtil;
 
 public class MenuItem extends BaseEntity {
+	
+	public static final String DEFAULT_STATUS = "1";
 
 	private String fullNameOfMenuItem;
 	

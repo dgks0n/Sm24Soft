@@ -111,7 +111,11 @@ public class CertificationStandardService implements ICertificationStandardServi
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		return certificationRepository.findById(id);
+		CertificationStandard certification = certificationRepository.findById(id);
+		if (certification == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		return certification;
 	}
 
 	@Override

@@ -22,136 +22,134 @@
 <script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/jquery/dist/jquery.min.js')"></script>
 </head>
 <body class="nav-md">
-	<div class="container body">
-		<div class="main_container">
-			<div class="col-md-3 left_col">
-				<div class="left_col scroll-view">
-					<div class="navbar nav_title" style="border: 0;">
-						<a href="${request.contextPath}/admin" class="site_title"><i class="fa fa-paw"></i> <span>Gala.vn</span></a>
-					</div>
-					<div class="clearfix"></div>
-					<!-- menu profile quick info -->
-					<div class="profile">
-						<div class="profile_pic">
-							<img src="#springUrl('/assets/themes/gentelella-1.3.0/production/images/user.png')" alt="$principal.currentUserName" class="img-circle profile_img">
-						</div>
-						<div class="profile_info">
-							<span>Xin chào,</span>
-							<h2>$!pageUtil.currentUserName</h2>
-						</div>
-					</div>
-					<!-- /menu profile quick info -->
-					<div class="clearfix"></div>
-					<br />
-
-					<!-- sidebar menu -->
-					<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-						<div class="menu_section">
-							<h3>Danh mục quản lý</h3>
-							<ul class="nav side-menu">
-								<li>
-									<a><i class="fa fa-th-list"></i>Quản lý Danh mục <span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#springUrl('/admin/menu-item')">Danh mục Sản phẩm</a></li>
-									</ul>
-								</li>
-								<li>
-									<a><i class="fa fa-home"></i>Quản lý Trang trại <span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#springUrl('/admin/supplier')">Thông tin Trang trại</a></li>
-										<li><a href="#springUrl('/admin/certification')">Tiêu chuẩn & chứng chỉ</a></li>
-									</ul>
-								</li>
-								<li>
-									<a><i class="fa fa-cube"></i>Quản lý Sản phẩm <span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#springUrl('/admin/item-category')">Nhóm Sản phẩm</a></li>
-										<li><a href="#springUrl('/admin/item')">Sản phẩm</a></li>
-									</ul>
-								</li>
-								<li>
-									<a><i class="fa fa-shopping-cart"></i>Quản lý Đơn hàng <span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#springUrl('/admin/order?status=1')">Đơn hàng chờ duyệt</a></li>
-										<li><a href="#springUrl('/admin/order?status=2')">Đơn hàng chờ Ship</a></li>
-										<li><a href="#springUrl('/admin/order?status=3')">Đơn hàng đã hoàn thành</a></li>
-										<li><a href="#springUrl('/admin/order?status=4')">Đơn hàng đã huỷ</a></li>
-									</ul>
-								</li>
-								<li>
-									<a><i class="fa fa-newspaper-o"></i>Quản lý Tin tức <span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#springUrl('/admin/news-promotion')">Tin tức & Khuyến mãi</a></li>
-										<li><a href="#springUrl('/admin/banner')">Quản lý banner</a></li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- /sidebar menu -->
+<div class="container body">
+	<div class="main_container">
+		<div class="col-md-3 left_col">
+			<div class="left_col scroll-view">
+				<div class="navbar nav_title" style="border: 0;">
+					<a href="${request.contextPath}/admin" class="site_title"><i class="fa fa-paw"></i> <span>GaLa.vn</span></a>
 				</div>
-			</div>
+				<div class="clearfix"></div>
+				<!-- menu profile quick info -->
+				<div class="profile">
+					<div class="profile_pic">
+						<img src="#springUrl('/assets/themes/gentelella-1.3.0/production/images/user.png')" alt="$principal.currentUserName" class="img-circle profile_img">
+					</div>
+					<div class="profile_info">
+						<span>Xin chào,</span>
+						<h2>$!pageUtil.currentUserName</h2>
+					</div>
+				</div>
+				<!-- /menu profile quick info -->
+				<div class="clearfix"></div>
 
-			<!-- top navigation -->
-			<div class="top_nav">
-				<div class="nav_menu">
-					<nav class="" role="navigation">
-						<div class="nav toggle">
-							<a id="menu_toggle"><i class="fa fa-bars"></i></a>
-						</div>
-
-						<ul class="nav navbar-nav navbar-right">
-							<li class="">
-								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
-									<img src="#springUrl('/assets/themes/gentelella-1.3.0/production/images/user.png')" alt="$!pageUtil.currentUserName">$!pageUtil.currentUserName
-									<span class=" fa fa-angle-down"></span>
-								</a>
-								<ul class="dropdown-menu dropdown-usermenu pull-right">
-									<li><a href="#springUrl('/admin/help')">Giúp đỡ</a></li>
-									<li><a href="#springUrl('/admin/logout')"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+				<!-- sidebar menu -->
+				<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+					<div class="menu_section">
+						<h3>Quản lý (BOSS)</h3>
+						<ul class="nav side-menu">
+							<li>
+								<a><i class="fa fa-th-list"></i>Quản lý Danh mục <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/menu-item')">Danh mục Sản phẩm</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-home"></i>Quản lý Trang trại <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/supplier')">Thông tin Trang trại</a></li>
+									<li><a href="#springUrl('/admin/certification')">Tiêu chuẩn & chứng chỉ</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-cube"></i>Quản lý Sản phẩm <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/item-category')">Nhóm Sản phẩm</a></li>
+									<li><a href="#springUrl('/admin/item')">Sản phẩm</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-shopping-cart"></i>Quản lý Đơn hàng <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/order?status=1')">Đơn hàng chờ duyệt</a></li>
+									<li><a href="#springUrl('/admin/order?status=2')">Đơn hàng chờ Ship</a></li>
+									<li><a href="#springUrl('/admin/order?status=3')">Đơn hàng đã hoàn thành</a></li>
+									<li><a href="#springUrl('/admin/order?status=4')">Đơn hàng đã huỷ</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-newspaper-o"></i>Quản lý Tin tức <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/news-promotion')">Tin tức & Khuyến mãi</a></li>
+									<li><a href="#springUrl('/admin/banner')">Quản lý banner</a></li>
 								</ul>
 							</li>
 						</ul>
-					</nav>
+					</div>
 				</div>
+				<!-- /sidebar menu -->
 			</div>
-			<!-- /top navigation -->
-
-			<!-- page content -->
-			$!bodyContent
-			<!-- /page content -->
-
-			<!-- footer content -->
-			<footer>
-				<div class="pull-right">$!pageUtil.pageCopyright</div>
-				<div class="clearfix"></div>
-			</footer>
-			<!-- /footer content -->
 		</div>
+
+		<!-- top navigation -->
+		<div class="top_nav">
+			<div class="nav_menu">
+				<nav class="" role="navigation">
+					<div class="nav toggle">
+						<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="">
+							<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
+								<img src="#springUrl('/assets/themes/gentelella-1.3.0/production/images/user.png')" alt="$!pageUtil.currentUserName">$!pageUtil.currentUserName
+								<span class=" fa fa-angle-down"></span>
+							</a>
+							<ul class="dropdown-menu dropdown-usermenu pull-right">
+								<li><a href="#springUrl('/admin/help')">Giúp đỡ</a></li>
+								<li><a href="#springUrl('/admin/logout')"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- /top navigation -->
+
+		<!-- page content -->
+		$!bodyContent
+		<!-- /page content -->
+
+		<!-- footer content -->
+		<footer>
+			<div class="pull-right">$!pageUtil.pageCopyright</div>
+			<div class="clearfix"></div>
+		</footer>
+		<!-- /footer content -->
 	</div>
-	
-	<!-- Bootstrap -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/bootstrap/dist/js/bootstrap.min.js')"></script>
-	<!-- FastClick -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/fastclick/lib/fastclick.js')"></script>
-	<!-- NProgress -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/nprogress/nprogress.js')"></script>
-	<!-- iCheck -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/iCheck/icheck.min.js')"></script>
-	<!-- Custom Theme Scripts -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/build/js/custom.min.js')"></script>
-	<!-- jQuery Smart Wizard -->
-	<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')"></script>
-	<!-- validator -->
-	<script src="#springUrl('/assets/javascripts/plugins/jquery.validate-1.15.0/jquery.validate.min.js')"></script>
-	<script src="#springUrl('/assets/javascripts/plugins/jquery.validate-1.15.0/additional-methods.min.js')"></script>
-	<!-- Serialize an HTML Form to a JavaScript Object -->
-	<script src="#springUrl('/assets/javascripts/plugins/jquery.serializeJSON-2.7.2/jquery.serializejson.min.js')"></script>
-	<!-- Firebug console.log .log() jQuery extension -->
-	<script src="#springUrl('/assets/javascripts/plugins/jquery.log/jquery.firebug.console.log.js')"></script>
-	<!-- TinyMCE -->
-	<script src="#springUrl('/assets/javascripts/plugins/tinymce-4.4.0/tinymce.min.js')"></script>
-	<!-- Customize -->
-	<script src="#springUrl('/assets/javascripts/back-office/jquery.customize.js')"></script>
+</div>
+
+<!-- Bootstrap -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/bootstrap/dist/js/bootstrap.min.js')"></script>
+<!-- FastClick -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/fastclick/lib/fastclick.js')"></script>
+<!-- NProgress -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/nprogress/nprogress.js')"></script>
+<!-- iCheck -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/iCheck/icheck.min.js')"></script>
+<!-- Custom Theme Scripts -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/build/js/custom.min.js')"></script>
+<!-- jQuery Smart Wizard -->
+<script src="#springUrl('/assets/themes/gentelella-1.3.0/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js')"></script>
+<!-- validator -->
+<script src="#springUrl('/assets/javascripts/plugins/jquery.validate-1.15.0/jquery.validate.min.js')"></script>
+<script src="#springUrl('/assets/javascripts/plugins/jquery.validate-1.15.0/additional-methods.min.js')"></script>
+<!-- Serialize an HTML Form to a JavaScript Object -->
+<script src="#springUrl('/assets/javascripts/plugins/jquery.serializeJSON-2.7.2/jquery.serializejson.min.js')"></script>
+<!-- Firebug console.log .log() jQuery extension -->
+<script src="#springUrl('/assets/javascripts/plugins/jquery.log/jquery.firebug.console.log.js')"></script>
+<!-- TinyMCE -->
+<script src="#springUrl('/assets/javascripts/plugins/tinymce-4.4.0/tinymce.min.js')"></script>
+<!-- Customize -->
+<script src="#springUrl('/assets/javascripts/back-office/jquery.customize.js')"></script>
 </body>
 </html>

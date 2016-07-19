@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sm24soft.common.util.FileUtil;
+import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
 import com.sm24soft.controller.Controllable;
+import com.sm24soft.entity.ItemCategory;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.http.response.HttpResponse;
+import com.sm24soft.service.IItemCategoryService;
 import com.sm24soft.service.ISupplierService;
 
 @org.springframework.stereotype.Controller
@@ -32,9 +33,12 @@ public class SupplierController extends ApplicationController implements Control
 	
 	private ISupplierService supplierService;
 	
+	private IItemCategoryService itemCategoryService;
+	
 	@Autowired
-	public SupplierController(ISupplierService supplierService) {
+	public SupplierController(ISupplierService supplierService, IItemCategoryService itemCategoryService) {
 		this.supplierService = supplierService;
+		this.itemCategoryService = itemCategoryService;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -70,6 +74,7 @@ public class SupplierController extends ApplicationController implements Control
 			supplierService.createNewSupplier(supplier);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			return getErrorStatus(ex);
 		}
 		return getOKStatus();
@@ -79,42 +84,21 @@ public class SupplierController extends ApplicationController implements Control
 	public @ResponseBody HttpResponse<String> createOrUpdateLogoUrl(
 			@RequestParam(value = "email", required = true) String emailAddress,
 			@RequestParam(value = "file", required = true) MultipartFile multipartFile, 
-			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageFieldId) {
+			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
 		logger.info("Call createOrUpdateLogoUrl()");
 		
-		if (StringUtils.isEmpty(emailAddress)) {
-			return getErrorStatus();
-		}
-		
-		File targetFile = null;
-		
 		try {
-			String supplierFolder = FileUtil.getHomeDirectory("Gala/Resources") + File.separator + emailAddress;
-			File logoDir  = new File(supplierFolder + File.separator + "logo");
-			if (!logoDir.exists()) {
-				logoDir.mkdirs();
-			}
+			File targetFile = new File(com.sm24soft.util.FileUtil.getSupplierLogoPath(emailAddress) 
+					+ File.separator 
+					+ multipartFile.getOriginalFilename());
+			multipartFile.transferTo(targetFile);
 			
-			String originalFilename = multipartFile.getOriginalFilename();
-			if (StringUtils.isNotEmpty(originalFilename)) {
-				// Handle file content - multipartFile.getInputStream()
-				targetFile = new File(logoDir.getPath() + File.separator + originalFilename);
-				multipartFile.transferTo(targetFile);
-			}
+			supplierService.uploadRepresentativeLogo(emailAddress, imageField, targetFile.getPath());
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			return getErrorStatus(ex);
 		}
-		
-		if (targetFile != null) {
-			try {
-				supplierService.uploadRepresentativeLogo(emailAddress, imageFieldId, targetFile.getPath());
-			} catch (Exception ex) {
-				logger.error(ex.getMessage(), ex);
-				return getErrorStatus(ex);
-			}
-		}
-		
 		return getOKStatus();
 	}
 	
@@ -122,38 +106,20 @@ public class SupplierController extends ApplicationController implements Control
 	public @ResponseBody HttpResponse<String> uploadOperationImages(
 			@RequestParam(value = "email", required = true) String emailAddress,
 			@RequestParam(value = "file", required = true) MultipartFile multipartFile, 
-			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageFieldId) {
-		if (StringUtils.isEmpty(emailAddress)) {
-			return getErrorStatus();
-		}
-		
-		File targetFile = null;
+			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
+		logger.info("Call uploadOperationImages()");
 		
 		try {
-			String supplierFolder = FileUtil.getHomeDirectory() + File.separator + emailAddress;
-			File imageDir  = new File(supplierFolder + File.separator + "image");
-			if (!imageDir.exists()) {
-				imageDir.mkdirs();
-			}
+			File targetFile = new File(com.sm24soft.util.FileUtil.getSupplierOperationImagePath(emailAddress, imageField)
+					+ File.separator
+					+ multipartFile.getOriginalFilename());
+			multipartFile.transferTo(targetFile);
 			
-			String originalFilename = multipartFile.getOriginalFilename();
-			if (StringUtils.isNotEmpty(originalFilename)) {
-				// Handle file content - multipartFile.getInputStream()
-				targetFile = new File(imageDir.getPath() + File.separator + originalFilename);
-				multipartFile.transferTo(targetFile);
-			}
+			supplierService.uploadOperationImage(emailAddress, imageField, targetFile.getPath());
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			return getErrorStatus(ex);
-		}
-		
-		if (targetFile != null) {
-			try {
-				supplierService.uploadOperationImage(emailAddress, imageFieldId, targetFile.getPath());
-			} catch (Exception ex) {
-				logger.error(ex.getMessage(), ex);
-				return getErrorStatus(ex);
-			}
 		}
 		return getOKStatus();
 	}
@@ -162,31 +128,28 @@ public class SupplierController extends ApplicationController implements Control
 	public @ResponseBody HttpResponse<String> deleteOneSupplier(@PathVariable("id") String id) {
 		logger.info("Call deleteOneSupplier()");
 		
-		if (StringUtils.isEmpty(id)) {
-			return getErrorStatus();
-		}
-		
 		try {
 			supplierService.deleteById(id);
-			return getOKStatus();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			return getErrorStatus(ex);
 		}
+		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
 	public String renderUpdateSupplierPage(@PathVariable("id") String id, final Model model) {
 		logger.info("Call renderUpdateSupplierPage()");
 		
-		if (StringUtils.isEmpty(id)) {
-			throw new IllegalArgumentException("The supplier's id must not be null and empty");
-		}
-		
 		Supplier supplier = null;
 		
 		try {
 			supplier = supplierService.findById(id);
+		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getRedirectTo404Page();
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}
@@ -200,19 +163,36 @@ public class SupplierController extends ApplicationController implements Control
 			@RequestBody Supplier supplier) {
 		logger.info("Call updateSupplierPage()");
 		
-		if (StringUtils.isEmpty(id)) {
-			return getErrorStatus();
-		}
-		
 		try {
 			supplier.setId(id);
 			// push to underlying database
 			supplierService.updateSupplier(supplier);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
 			return getErrorStatus(ex);
 		}
 		return getOKStatus();
 	}
 	
+	@RequestMapping(value = { "/item-categories" }, method = RequestMethod.GET)
+	public @ResponseBody HttpResponse<String> renderItemCategorySelectBox(
+			@RequestParam(value = "supplierId", required = true) String supplierId) {
+		logger.info("Call renderItemCategorySelectBox()");
+		
+		StringBuilder optionsBuilder = new StringBuilder("<option value=\"\"></option>");
+		try {
+			List<ItemCategory> listOfItemCategories = itemCategoryService.findAllBySupplierId(supplierId);
+			for (ItemCategory itemCategory : listOfItemCategories) {
+				optionsBuilder.append("<option value=\"");
+				optionsBuilder.append(itemCategory.getIdWithPADZero());
+				optionsBuilder.append("\">");
+				optionsBuilder.append(itemCategory.getName());
+				optionsBuilder.append("</option>");
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+		}
+		return getOKStatus(optionsBuilder.toString());
+	}
 }

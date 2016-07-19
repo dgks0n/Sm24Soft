@@ -79,3 +79,11 @@
 	</div>
 </div>
 #end
+
+#macro( springInputFile $inputId $iptClazz $iptName $iptDataId $iptDataFieldId )
+<input type="file" id="$!iptId" class="$!iptClazz" name="$!iptName" data-id="$!iptDataId" data-field-id="$!iptDataFieldId" accept="image/*">
+#end
+
+#macro( springInputHidden $inputId $iptClazz $iptName )
+<input type="hidden" id="$!inputId" class="$!iptClazz" name="$!iptName">
+#end

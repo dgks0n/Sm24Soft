@@ -16,9 +16,7 @@ import com.sm24soft.common.util.DateUtil;
 import com.sm24soft.entity.Image;
 import com.sm24soft.entity.RepresentativeOrContactPerson;
 import com.sm24soft.entity.Supplier;
-import com.sm24soft.repository.CertificationStandardRepository;
 import com.sm24soft.repository.ImageRepository;
-import com.sm24soft.repository.NewsRepository;
 import com.sm24soft.repository.RepresentativeOrContactPersonRepository;
 import com.sm24soft.repository.SupplierRepository;
 
@@ -31,20 +29,12 @@ public class SupplierService implements ISupplierService {
 
 	private ImageRepository imageRepository;
 
-	private NewsRepository newsRepository;
-
-	private CertificationStandardRepository certificationStandardRepository;
-
 	@Autowired
-	public SupplierService(SupplierRepository supplierRepository,
-			RepresentativeOrContactPersonRepository representativeOrContactPersonRepository,
-			ImageRepository imageRepository, NewsRepository newsRepository,
-			CertificationStandardRepository certificationStandardRepository) {
+	public SupplierService(SupplierRepository supplierRepository, ImageRepository imageRepository,
+			RepresentativeOrContactPersonRepository representativeOrContactPersonRepository) {
 		this.supplierRepository = supplierRepository;
 		this.representativeOrContactPersonRepository = representativeOrContactPersonRepository;
 		this.imageRepository = imageRepository;
-		this.newsRepository = newsRepository;
-		this.certificationStandardRepository = certificationStandardRepository;
 	}
 
 	@Override
@@ -163,8 +153,11 @@ public class SupplierService implements ISupplierService {
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The object id must not be null and empty");
 		}
-
-		return supplierRepository.findById(id);
+		Supplier supplier = supplierRepository.findById(id);
+		if (supplier == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		return supplier;
 	}
 
 	@Override

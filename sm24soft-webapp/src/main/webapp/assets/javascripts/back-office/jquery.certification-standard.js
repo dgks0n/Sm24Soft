@@ -96,8 +96,8 @@
 		});
 		
 		$("div.confirm-delete-certification-dialog").on("click", "button", function(e) {
-			var _this = $(this);
-			if (_this.hasClass("btn-agreement")) {
+			var $this = $(this);
+			if ($this.hasClass("btn-agreement")) {
 				Util.hideMessageDialog(".confirm-delete-certification-dialog");
 				
 				var itemId = $("table.table-certification-standard").attr("data-selected-id");
