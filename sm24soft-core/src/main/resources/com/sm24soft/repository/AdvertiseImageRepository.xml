@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.AdvertiseImageRepository">
+	<resultMap type="com.sm24soft.entity.AdvertiseImage" id="AdvertiseImageResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="ad_title" property="advertiseTitle" />
+		<result column="ad_url" property="advertiseUrl" />
+		<result column="ad_path" property="advertisePath" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<sql id="findAdvertiseImageSQL">
+		SELECT `apress_ads`.`id`,
+		    `apress_ads`.`ad_title`,
+		    `apress_ads`.`ad_url`,
+		    `apress_ads`.`ad_path`,
+		    `apress_ads`.`status`,
+		    `apress_ads`.`delete_flg`,
+		    `apress_ads`.`created_at`,
+		    `apress_ads`.`created_user_id`,
+		    `apress_ads`.`updated_at`,
+		    `apress_ads`.`updated_user_id`
+		FROM `apress_ads`
+	</sql>
+	
+	<select id="findById" resultMap="AdvertiseImageResultMap">
+		<include refid="findAdvertiseImageSQL" />
+		WHERE `apress_ads`.`id` = #{id}
+			AND `apress_ads`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findAll" resultMap="AdvertiseImageResultMap">
+		<include refid="findAdvertiseImageSQL" />
+		WHERE `apress_ads`.`delete_flg` = "0"
+		ORDER BY `apress_ads`.`updated_at` DESC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.AdvertiseImage"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `apress_ads`
+		(
+			`ad_title`,
+			`ad_url`,
+			`ad_path`,
+			`status`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{advertiseTitle},
+			#{advertiseUrl},
+			#{advertisePath},
+			#{status},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+	</insert>
+	
+	<insert id="saveListOfAdvertiseImages" parameterType="java.util.List" useGeneratedKeys="true">
+		INSERT INTO `apress_ads`
+		(
+			`ad_title`,
+			`ad_url`,
+			`ad_path`,
+			`status`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		<foreach collection="advertiseImages" item="item" index="index" open="(" separator="), ("  close=")">
+			#{item.advertiseTitle},
+			#{item.advertiseUrl},
+			#{item.advertisePath},
+			#{item.status},
+			#{item.deleteFlg},
+			#{item.createdAt},
+			#{item.createdUserId},
+			#{item.updatedAt},
+			#{item.updatedUserId}
+		</foreach>;
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.AdvertiseImage">
+		UPDATE `apress_ads`
+		SET
+			`ad_title` = #{advertiseTitle},
+			`ad_url` = #{advertiseUrl},
+			`ad_path` = #{advertisePath},
+			`status` = #{status},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `apress_ads`
+		SET
+			`delete_flg` = "1",
+			`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+</mapper>

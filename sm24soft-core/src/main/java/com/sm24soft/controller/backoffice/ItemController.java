@@ -104,11 +104,15 @@ public class ItemController extends ApplicationController implements Controllabl
 			if (StringUtils.isEmpty(imageId)) {
 				targetFile = new File(com.sm24soft.util.FileUtil.getItemImagePath(imageField)
 						+ File.separator
-						+ GenerateUUID.randomUUID());
+						+ GenerateUUID.randomUUID()
+						+ File.separator
+						+ multipartFile.getOriginalFilename());
 			} else { // In-case update
 				targetFile = new File(com.sm24soft.util.FileUtil.getItemImagePath(imageField)
 						+ File.separator
-						+ imageId);
+						+ imageId
+						+ File.separator
+						+ multipartFile.getOriginalFilename());
 			}
 			multipartFile.transferTo(targetFile);
 			

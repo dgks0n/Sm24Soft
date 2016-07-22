@@ -17,7 +17,6 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<input type="hidden" name="selectedMenuItem" value="" />
 						<table class="table table-striped table-hover table-supplier" data-selected-id="">
 							<thead>
 								<tr>
@@ -38,10 +37,8 @@
 									<td>$!supplier.telephoneNumber1</td>
 									<td><span class="badge badge-success">$!supplier.loyaltyAccumulatedPoint</span></td>
 									<td>
-										<a class="btn btn-default btn-xs btn-edit" 
-											data-id="$!supplier.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
-										<a class="btn btn-danger btn-xs btn-trash" 
-											data-id="$!supplier.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
+										<a class="btn btn-default btn-xs btn-edit" data-id="$!supplier.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
+										<a class="btn btn-danger btn-xs btn-trash" data-id="$!supplier.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
 									</td>
 								</tr>
 								#end
@@ -53,6 +50,6 @@
 		</div>
 	</div>
 </div>
-#springConfirmMessage( "confirm-delete-supplier-dialog" "Xác nhận" "" "Bạn muốn xoá Trang trại hoặc Nhà cung cấp này?" "Huỷ" "Đồng ý" )
-#springErrorMessage( "fails-delete-supplier-dialog" "Thông báo" "" "Không thể xoá Trang trại hoặc Nhà cung cấp này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springConfirmMessage( "confirm-delete-dialog" "Xác nhận" "" "Bạn muốn xoá Trang trại hoặc Nhà cung cấp này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-delete-dialog" "Thông báo" "" "Không thể xoá Trang trại hoặc Nhà cung cấp này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.supplier.js')"></script>

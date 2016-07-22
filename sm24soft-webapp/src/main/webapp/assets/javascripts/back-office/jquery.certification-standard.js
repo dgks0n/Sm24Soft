@@ -1,4 +1,6 @@
 (function($) {
+	var isUpdateForm = false;
+	
 	//jQuery DOM Ready
 	$(function() {
 		tinymce.init({
@@ -15,6 +17,12 @@
 			toolbar1 : "undo redo | fontselect | fontsizeselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent"
 		});
 		
+		isUpdateForm = $(".form-main").hasClass("form-update");
+		
+		var failsClazz = function() {
+			return isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS;
+		}();
+		
 		var options = {
 			rules: {
 				name: {
@@ -26,39 +34,39 @@
 			},
 			messages: {
 				name: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				description: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				}
 			},
 			submitHandler: function(form) {
 				// it will save the contents in all editors to their bound textareas
 				tinymce.triggerSave();
 				
-				var isUpdateForm = $(form).hasClass("form-update-certification");
 				var jSONData = Util.toJSONString($(form).serializeJSON());
 				var action = $(form).attr("action");
 				
-				$.log(jSONData);
 				$.ajax({
 					url: action,
-					type: isUpdateForm ? 'PUT' : 'POST',
-					contentType: 'application/json; charset=utf-8',
-					dataType: 'json',
+					type: isUpdateForm ? "PUT" : "POST",
+					contentType: APPLICATION_JSON,
+					dataType: "json",
 					data: jSONData,
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/certification");
+						} else {
+							Util.showMessageDialog(failsClazz);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
 						
-						if (isUpdateForm) {
-							Util.showMessageDialog(".fails-update-certification-dialog");
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
 						} else {
-							Util.showMessageDialog(".fails-create-certification-dialog");
+							Util.showMessageDialog(failsClazz);
 						}
 					}
 				});
@@ -66,55 +74,63 @@
 			}
 		};
 		
-		$("form.form-create-certification").validate(options);
-		$("form.form-update-certification").validate(options);
-		
-		$("form.form-search-certification").on("click", "button", function() {
+		$("form.form-main").validate(options);
+		$("form.form-search").on("click", "button", function() {
 			$(this).closest("form").submit();
 		});
 		
 		$("form").on("click", "a", function(e) {
-			if ($(this).hasClass("btn-cancel")) {
-				$("form")[0].reset();
+			var $this = $(this);
+			var form = $this.closest("form");
+			if ($this.hasClass("btn-cancel")) {
+				form[0].reset();
 			} else {
-				$("form").submit();
+				form.submit();
 			}
 		});
 		
-		$("table.table-certification-standard").on("click", "a", function(e) {
-			var itemId = $(this).attr("data-id");
-			var table = $(this).closest("table.table-certification-standard");
+		$("table.table-certificate").on("click", "a", function(e) {
+			var $this = $(this);
+			var itemId = $this.attr("data-id");
+			var table = $this.closest("table.table-certificate");
 			
 			// mark current is selecting menu item
 			table.attr("data-selected-id", itemId);
 			
-			if ($(this).hasClass("btn-edit")) {
+			if ($this.hasClass("btn-edit")) {
 				location.href = Util.getRealPath("/admin/certification/") + itemId;
 			} else {
-				Util.showMessageDialog(".confirm-delete-certification-dialog");
+				Util.showMessageDialog(FAILS_DELETE_CLASS);
 			}
 		});
 		
-		$("div.confirm-delete-certification-dialog").on("click", "button", function(e) {
+		$("div.confirm-delete-dialog").on("click", "button", function(e) {
 			var $this = $(this);
 			if ($this.hasClass("btn-agreement")) {
-				Util.hideMessageDialog(".confirm-delete-certification-dialog");
+				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
-				var itemId = $("table.table-certification-standard").attr("data-selected-id");
+				var itemId = $("table.table-certificate").attr("data-selected-id");
 				var action = Util.getRealPath("/admin/certification/") + itemId;
 				
 				$.ajax({
 					url: action,
-					type: 'DELETE',
-					dataType: 'json',
+					type: "DELETE",
+					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/certification");
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
-						Util.showMessageDialog(".fails-delete-certification-dialog");
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
+						
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
+						}
 					}
 				});
 			}

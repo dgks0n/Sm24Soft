@@ -1,7 +1,13 @@
 (function($) {
+	var isUpdateForm = false;
 	//jQuery DOM Ready
 	$(function() {
-		$("form.form-search-group-item").on("click", "button", function() {
+		isUpdateForm = $(".form-main").hasClass("form-update");
+		var failsClazz = function() {
+			return isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS;
+		}();
+		
+		$("form.form-search").on("click", "button", function() {
 			$(this).closest("form").submit();
 		});
 		
@@ -22,45 +28,45 @@
 			},
 			messages: {
 				"menuItem[id]": {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				"supplier[id]": {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				name: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				description: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				}
 			},
 			submitHandler: function(form) {
 				// it will save the contents in all editors to their bound textareas
 				tinymce.triggerSave();
 				
-				var isUpdateForm = $(form).hasClass("form-update-group-item");
 				var jSONData = Util.toJSONString($(form).serializeJSON());
 				var action = $(form).attr("action");
-				
-				$.log(jSONData);
+
 				$.ajax({
 					url: action,
-					type: isUpdateForm ? 'PUT' : 'POST',
-					contentType: 'application/json; charset=utf-8',
-					dataType: 'json',
+					type: isUpdateForm ? "PUT" : "POST",
+					contentType: APPLICATION_JSON,
+					dataType: "json",
 					data: jSONData,
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/item-category");
+						} else {
+							Util.showMessageDialog(failsClazz);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
 						
-						if (isUpdateForm) {
-							Util.showMessageDialog(".fails-update-group-item-dialog");
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
 						} else {
-							Util.showMessageDialog(".fails-create-group-item-dialog");
+							Util.showMessageDialog(failsClazz);
 						}
 					}
 				});
@@ -68,9 +74,7 @@
 			}
 		};
 		
-		$("form.form-create-group-item").validate(options);
-		$("form.form-update-group-item").validate(options);
-		
+		$("form.form-main").validate(options);
 		$("form").on("click", "a", function(e) {
 			if ($(this).hasClass("btn-cancel")) {
 				$("form")[0].reset();
@@ -79,40 +83,48 @@
 			}
 		});
 		
-		$("table.table-item-category").on("click", "a", function(e) {
-			var itemId = $(this).attr("data-id");
-			var table = $(this).closest("table.table-item-category");
+		$("table.table-item").on("click", "a", function(e) {
+			var $this = $(this);
+			var itemId = $this.attr("data-id");
+			var table = $this.closest("table.table-item");
 			
 			// mark current is selecting menu item
 			table.attr("data-selected-id", itemId);
 			
-			if ($(this).hasClass("btn-edit")) {
+			if ($this.hasClass("btn-edit")) {
 				location.href = Util.getRealPath("/admin/item-category/") + itemId;
 			} else {
-				Util.showMessageDialog(".confirm-delete-item-category-dialog");
+				Util.showMessageDialog(FAILS_DELETE_CLASS);
 			}
 		});
 		
-		$("div.confirm-delete-item-category-dialog").on("click", "button", function(e) {
+		$("div.confirm-delete-dialog").on("click", "button", function(e) {
 			var $this = $(this);
 			if ($this.hasClass("btn-agreement")) {
-				Util.hideMessageDialog(".confirm-delete-item-category-dialog");
+				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
-				var itemId = $("table.table-item-category").attr("data-selected-id");
+				var itemId = $("table.table-item").attr("data-selected-id");
 				var action = Util.getRealPath("/admin/item-category/") + itemId;
 				
 				$.ajax({
 					url: action,
-					type: 'DELETE',
-					dataType: 'json',
+					type: "DELETE",
+					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/item-category");
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
-						Util.showMessageDialog(".fails-delete-item-category-dialog");
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
+						
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
+						}
 					}
 				});
 			}

@@ -18,12 +18,9 @@
 					</div>
 					<div class="x_content">
 						<br>
-						<form data-parsley-validate class="form-create-certification form-horizontal form-label-left"
-							action="#springUrl('/admin/certification/create-new')" method="post" novalidate>
+						<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/certification/create-new')">
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">
-									Trang trại trực thuộc <span class="required">*</span>
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
@@ -34,30 +31,21 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-									Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span>
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<input type="text" name="name" id="name" 
-										required="required" class="form-control col-md-7 col-xs-12">
+									<input type="text" name="name" id="name" required="required" class="form-control col-md-7 col-xs-12">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">
-									Mô tả
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Mô tả</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="description" class="form-control col-md-9 col-xs-12" 
-										placeholder=""></textarea>
+									<textarea name="description" class="form-control col-md-9 col-xs-12"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">
-									Link (Url) tham khảo
-								</label>
+								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">Link (Url) tham khảo</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" 
-										class="form-control col-md-2 col-xs-12">
+									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control col-md-2 col-xs-12">
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -74,5 +62,5 @@
 		</div>
 	</div>
 </div>
-#springErrorMessage( "fails-create-certification-dialog" "Thông báo" "" "Không thể thêm mới Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.certification-standard.js')"></script>

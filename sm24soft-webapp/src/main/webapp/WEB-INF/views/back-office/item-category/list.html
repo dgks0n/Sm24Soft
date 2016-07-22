@@ -6,10 +6,9 @@
 			</div>
 			<div class="title_right">
 				<div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
-					<form class="form-search-group-item" action="#springUrl('/admin/item-category')" method="get">
+					<form class="form-search" action="#springUrl('/admin/item-category')" method="get">
 						<div class="input-group">
-							<input type="text" class="form-control" name="keyword" value="$!keyword" 
-								placeholder="Tên Trang trại...">
+							<input type="text" class="form-control" name="keyword" value="$!keyword" placeholder="Tên Trang trại...">
 							<span class="input-group-btn">
 								<button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i> Tìm kiếm</button>
 							</span>
@@ -30,7 +29,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<table class="table table-striped table-hover table-item-category" data-selected-id="">
+						<table class="table table-striped table-hover table-item" data-selected-id="">
 							<thead>
 								<tr>
 									<th width="5%">Stt</th>
@@ -48,10 +47,8 @@
 									<td>$!itemCategory.supplier.companyName</td>
 									<td>$!itemCategory.menuItem.fullNameOfMenuItem</td>
 									<td>
-										<a class="btn btn-default btn-xs btn-edit" 
-											data-id="$!itemCategory.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
-										<a class="btn btn-danger btn-xs btn-trash" 
-											data-id="$!itemCategory.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
+										<a class="btn btn-default btn-xs btn-edit" data-id="$!itemCategory.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
+										<a class="btn btn-danger btn-xs btn-trash" data-id="$!itemCategory.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
 									</td>
 								</tr>
 								#end
@@ -63,6 +60,6 @@
 		</div>
 	</div>
 </div>
-#springConfirmMessage( "confirm-delete-item-category-dialog" "Xác nhận" "" "Bạn muốn xoá nhóm Sản phẩm này?" "Huỷ" "Đồng ý" )
-#springErrorMessage( "fails-delete-item-category-dialog" "Thông báo" "" "Không thể xoá nhóm Sản phẩm này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springConfirmMessage( "confirm-delete-dialog" "Xác nhận" "" "Bạn muốn xoá nhóm Sản phẩm này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-delete-dialog" "Thông báo" "" "Không thể xoá nhóm Sản phẩm này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.item-category.js')"></script>

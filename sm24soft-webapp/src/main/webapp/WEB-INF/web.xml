@@ -57,7 +57,7 @@
 	</filter>
 	
 	<filter>
-		<filter-name>CompressingFilter</filter-name>
+		<filter-name>compressingFilter</filter-name>
 		<filter-class>com.planetj.servlet.filter.compression.CompressingFilter</filter-class>
 		<init-param>
 			<param-name>debug</param-name>
@@ -73,6 +73,16 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
+	
+<!-- 	<filter> -->
+<!-- 		<filter-name>multipartFilter</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class> -->
+<!-- 	</filter> -->
+	
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>multipartFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
 
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -85,7 +95,7 @@
 	</filter-mapping>
 	
 	<filter-mapping>
-		<filter-name>CompressingFilter</filter-name>
+		<filter-name>compressingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	

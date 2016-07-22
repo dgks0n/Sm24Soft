@@ -18,47 +18,34 @@
 					</div>
 					<div class="x_content">
 						<br>
-						<form data-parsley-validate class="form-update-certification form-horizontal form-label-left"
-							action="#springUrl('/admin/certification/')$!certificationStandard.id" novalidate>
+						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/certification/')$!certificationStandard.id">
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">
-									Trang trại trực thuộc <span class="required">*</span>
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($supplier in $!listOfSuppliers)
-										<option value="$!supplier.id" $!pageUtil.getSelectedElementFormCurrentValue($!supplier.id, $!certificationStandard.supplier.id)>$!supplier.companyName</option>
+										<option value="$!supplier.id" $!pageUtil.markSelectElement($!supplier.id, $!certificationStandard.supplier.id)>$!supplier.companyName</option>
 									#end
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-									Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span>
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<input type="text" name="name" id="name" 
-										required="required" class="form-control col-md-7 col-xs-12"
-										value="$!certificationStandard.name">
+									<input type="text" name="name" id="name" required="required" class="form-control" value="$!certificationStandard.name">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">
-									Mô tả
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Mô tả</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="description" class="form-control col-md-9 col-xs-12" 
-										placeholder="">$!certificationStandard.description</textarea>
+									<textarea name="description" class="form-control col-md-9 col-xs-12">$!certificationStandard.description</textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">
-									Link (Url) tham khảo
-								</label>
+								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">Link (Url) tham khảo</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" 
-										class="form-control col-md-2 col-xs-12" value="$!certificationStandard.detailsLinkUrl">
+									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control" value="$!certificationStandard.detailsLinkUrl">
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -75,6 +62,6 @@
 		</div>
 	</div>
 </div>
-#springConfirmMessage( "confirm-update-certification-dialog" "Xác nhận" "" "Bạn muốn cập nhật Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
-#springErrorMessage( "fails-update-certification-dialog" "Thông báo" "" "Không thể cập nhật Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springConfirmMessage( "confirm-update-dialog" "Xác nhận" "" "Bạn muốn cập nhật Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.certification-standard.js')"></script>

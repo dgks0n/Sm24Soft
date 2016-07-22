@@ -1,21 +1,25 @@
 (function($) {
 	//Default is not upload logo yet
 	var isUploadedLogo = false;
+	var isUpdateForm = false;
 	
 	//jQuery DOM Ready
 	$(function() {
-		$("#create-new-wizard").smartWizard({
-			labelNext: "Bỏ qua",
-			labelPrevious: "Quay lại",
-			labelFinish: "Tạo mới",
-			onLeaveStep: leaveAStepCallback,
-			onFinish: onFinishCallback
-		});
+		isUpdateForm = $(".form-main").hasClass("form-update");
 		
-		$("#update-wizard").smartWizard({
-			labelNext: "Bỏ qua",
-			labelPrevious: "Quay lại",
-			labelFinish: "Cập nhật",
+		var labelFinish = function() {
+			return isUpdateForm ? WIZARD_LABEL_UPDATE : WIZARD_LABEL_CREATE;
+		}();
+		
+		var failsClazz = function() {
+			return isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS;
+		}(); 
+		
+		
+		$("#wizard").smartWizard({
+			labelNext: WIZARD_LABEL_NEXT,
+			labelPrevious: WIZARD_LABEL_PREVIOUS,
+			labelFinish: labelFinish,
 			onLeaveStep: leaveAStepCallback,
 			onFinish: onFinishCallback
 		});
@@ -52,36 +56,36 @@
 			},
 			messages: {
 				companyName: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				companyTradingName: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				},
 				email: {
-					required: "Thông tin bắt buộc",
-					email: "Vui lòng nhập địa chỉ email hợp lệ"
+					required: REQUIRED_MESSAGE,
+					email: INVALID_EMAIL_MESSAGE
 				},
 				telephoneNumber1: {
-					required: "Thông tin bắt buộc",
-					digits: "Vui lòng chỉ nhập chữ số",
-					minlength: "Số điện thoại không đúng. Ít nhất có 9 chữ số."
+					required: REQUIRED_MESSAGE,
+					digits: INVALID_DIGIT_MESSAGE,
+					minlength: INVALID_TELEPHONE_LENGTH_MESSAGE
 				},
 				address1: {
-					required: "Thông tin bắt buộc",
-					minlength: "Địa chỉ không hợp lệ. Ít nhất có 20 ký tự."
+					required: REQUIRED_MESSAGE,
+					minlength: INVALID_ADDRESS_LENGTH_MESSAGE
 				},
 				description: {
-					required: "Thông tin bắt buộc"
+					required: REQUIRED_MESSAGE
 				}
 			}
 		};
 		
 		// form validation
 		$("form").validate(options);
-		$("form.form-create-supplier input[name=logoUrl]").rules("add", {
+		$("form.form-create input[name=logoUrl]").rules("add", {
 			required: true,
 			messages: {
-				required: "Thông tin bắt buộc"
+				required: REQUIRED_MESSAGE
 			}
 		});
 		
@@ -89,36 +93,36 @@
 			event.preventDefault();
 			
 			var action = $(this).attr("action");
-			var isUpdateForm = $(this).hasClass("form-update-supplier");
-			// evaluate the form using generic validating
 			var jSONData = Util.toJSONString($(this).serializeJSON());
 			
-			$.log(jSONData);
 			$.ajax({
 				url: action,
 				type: isUpdateForm ? "PUT" : "POST",
-				contentType: "application/json; charset=utf-8",
+				contentType: APPLICATION_JSON,
 				dataType: "json",
 				data: jSONData,
 				success: function(data) {
 					if (data.status == 200) {
 						location.href = Util.getRealPath("/admin/supplier");
+					} else {
+						Util.showMessageDialog(failsClazz);
 					}
 				},
-				error: function(e) {
-					$.log(e.message);
-					if (isUpdateForm) {
-						Util.showMessageDialog(".fails-update-supplier-dialog");
+				error: function(jqXHR, textStatus, errorThrown) {
+					$.log(jqXHR, textStatus, errorThrown);
+					
+					if (jqXHR.status && jqXHR.status === 401) {
+						location.reload(true);
 					} else {
-						Util.showMessageDialog(".fails-create-supplier-dialog");
+						Util.showMessageDialog(failsClazz);
 					}
 				}
 			});
 		});
 		
 		$("table.table-supplier").on("click", "a", function(e) {
-			var itemId = $(this).attr("data-id"),
-				table = $(this).closest("table.table-supplier");
+			var itemId = $(this).attr("data-id");
+			var table = $(this).closest("table.table-supplier");
 			
 			// mark current is selecting menu item
 			table.attr("data-selected-id", itemId);
@@ -126,18 +130,17 @@
 			if ($(this).hasClass("btn-edit")) {
 				location.href = Util.getRealPath("/admin/supplier/") + itemId;
 			} else {
-				Util.showMessageDialog(".confirm-delete-supplier-dialog");
+				Util.showMessageDialog(FAILS_DELETE_CLASS);
 			}
 		});
 		
-		$("div.confirm-delete-supplier-dialog").on("click", "button", function(e) {
+		$("div.confirm-delete-dialog").on("click", "button", function(e) {
 			var $this = $(this);
 			if ($this.hasClass("btn-agreement")) {
-				Util.hideMessageDialog(".confirm-delete-supplier-dialog");
+				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
 				var selectedItemId = $("table.table-supplier").attr("data-selected-id");
-				var action = Util.getRealPath("/admin/supplier/");
-				action += selectedItemId;
+				var action = Util.getRealPath("/admin/supplier/") + selectedItemId;
 				
 				$.ajax({
 					url: action,
@@ -146,17 +149,24 @@
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/supplier");
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
-						Util.showMessageDialog(".fails-delete-supplier-dialog");
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
+						
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
+						}
 					}
 				});
 			}
 		});
 		
-		$("#logoUrl").on("change", function(e) {
+		$("input[name=logoUrl]").on("change", function(e) {
 			var changedSupplierEmail = $("#email").val();
 			if (changedSupplierEmail) {
 				$.log("Uploading logo for the email: " + changedSupplierEmail);
@@ -168,29 +178,27 @@
 				
 				//Mark it still has not been uploaded
 				isUploadedLogo = false;
-				Util.showMessageDialog(".fails-upload-logo-dialog");
+				Util.showMessageDialog(FAILT_UPLOAD_CLASS);
 			}
 		});
 		
-		$("#step-image-of-operations input[name=operationImageUrl]").on("change", function(e) {
-			var imageFieldId = $(this).attr("data-id");
-			uploadSupplierImages($(this), $("#email").val(), imageFieldId);
+		$("input[name=operationImageUrl]").on("change", function(e) {
+			var $this = $(this);
+			var imageFieldId = $this.attr("data-id");
+			
+			uploadSupplierImages($this, $("#email").val(), imageFieldId);
 		});
 	});
 	
 	function uploadSupplierLogo(obj, emailAddress, imageFieldId) {
-		// Starting upload
-		var action = Util.getRealPath("/admin/supplier/upload-logo?email=");
-		action += emailAddress;
-		
-		$.log(action);
-		
 		var logoUrl = obj[0].files[0];
 		var formData = new FormData();
+		
 		formData.append("file", logoUrl);
 		formData.append("imageFieldId", imageFieldId);
 		
-		$.log(formData);
+		var action = Util.getRealPath("/admin/supplier/upload-logo?email=") + emailAddress;
+		
 		$.ajax({
 			type: "post",
 			url: action,
@@ -201,32 +209,34 @@
 			dataType: "json",
 			success: function(data, textStatus, jqXHR) {
 				$.log(data, textStatus, jqXHR);
+				
 				//Mark it has been uploaded
 				isUploadedLogo = true;
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				$.log(jqXHR, textStatus, errorThrown);
+				
 				//Mark it still has not been uploaded
 				isUploadedLogo = false;
 				
-				Util.showMessageDialog(".fails-upload-logo-dialog");
+				if (jqXHR.status && jqXHR.status === 401) {
+					location.reload(true);
+				} else {
+					Util.showMessageDialog(FAILT_UPLOAD_CLASS);
+				}
 			}
 		});
 	}
 	
 	function uploadSupplierImages(obj, emailAddress, imageFieldId) {
-		// Starting upload
-		var action = Util.getRealPath("/admin/supplier/upload-image?email=");
-		action += emailAddress;
-		
-		$.log(action);
-		
 		var imageUrl = obj[0].files[0];
 		var formData = new FormData();
+		
 		formData.append("file", imageUrl);
 		formData.append("imageFieldId", imageFieldId);
 		
-		$.log(formData);
+		var action = Util.getRealPath("/admin/supplier/upload-image?email=") + emailAddress;
+		
 		$.ajax({
 			type: "post",
 			url: action,
@@ -240,8 +250,12 @@
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				$.log(jqXHR, textStatus, errorThrown);
-				// fails message
-				Util.showMessageDialog(".fails-upload-logo-dialog");
+				
+				if (jqXHR.status && jqXHR.status === 401) {
+					location.reload(true);
+				} else {
+					Util.showMessageDialog(FAILT_UPLOAD_CLASS);
+				}
 			}
 		});
 	}
@@ -268,8 +282,9 @@
         	// if form is create new form and the logo still has not
 			// been uploaded then we will have to upload before go
 			// to next step
-        	if (form.hasClass("form-create-supplier") && isStepValid && !isUploadedLogo) {
+        	if (!isUpdateForm && isStepValid && !isUploadedLogo) {
         		var changedSupplierEmail = $("#email").val();
+        		
         		uploadSupplierLogo($("#logoUrl"), changedSupplierEmail);
         	}
         }

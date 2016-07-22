@@ -21,310 +21,155 @@
 					<div class="x_content">
 						<!-- Smart Wizard -->
 						<p>Yêu cầu nhập thông tin của Trang trại theo mô tả như các bước dưới đây:</p>
-						<div id="create-new-wizard" class="form_wizard wizard_horizontal">
+						<div id="wizard" class="form_wizard wizard_horizontal">
 							<ul class="wizard_steps">
 								<li>
-									<a href="#farm-info"> 
+									<a href="#step_no1"> 
 										<span class="step_no">1</span> 
 										<span class="step_descr"> Step 1<br /> <small>Thông tin cơ bản</small></span>
 									</a>
 								</li>
 								<li>
-									<a href="#representative-person"> 
+									<a href="#step_no2"> 
 										<span class="step_no">2</span> 
 										<span class="step_descr"> Step 2<br /> <small>Người đại diện</small></span>
 									</a>
 								</li>
 								<li>
-									<a href="#contact-person"> 
+									<a href="#step_no3"> 
 										<span class="step_no">3</span> 
 										<span class="step_descr"> Step 3<br /> <small>Người liên hệ trực tiếp</small></span>
 									</a>
 								</li>
 								<li>
-									<a href="#operation-images"> 
+									<a href="#step_no4"> 
 										<span class="step_no">5</span> 
 										<span class="step_descr"> Step 5<br /> <small>Hình ảnh hoạt động</small></span>
 									</a>
 								</li>
 							</ul>
-							<form class="form-horizontal form-label-left form-create-supplier"
-								action="#springUrl('/admin/supplier')" method="post">
-								<div id="farm-info">
+							<form class="form-horizontal form-label-left form-create form-main" action="#springUrl('/admin/supplier')">
+								<div id="step_no1">
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="company-name">Tên <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="company-name">Tên <span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-12">
-											<input type="text" id="company-name" name="companyName" 
-												required="required" class="form-control col-md-7 col-xs-12">
+											<input type="text" id="company-name" name="companyName" required="required" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="company-trading-name">Tên giao dịch <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="company-trading-name">Tên giao dịch <span class="required">*</span></label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="company-trading-name" name="companyTradingName"
-												required="required" class="form-control col-md-7 col-xs-12">
+											<input type="text" id="company-trading-name" name="companyTradingName" required="required" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="email">Email <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span></label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="email"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="email" required="required" type="text">
+											<input id="email" class="form-control" name="email" required="required" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="telephone-number1">Số điện thoại <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone-number1">Số điện thoại <span class="required">*</span></label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="telephone-number1"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="telephoneNumber1" required="required" type="text">
+											<input id="telephone-number1" class="form-control" name="telephoneNumber1" required="required" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="address1">Địa chỉ <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="address1">Địa chỉ <span class="required">*</span></label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="address1"
-												class="form-control col-md-7 col-xs-12" type="text"
-												name="address1">
+											<input id="address1" class="form-control" type="text" name="address1">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="logoUrl">Hình ảnh đại diện (Logo) <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">Hình ảnh đại diện (Logo) <span class="required">*</span></label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="logoUrl"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="logoUrl" data-id="LOGO" class="required" accept="image/*">
+											<input id="logoUrl" class="form-control" type="file" name="logoUrl" data-id="LOGO" accept="image/*">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="description">Mô tả <span class="required">*</span>
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Mô tả <span class="required">*</span></label>
 										<div class="col-md-9 col-sm-9 col-xs-12">
-											<textarea id="description"
-												class="form-control col-md-7 col-xs-12" 
-												name="description" rows="5"></textarea>
+											<textarea id="description" class="form-control" name="description" rows="5"></textarea>
 										</div>
 									</div>
 								</div>
 								
 								<!-- Representative Person -->
-								<div id="representative-person">
+								<div id="step_no2">
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="representative-shortName">Tên
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-shortName">Tên</label>
 										<div class="col-md-4 col-sm-4 col-xs-12">
-											<input type="text" id="representative-shortName" 
-												name="representativePerson[shortName]" class="form-control col-md-7 col-xs-12">
+											<input type="text" id="represent-shortName" name="representativePerson[shortName]" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="representative-fullName">Tên đầy đủ
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-fullName">Tên đầy đủ</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="representative-fullName" 
-												name="representativePerson[fullName]" class="form-control col-md-7 col-xs-12">
+											<input type="text" id="represent-fullName" name="representativePerson[fullName]" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="representative-email">Email
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-email">Email</label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="representative-email"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="representativePerson[email]" type="text">
+											<input id="represent-email" class="form-control" name="representativePerson[email]" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="representative-phone-number1">Số điện thoại
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-phone-number1">Số điện thoại</label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="representative-phone-number1"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="representativePerson[phoneNumber1]" type="text">
+											<input id="represent-phone-number1" class="form-control" name="representativePerson[phoneNumber1]" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="representative-address1">Địa chỉ
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-address1">Địa chỉ</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="representative-address1"
-												class="form-control col-md-7 col-xs-12" type="text"
-												name="representativePerson[address1]">
+											<input id="represent-address1" class="form-control" type="text" name="representativePerson[address1]">
 										</div>
 									</div>
 								</div>
 								
 								<!-- Contact Person -->
-								<div id="contact-person">
+								<div id="step_no3">
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="contact-shortName">Tên
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-shortName">Tên</label>
 										<div class="col-md-4 col-sm-4 col-xs-12">
-											<input type="text" id="contact-shortName" name="contactPerson[shortName]" 
-												class="form-control col-md-7 col-xs-12">
+											<input type="text" id="contact-shortName" name="contactPerson[shortName]" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="contact-fullName">Tên đầy đủ
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-fullName">Tên đầy đủ</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="contact-fullName" name="contactPerson[fullName]"
-												class="form-control col-md-7 col-xs-12">
+											<input type="text" id="contact-fullName" name="contactPerson[fullName]" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="contact-email">Email
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-email">Email</label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="contact-email"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="contactPerson[email]" type="text">
+											<input id="contact-email" class="form-control" name="contactPerson[email]" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="contact-phone-number1">Số điện thoại
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-phone-number1">Số điện thoại</label>
 										<div class="col-md-3 col-sm-3 col-xs-12">
-											<input id="contact-phone-number1"
-												class="date-picker form-control col-md-7 col-xs-12"
-												name="contactPerson[phoneNumber1]" type="text">
+											<input id="contact-phone-number1" class="form-control" name="contactPerson[phoneNumber1]" type="text">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="contact-address1">Địa chỉ
-										</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-address1">Địa chỉ</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="contact-address1"
-												class="form-control col-md-7 col-xs-12" type="text"
-												name="contactPerson[address1]">
+											<input id="contact-address1" class="form-control" type="text" name="contactPerson[address1]">
 										</div>
 									</div>
 								</div>
-								<div id="operation-images">
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages1">Hình ảnh các hoạt động (1)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages1"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_01" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages2">Hình ảnh các hoạt động (2)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages2"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_02" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages3">Hình ảnh các hoạt động (3)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages3"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_03" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages4">Hình ảnh các hoạt động (4)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages4"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_04" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages5">Hình ảnh các hoạt động (5)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages5"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_05" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages6">Hình ảnh các hoạt động (6)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages6"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_06" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages7">Hình ảnh các hoạt động (7)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages7"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_07" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages8">Hình ảnh các hoạt động (8)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages8"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_08" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages9">Hình ảnh các hoạt động (9)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages9"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_09" class="required" accept="image/*">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12"
-											for="listOfImages10">Hình ảnh các hoạt động (10)
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="listOfImages10"
-												class="form-control col-md-7 col-xs-12" type="file"
-												name="operationImageUrl" data-id="OPERATION_IMAGE_10" class="required" accept="image/*">
-										</div>
-									</div>
+								<div id="step_no4">
+									#set ( $labelClazz = "control-label col-md-3 col-sm-3 col-xs-12" )
+									#set ( $labelText = "Hình ảnh các hoạt động" )
+									#set ( $inputId = "operationImageUrl" )
+									#set ( $inputClazz = "form-control" )
+									#foreach ( $number in [1..9] )
+									#springInputFileWithLabel ( $labelClazz "$labelText ($number)" "listOfImages$number" "$inputClazz" "$inputId" "" "OPERATION_IMAGE_0$number")
+									#end
+									#springInputFileWithLabel ( $labelClazz "$labelText (10)" "listOfImages10" "$inputClazz" "$inputId" "" "OPERATION_IMAGE_10")
 								</div>
 							</form>
 						</div>
@@ -335,6 +180,6 @@
 		</div>
 	</div>
 </div>
-#springErrorMessage( "fails-create-supplier-dialog" "Thông báo" "" "Không thể thêm mới Trang trại hoặc Nhà cung cấp. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
-#springWarningMessage( "fails-upload-logo-dialog" "Cảnh báo" "Không thể cập nhật hình đại diện." "Vui lòng kiểm tra địa chỉ email hoặc liên hệ với quản trị hệ thống." "Đóng" )
+#springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Trang trại hoặc Nhà cung cấp. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springWarningMessage( "fails-upload-dialog" "Cảnh báo" "Không thể cập nhật hình đại diện." "Vui lòng kiểm tra địa chỉ email hoặc liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.supplier.js')"></script>

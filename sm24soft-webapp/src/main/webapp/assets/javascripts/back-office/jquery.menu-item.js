@@ -1,12 +1,17 @@
 (function($) {
+	var isUpdateForm = false;
+	
 	//jQuery DOM Ready
 	$(function() {
+		isUpdateForm = $(".form-main").hasClass("form-update");
+		
 		$("form").on("click", "a", function(e) {
-			var form = $(this).closest("form");
-			if ($(this).hasClass("btn-cancel")) {
+			var $this = $(this);
+			var form = $this.closest("form");
+			if ($this.hasClass("btn-cancel")) {
 				form[0].reset();
 			} else {
-				$(this).submit();
+				form.submit();
 			}
 		});
 		
@@ -16,33 +21,36 @@
 				description: "required"
 			},
 			messages: {
-				fullNameOfMenuItem: "Thông tin bắt buộc",
-				description: "Thông tin bắt buộc"
+				fullNameOfMenuItem: REQUIRED_MESSAGE,
+				description: REQUIRED_MESSAGE
 			},
 			submitHandler: function(form) {
 				var action = $(form).attr("action");
-				var isUpdateForm = $(form).hasClass("form-update-menu");
+				
 				// evaluate the form using generic validating
 				var jSONData = Util.toJSONString($(form).serializeJSON());
 				
 				$.log(jSONData);
 				$.ajax({
 					url: action,
-					type: isUpdateForm ? 'PUT' : 'POST',
-					contentType: 'application/json; charset=utf-8',
-					dataType: 'json',
+					type: isUpdateForm ? "PUT" : "POST",
+					contentType: APPLICATION_JSON,
+					dataType: "json",
 					data: jSONData,
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/menu-item");
+						} else {
+							Util.showMessageDialog(isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
-						if (isUpdateForm) {
-							Util.showMessageDialog(".fails-update-menu-dialog");
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
+						
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
 						} else {
-							Util.showMessageDialog(".fails-create-menu-dialog");
+							Util.showMessageDialog(isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS);
 						}
 					}
 				});
@@ -51,10 +59,10 @@
 			}
 		});
 		
-		$("table.table-menu-item").on("click", "a", function(e) {
+		$("table.table-menu").on("click", "a", function(e) {
 			var $this = $(this);
 			var itemId = $this.attr("data-id");
-			var table = $this.closest("table.table-menu-item");
+			var table = $this.closest("table.table-menu");
 			
 			// mark current is selecting menu item
 			table.attr("data-selected-id", itemId);
@@ -62,30 +70,37 @@
 			if ($this.hasClass("btn-edit")) {
 				location.href = Util.getRealPath("/admin/menu-item/") + itemId;
 			} else {
-				Util.showMessageDialog(".confirm-delete-menu-dialog");
+				Util.showMessageDialog(FAILS_DELETE_CLASS);
 			}
 		});
 		
-		$("div.confirm-delete-menu-dialog").on("click", "button", function(e) {
+		$("div.confirm-delete-dialog").on("click", "button", function(e) {
 			var $this = $(this);
 			if ($this.hasClass("btn-agreement")) {
-				Util.hideMessageDialog(".confirm-delete-menu-dialog");
+				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
-				var itemId = $("table.table-menu-item").attr("data-selected-id");
+				var itemId = $("table.table-menu").attr("data-selected-id");
 				var action = Util.getRealPath("/admin/menu-item/") + itemId;
 				
 				$.ajax({
 					url: action,
-					type: 'DELETE',
-					dataType: 'json',
+					type: "DELETE",
+					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/menu-item");
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					},
-					error: function(e) {
-						$.log(e.message);
-						Util.showMessageDialog(".fails-delete-menu-dialog");
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.log(jqXHR, textStatus, errorThrown);
+						
+						if (jqXHR.status && jqXHR.status === 401) {
+							location.reload(true);
+						} else {
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
+						}
 					}
 				});
 			}

@@ -80,10 +80,32 @@
 </div>
 #end
 
-#macro( springInputFile $inputId $iptClazz $iptName $iptDataId $iptDataFieldId )
+#macro( springInputFile $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
 <input type="file" id="$!iptId" class="$!iptClazz" name="$!iptName" data-id="$!iptDataId" data-field-id="$!iptDataFieldId" accept="image/*">
 #end
 
-#macro( springInputHidden $inputId $iptClazz $iptName )
-<input type="hidden" id="$!inputId" class="$!iptClazz" name="$!iptName">
+#macro( springInputFileRequired $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+<input type="file" id="$!iptId" class="$!iptClazz" name="$!iptName" data-id="$!iptDataId" data-field-id="$!iptDataFieldId" accept="image/*" required="required">
+#end
+
+#macro( springInputHidden $iptId $iptClazz $iptName )
+<input type="hidden" id="$!iptId" class="$!iptClazz" name="$!iptName">
+#end
+
+#macro( springInputFileWithLabel $lblClazz $lblText $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+<div class="form-group">
+	<label class="$!lblClazz" for="$!iptId">$!lblText</label>
+	<div class="col-md-6 col-sm-6 col-xs-12">
+		#springInputFile ( $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+	</div>
+</div>
+#end
+
+#macro( springInputFileRequiredWithLabel $lblClazz $lblText $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+<div class="form-group">
+	<label class="$!lblClazz" for="$!iptId">$!lblText</label>
+	<div class="col-md-6 col-sm-6 col-xs-12">
+		#springInputFileRequired ( $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+	</div>
+</div>
 #end

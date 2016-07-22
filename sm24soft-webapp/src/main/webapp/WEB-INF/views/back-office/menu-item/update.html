@@ -18,34 +18,23 @@
 					</div>
 					<div class="x_content">
 						<br>
-						<form data-parsley-validate class="form-update-menu form-horizontal form-label-left"
-							action="#springUrl('/admin/menu-item/')$!menuItem.id" novalidate>
+						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/menu-item/')$!menuItem.id">
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="fullname-menu-item">
-									Tên Danh mục <span class="required">*</span>
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="fullname-menu-item">Tên Danh mục <span class="required">*</span></label>
 								<div class="col-md-4 col-sm-4 col-xs-12">
-									<input type="text" name="fullNameOfMenuItem" id="fullname-menu-item" 
-										required="required" class="form-control col-md-7 col-xs-12"
-										value="$!menuItem.fullNameOfMenuItem">
+									<input type="text" name="fullNameOfMenuItem" id="fullname-menu-item" required="required" class="form-control col-md-7 col-xs-12" value="$!menuItem.fullNameOfMenuItem">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">
-									Thứ tự ưu tiên
-								</label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Thứ tự ưu tiên</label>
 								<div class="col-md-2 col-sm-2 col-xs-12">
-									<input id="order-number" class="form-control col-md-2 col-xs-12" type="text" 
-										name="orderNumber" value="$!menuItem.orderNumber">
+									<input id="order-number" class="form-control col-md-2 col-xs-12" type="text" name="orderNumber" value="$!menuItem.orderNumber">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">
-									Mô tả chi tiết <span class="required">*</span>
-								</label>
+								<label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả chi tiết <span class="required">*</span></label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="description" id="description" class="form-control" rows="3" 
-										placeholder="" required="required">$!menuItem.description</textarea>
+									<textarea name="description" id="description" class="form-control" rows="3" required="required">$!menuItem.description</textarea>
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -62,6 +51,6 @@
 		</div>
 	</div>
 </div>
-#springConfirmMessage( "confirm-update-menu-dialog" "Xác nhận" "" "Bạn muốn cập nhật Danh mục này?" "Huỷ" "Đồng ý" )
-#springErrorMessage( "fails-update-menu-dialog" "Thông báo" "" "Không thể cập nhật Danh mục này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springConfirmMessage( "confirm-update-dialog" "Xác nhận" "" "Bạn muốn cập nhật Danh mục này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật Danh mục này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/assets/javascripts/back-office/jquery.menu-item.js')"></script>

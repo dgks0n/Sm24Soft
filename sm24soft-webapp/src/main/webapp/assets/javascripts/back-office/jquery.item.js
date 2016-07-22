@@ -5,12 +5,16 @@
 	$(function() {
 		isUpdateForm = $(".form-main").hasClass("form-update");
 		var labelFinish = function() {
-			return isUpdateForm ? "Cập nhật" : "Tạo mới";
+			return isUpdateForm ? WIZARD_LABEL_UPDATE : WIZARD_LABEL_CREATE;
+		}();
+		
+		var failsClazz = function() {
+			return isUpdateForm ? FAILS_UPDATE_CLASS : FAILS_CREATE_CLASS;
 		}();
 		
 		$("#wizard").smartWizard({
-			labelNext: "Bỏ qua",
-			labelPrevious: "Quay lại",
+			labelNext: WIZARD_LABEL_NEXT,
+			labelPrevious: WIZARD_LABEL_PREVIOUS,
 			labelFinish: labelFinish,
 			onLeaveStep: onLeaveStepCallback,
 			onFinish: onFinishCallback
@@ -58,27 +62,27 @@
 			},
 			messages : {
 				"supplier[id]" : {
-					required : "Thông tin bắt buộc"
+					required : REQUIRED_MESSAGE
 				},
 				"itemCategory[id]" : {
-					required : "Thông tin bắt buộc"
+					required : REQUIRED_MESSAGE
 				},
 				shortName : {
-					required : "Thông tin bắt buộc"
+					required : REQUIRED_MESSAGE
 				},
 				salePrice : {
-					required : "Thông tin bắt buộc"
+					required : REQUIRED_MESSAGE
 				},
 				totalWeight : {
-					required : "Thông tin bắt buộc"
+					required : REQUIRED_MESSAGE
 				},
 				weightOfOneBox: {
-					required: "Thông tin bắt buộc",
-					min: "Khối lượng đóng gói nhỏ nhất: 0"
+					required: REQUIRED_MESSAGE,
+					min: INVALID_WEIGHT_MESSAGE
 				},
 				discount: {
-					required: "Thông tin bắt buộc",
-					min: "Tỷ lệ khấu trừ nhỏ nhất: 0"
+					required: REQUIRED_MESSAGE,
+					min: INVALID_DISCOUNT_MESSAGE
 				}
 			}
 		};
@@ -86,7 +90,7 @@
 		// form validation
 		$("form.form-main").validate(options);
 		
-		// only validate for upload item's image from
+		// only validate for upload item"s image from
 		// if item is not created
 		if (isUpdateForm) {
 			$("form.form-upload").validate({
@@ -97,7 +101,7 @@
 				},
 				messages: {
 					previewImageUrl1: {
-						required: "Thông tin bắt buộc"
+						required: REQUIRED_MESSAGE
 					}
 				}
 			});
@@ -114,14 +118,14 @@
 			$.ajax({
 				url: action,
 				type: isUpdateForm ? "PUT" : "POST",
-				contentType: "application/json; charset=utf-8",
+				contentType: APPLICATION_JSON,
 				dataType: "json",
 				data: jSONData,
 				success: function(data) {
 					if (data.status == 200) {
 						location.href = Util.getRealPath("/admin/item");
 					} else {
-						Util.showMessageDialog(isUpdateForm ? ".fails-update-dialog" : ".fails-create-dialog");
+						Util.showMessageDialog(failsClazz);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
@@ -130,7 +134,7 @@
 					if (jqXHR.status && jqXHR.status === 401) {
 						location.reload(true);
 					} else {
-						Util.showMessageDialog(isUpdateForm ? ".fails-update-dialog" : ".fails-create-dialog");
+						Util.showMessageDialog(failsClazz);
 					}
 				}
 			});
@@ -154,27 +158,27 @@
 			} else if ($this.hasClass("btn-copy")) {
 				location.href = Util.getRealPath("/admin/item/copy-item/") + itemId;
 			} else {
-				Util.showMessageDialog(".confirm-delete-dialog");
+				Util.showMessageDialog(FAILS_DELETE_CLASS);
 			}
 		});
 		
 		$("div.confirm-delete-dialog").on("click", "button", function(e) {
 			var $this = $(this);
 			if ($this.hasClass("btn-agreement")) {
-				Util.hideMessageDialog(".confirm-delete-dialog");
+				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
 				var itemId = $("table.table-item").attr("data-selected-id");
 				var action = Util.getRealPath("/admin/item/") + itemId;
 				
 				$.ajax({
 					url: action,
-					type: 'DELETE',
-					dataType: 'json',
+					type: "DELETE",
+					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
 							location.href = Util.getRealPath("/admin/item");
 						} else {
-							Util.showMessageDialog(".fails-delete-dialog");
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
@@ -183,7 +187,7 @@
 						if (jqXHR.status && jqXHR.status === 401) {
 							location.reload(true);
 						} else {
-							Util.showMessageDialog(".fails-delete-dialog");
+							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}
 					}
 				});
@@ -223,8 +227,8 @@
 		
 		$.ajax({
 			url: action,
-			type: 'GET',
-			dataType: 'json',
+			type: "GET",
+			dataType: "json",
 			success: function(data) {
 				if (data.status == 200) {
 					$("select#item-category").html(data.result);
@@ -251,6 +255,7 @@
 		var action = Util.getRealPath("/admin/item/upload-preview-image");
 		var imageUrl = obj[0].files[0];
 		var formData = new FormData();
+		
 		formData.append("file", imageUrl);
 		formData.append("imageId", imageId);
 		formData.append("imageFieldId", imageFieldId);
@@ -269,7 +274,7 @@
 				if (data.status == 200) {
 					$("input#" + imageFieldId).val(data.result);
 				} else {
-					Util.showMessageDialog(".fails-upload-dialog");
+					Util.showMessageDialog(FAILT_UPLOAD_CLASS);
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -278,7 +283,7 @@
 				if (jqXHR.status && jqXHR.status === 401) {
 					location.reload(true);
 				} else {
-					Util.showMessageDialog(".fails-upload-dialog");
+					Util.showMessageDialog(FAILT_UPLOAD_CLASS);
 				}
 			}
 		});
