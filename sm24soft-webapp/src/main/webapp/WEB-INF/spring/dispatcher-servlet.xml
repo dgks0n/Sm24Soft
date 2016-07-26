@@ -9,8 +9,17 @@
 	<mvc:annotation-driven />
 	
 	<!-- resources exclusions from servlet mapping -->
-	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
-	<mvc:resources mapping="/wp-content/**" location="/wp-content/" cache-period="31556926" />
+	<mvc:resources mapping="/wp-content/**" location="/wp-content/">
+		<mvc:cache-control cache-public="true" max-age="2592000" />
+	</mvc:resources>
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/">
+		<mvc:cache-control cache-public="true" max-age="2592000" />
+		<mvc:resource-chain resource-cache="true">
+			<mvc:resolvers>
+				<beans:bean class="org.springframework.web.servlet.resource.WebJarsResourceResolver" />
+			</mvc:resolvers>
+		</mvc:resource-chain>
+	</mvc:resources>
 	
 	<!-- 
 	  This bean sets up the Velocity environment for us based on a root path for templates.
