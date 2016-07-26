@@ -1,0 +1,67 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Tiêu chuẩn & Chứng chỉ</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Thông tin chi tiết</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/certification')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<br>
+						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/certification/')$!certificationStandard.id">
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
+										<option value=""></option>
+									#foreach ($supplier in $!listOfSuppliers)
+										<option value="$!supplier.id" $!pageUtil.markSelectElement($!supplier.id, $!certificationStandard.supplier.id)>$!supplier.companyName</option>
+									#end
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span></label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<input type="text" name="name" id="name" required="required" class="form-control" value="$!certificationStandard.name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Mô tả</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<textarea name="description" class="form-control col-md-9 col-xs-12">$!certificationStandard.description</textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">Link (Url) tham khảo</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control" value="$!certificationStandard.detailsLinkUrl">
+								</div>
+							</div>
+							<div class="ln_solid"></div>
+							<div class="form-group">
+								<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+									<a class="btn btn-default btn-cancel">Huỷ</a>
+									<a class="btn btn-default btn-update">Đồng ý</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springConfirmMessage( "confirm-update-dialog" "Xác nhận" "" "Bạn muốn cập nhật Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/wp-content/js/certification-standard.js')"></script>

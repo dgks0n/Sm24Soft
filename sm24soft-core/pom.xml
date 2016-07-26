@@ -89,5 +89,21 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		
+		<!-- imgscalr - Java Image-Scaling Library -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.imgscalr</groupId> -->
+<!-- 			<artifactId>imgscalr-lib</artifactId> -->
+<!-- 			<version>4.2</version> -->
+<!-- 			<type>jar</type> -->
+<!-- 			<scope>compile</scope> -->
+<!-- 		</dependency> -->
+		
+		<!-- Refer to: https://github.com/coobird/thumbnailator -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.3</version>
+		</dependency>
 	</dependencies>
 </project>

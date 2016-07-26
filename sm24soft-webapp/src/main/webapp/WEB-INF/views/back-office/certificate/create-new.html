@@ -2,7 +2,7 @@
 	<div class="">
 		<div class="page-title">
 			<div class="title_left">
-				<h3>Nhóm Sản phẩm</h3>
+				<h3>Tiêu chuẩn & Chứng chỉ</h3>
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -12,27 +12,16 @@
 					<div class="x_title">
 						<h2>Thông tin chi tiết</h2>
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="btn btn-default" href="#springUrl('/admin/item-category')"><i class="fa fa-reply"></i> Quay lại</a></li>
+							<li><a class="btn btn-default" href="#springUrl('/admin/certification')"><i class="fa fa-reply"></i> Quay lại</a></li>
 						</ul>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<br>
-						<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/item-category')">
-							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="menu-item">Danh mục trực thuộc <span class="required">*</span></label>
-								<div class="col-md-4 col-sm-4 col-xs-12">
-									<select id="menu-item" name="menuItem[id]" class="form-control" required="required">
-										<option value=""></option>
-									#foreach ($menuItem in $!listOfMenuItems)
-										<option value="$!menuItem.id">$!menuItem.fullNameOfMenuItem</option>
-									#end
-									</select>
-								</div>
-							</div>
+						<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/certification/create-new')">
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
-								<div class="col-md-4 col-sm-4 col-xs-12">
+								<div class="col-md-6 col-sm-6 col-xs-12">
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($supplier in $!listOfSuppliers)
@@ -42,7 +31,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Nhóm Sản phẩm <span class="required">*</span></label>
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<input type="text" name="name" id="name" required="required" class="form-control col-md-7 col-xs-12">
 								</div>
@@ -50,7 +39,13 @@
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Mô tả</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="description" class="form-control col-md-9 col-xs-12" rows="5"></textarea>
+									<textarea name="description" class="form-control col-md-9 col-xs-12"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">Link (Url) tham khảo</label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control col-md-2 col-xs-12">
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -68,4 +63,4 @@
 	</div>
 </div>
 #springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
-<script src="#springUrl('/wp-content/js/item-category.js')"></script>
+<script src="#springUrl('/wp-content/js/certification-standard.js')"></script>

@@ -68,6 +68,27 @@ public class AdvertiseImageService implements IAdvertiseImageService {
 		advertiseImageRepository.update(oldAdvertiseImage);
 		return oldAdvertiseImage.getIdWithPADZero();
 	}
+	
+	@Override
+	@Transactional(rollbackFor = {
+			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+	public String updateAdvertiseImage(String id, File file) {
+		if (StringUtils.isEmpty(id)) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		
+		AdvertiseImage oldAdvertiseImage = advertiseImageRepository.findById(id);
+		if (oldAdvertiseImage == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		oldAdvertiseImage.setAdvertiseTitle(file.getName());
+		oldAdvertiseImage.setAdvertisePath(file.getPath());
+		oldAdvertiseImage.setUpdatedAt(DateUtil.now());
+		oldAdvertiseImage.setUpdatedUserIdAsDefault();
+		
+		advertiseImageRepository.update(oldAdvertiseImage);
+		return oldAdvertiseImage.getIdWithPADZero();
+	}
 
 	@Override
 	@Transactional(rollbackFor = {

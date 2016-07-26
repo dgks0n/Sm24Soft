@@ -174,6 +174,43 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
+		<!-- WebJars. Refer to: http://www.webjars.org/documentation#springmvc -->
+		<dependency>
+	        <groupId>org.webjars</groupId>
+	        <artifactId>bootstrap</artifactId>
+	        <version>3.1.0</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.webjars.bower</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>4.6.3</version>
+	    </dependency>
+	    <dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>animate.css</artifactId>
+			<version>3.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars.bower</groupId>
+		    <artifactId>jquery-validation</artifactId>
+		    <version>1.15.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars.bower</groupId>
+		    <artifactId>jquery.serializeJSON</artifactId>
+		    <version>2.7.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars.bower</groupId>
+		    <artifactId>tinymce</artifactId>
+		    <version>4.3.13</version>
+		</dependency>
+		<dependency>
+	        <groupId>org.webjars</groupId>
+	        <artifactId>webjars-locator</artifactId>
+	        <version>0.32</version>
+	    </dependency>
 	</dependencies>
 	
 	<build>

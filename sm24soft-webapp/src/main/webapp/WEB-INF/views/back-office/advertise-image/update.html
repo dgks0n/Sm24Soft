@@ -18,18 +18,19 @@
 					</div>
 					<div class="x_content">
 						<br>
-						<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/advertise-image')">
+						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/advertise-image/')$!advertiseImage.id">
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="">Hình ảnh Quảng Cáo <span class="required">*</span></label>
 								<div class="col-md-8 col-sm-8 col-xs-12">
-									<input type="file" name="advertiseImage" id="advertise-image" required="required" class="form-control" multiple="multiple" accept="image/*">
+									<input type="file" name="advertiseImage" id="advertise-image" class="form-control" multiple="multiple" accept="image/*">
+									#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
 								</div>
 							</div>
 							<div class="ln_solid"></div>
 							<div class="form-group">
 								<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 									<a class="btn btn-default btn-cancel">Huỷ</a>
-									<a class="btn btn-default btn-create-new">Đồng ý</a>
+									<a class="btn btn-default btn-update">Đồng ý</a>
 								</div>
 							</div>
 						</form>
@@ -39,5 +40,5 @@
 		</div>
 	</div>
 </div>
-#springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Hình ảnh Quảng Cáo - Banner. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật Hình ảnh Quảng Cáo - Banner. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
 <script src="#springUrl('/wp-content/js/advertise-image.js')"></script>

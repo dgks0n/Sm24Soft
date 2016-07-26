@@ -61,7 +61,7 @@ public class CertificationStandardController extends ApplicationController imple
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("listOfCertificationStandards", listOfCertificationStandards);
 		
-		return "back-office/certification-standard/list";
+		return "back-office/certificate/list";
 	}
 	
 	@RequestMapping(path = { "/create-new" }, method = RequestMethod.GET)
@@ -76,7 +76,7 @@ public class CertificationStandardController extends ApplicationController imple
 			
 			model.addAttribute("listOfSuppliers", null);
 		}
-		return "back-office/certification-standard/create-new";
+		return "back-office/certificate/create-new";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -113,7 +113,7 @@ public class CertificationStandardController extends ApplicationController imple
 			model.addAttribute("listOfSuppliers", null);
 			model.addAttribute("certificationStandard", null);
 		}
-		return "back-office/certification-standard/update";
+		return "back-office/certificate/update";
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)

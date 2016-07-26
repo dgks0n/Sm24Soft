@@ -17,30 +17,26 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<table class="table table-striped table-hover table-menu" data-selected-id="">
+						<table class="table table-striped table-hover table-advertise" data-selected-id="">
 							<thead>
 								<tr>
 									<th width="5%">Stt</th>
-									<th width="25%">Tên Danh mục</th>
-									<th width="5%">Vị trí</th>
-									<th width="12%">Quyền truy cập</th>
-									<th width="25%">Mô tả</th>
-									<th width="10%">Trạng thái</th>
-									<th width="13%"></th>
+									<th width="10%">Thumbnail</th>
+									<th width="30%">Tên Hình ảnh</th>
+									<th width="40%">Đường dẫn</th>
+									<th width="15%"></th>
 								</tr>
 							</thead>
 							<tbody>
-								#foreach ($menuItem in $!listOfMenuItems)
+								#foreach ($advertiseImage in $!advertiseImages)
 								<tr>
 									<th scope="row">$velocityCount</th>
-									<td>$!menuItem.fullNameOfMenuItem</td>
-									<td><span class="badge badge-success">$!menuItem.orderNumber</span></td>
-									<td>$!menuItem.roleOfMenuItemAsString</td>
-									<td>$!menuItem.description</td>
-									<td>$!menuItem.actualStatusAsString</td>
+									<td><span class="image"><img src="#springUrl('/')$!advertiseImage.advertisePath" alt="$!advertiseImage.advertiseTitle" width="50px" height="50px"></span></td>
+									<td>$!advertiseImage.shortAdvertiseTitle</td>
+									<td>$!advertiseImage.shortAdvertisePath</td>
 									<td>
-										<a class="btn btn-default btn-xs btn-edit" data-id="$!menuItem.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
-										<a class="btn btn-danger btn-xs btn-trash" data-id="$!menuItem.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
+										<a class="btn btn-default btn-xs btn-edit" data-id="$!advertiseImage.idWithPADZero"><i class="fa fa-edit"></i> Sửa </a>
+										<a class="btn btn-danger btn-xs btn-trash" data-id="$!advertiseImage.idWithPADZero"><i class="fa fa-trash-o"></i> Xoá </a>
 									</td>
 								</tr>
 								#end
@@ -52,6 +48,6 @@
 		</div>
 	</div>
 </div>
-#springConfirmMessage( "confirm-delete-dialog" "Xác nhận" "" "Bạn muốn xoá Danh mục này?" "Huỷ" "Đồng ý" )
-#springErrorMessage( "fails-delete-dialog" "Thông báo" "" "Không thể xoá Danh mục này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
-<script src="#springUrl('/assets/javascripts/back-office/jquery.advertise-image.js')"></script>
+#springConfirmMessage( "confirm-delete-dialog" "Xác nhận" "" "Bạn muốn xoá hình ảnh Quảng Cáo - Banner này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-delete-dialog" "Thông báo" "" "Không thể xoá hình ảnh Quảng Cáo - Banner này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/wp-content/js/advertise-image.js')"></script>

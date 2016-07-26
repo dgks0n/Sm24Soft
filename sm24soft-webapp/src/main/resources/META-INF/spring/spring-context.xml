@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" 
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
@@ -19,10 +18,7 @@
 		
 		<context:exclude-filter type="regex" expression=".*component\.AuthenticationComponent.*" />
 	</context:component-scan>
-    
-	<!-- @Controller の付いたクラスを Controller として登録。 -->
-	<mvc:annotation-driven />
-	
+
     <!-- Root Context: defines shared resources visible to all other web components -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
@@ -67,7 +63,6 @@
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
 	
-	<!-- Spring MVC:  setting objectMapper in converter MappingJackson2HttpMessageConverter-->
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<bean id="jacksonHttpMessageConverter" 
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

@@ -1,5 +1,7 @@
 package com.sm24soft.entity;
 
+import org.apache.commons.lang.StringUtils;
+
 public class AdvertiseImage extends BaseEntity {
 
 	private String advertiseTitle;
@@ -17,6 +19,16 @@ public class AdvertiseImage extends BaseEntity {
 	public String getAdvertiseTitle() {
 		return advertiseTitle;
 	}
+	
+	public String getShortAdvertiseTitle() {
+		if (StringUtils.isEmpty(advertiseTitle)) {
+			return advertiseTitle;
+		}
+		if (advertiseTitle.length() <= 50) {
+			return advertiseTitle;
+		}
+		return advertiseTitle.substring(0, 50) + "...";
+	}
 
 	public void setAdvertiseTitle(String advertiseTitle) {
 		this.advertiseTitle = advertiseTitle;
@@ -32,6 +44,16 @@ public class AdvertiseImage extends BaseEntity {
 
 	public String getAdvertisePath() {
 		return advertisePath;
+	}
+	
+	public String getShortAdvertisePath() {
+		if (StringUtils.isEmpty(advertisePath)) {
+			return advertisePath;
+		}
+		if (advertisePath.length() <= 50) {
+			return advertisePath;
+		}
+		return advertisePath.substring(0, 50) + "...";
 	}
 
 	public void setAdvertisePath(String advertisePath) {

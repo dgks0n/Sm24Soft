@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,7 +60,8 @@ public class AdvertiseImageController extends ApplicationController implements C
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody HttpResponse<String[]> uploadAdvertiseImage(@ModelAttribute("uploadForm") final MultiPartFileUploadBean multiPartFileUpload) {
+	public @ResponseBody HttpResponse<String[]> uploadAdvertiseImage(
+			@ModelAttribute("uploadForm") final MultiPartFileUploadBean multiPartFileUpload) {
 		logger.info("Call uploadAdvertiseImage()");
 		
 		try {
@@ -80,5 +82,58 @@ public class AdvertiseImageController extends ApplicationController implements C
 			return getErrorStatus(ex);
 		}
 	}
-
+	
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
+	public @ResponseBody HttpResponse<String> deleteAdvertiseImage(@PathVariable("id") final String id) {
+		logger.info("Call deleteAdvertiseImage()");
+		
+		try {
+			advertiseImageService.deleteById(id);
+			return getOKStatus();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
+		}
+	}
+	
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
+	public String renderUpdateAdvertiseImagePage(@PathVariable("id") final String id, final Model model) {
+		logger.info("Call renderUpdateAdvertiseImagePage()");
+		
+		try {
+			AdvertiseImage advertiseImage = advertiseImageService.findById(id);
+			
+			model.addAttribute("advertiseImage", advertiseImage);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			model.addAttribute("advertiseImage", null);
+		}
+		return "back-office/advertise-image/update";
+	}
+	
+	@RequestMapping(path = { "/{id}" }, method = RequestMethod.POST)
+	public @ResponseBody HttpResponse<String> updateAdvertiseImage(@PathVariable("id") final String id, 
+			@ModelAttribute("uploadForm") final MultiPartFileUploadBean multiPartFileUpload) {
+		logger.info("Call updateAdvertiseImage()");
+		
+		try {
+			File targetFile = null;
+			
+			for (MultipartFile multipartFile : multiPartFileUpload.getFiles()) {
+				targetFile = new File(com.sm24soft.util.FileUtil.getAdvertiseImagePath(File.separator 
+						+ GenerateUUID.randomUUID())
+						+ File.separator
+						+ multipartFile.getOriginalFilename());
+				multipartFile.transferTo(targetFile);
+			}
+			String createdAdvertiseImage = advertiseImageService.updateAdvertiseImage(id, targetFile);
+			return getOKStatus(createdAdvertiseImage);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
+		}
+	}
 }

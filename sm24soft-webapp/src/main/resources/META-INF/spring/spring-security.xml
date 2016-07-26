@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<!-- HTTP basic authentication in Spring Security -->
 	<http auto-config="false" 
-		entry-point-ref="loginUrlAuthenticationEntryPoint" 
-		access-decision-manager-ref="accessDecisionManager">
+		entry-point-ref="loginUrlAuthenticationEntryPoint" access-decision-manager-ref="accessDecisionManager">
         <!-- ログイン時の画面制御 -->
         <custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
         <custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter" />
@@ -31,10 +30,8 @@
 		<intercept-url pattern="/j_spring_security_check" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		
 		<!-- Resource Configuration -->
-		<intercept-url pattern="/assets/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
-		<intercept-url pattern="/assets/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
-		<intercept-url pattern="/assets/images/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
-		<intercept-url pattern="/assets/themes/gentelella-1.3.0/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		<intercept-url pattern="/assets/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		<intercept-url pattern="/wp-content/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
 		
 		<port-mappings>
 			<port-mapping http="80" https="443" />

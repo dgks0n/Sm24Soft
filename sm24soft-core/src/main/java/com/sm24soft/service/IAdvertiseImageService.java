@@ -17,6 +17,8 @@ public interface IAdvertiseImageService extends IService {
 	
 	String updateAdvertiseImage(AdvertiseImage advertiseImage);
 	
+	String updateAdvertiseImage(String id, File file);
+	
 	void deleteById(String id);
 	
 	AdvertiseImage findById(String id);
