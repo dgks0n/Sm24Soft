@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.uuid.GenerateUUID;
 import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.controller.Controllable;
+import com.sm24soft.entity.Image;
+import com.sm24soft.entity.Image.ImageType;
 import com.sm24soft.entity.Item;
 import com.sm24soft.entity.ItemCategory;
 import com.sm24soft.entity.Supplier;
@@ -28,10 +30,11 @@ import com.sm24soft.http.response.HttpResponse;
 import com.sm24soft.service.IItemCategoryService;
 import com.sm24soft.service.IItemService;
 import com.sm24soft.service.ISupplierService;
+import com.sm24soft.util.FileUtil;
 
 @Controller
 @RequestMapping("/admin/item")
-public class ItemController extends ApplicationController implements Controllable {
+public class ItemController extends ApplicationController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
@@ -90,34 +93,19 @@ public class ItemController extends ApplicationController implements Controllabl
 		return "back-office/item/create-new";
 	}
 	
-	@RequestMapping(value = "/upload-preview-image", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload-image", method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> uploadPreviewImage(
-			@RequestParam(value = "file", required = true) final MultipartFile multipartFile,
-			@RequestParam(value = "imageId", required = false, defaultValue = "") final String imageId,
-			@RequestParam(value = "imageFieldId", required = true) final String imageField) {
+			@RequestParam(value = "file", required = true) final MultipartFile fileUpload,
+			@RequestParam(value = "imageType", required = true) final String imageType) {
 		logger.info("Call uploadPreviewImage()");
 		
 		try {
-			File targetFile = null;
+			File targetDir = FileUtil.createResourceDirectory(getResourceDirectory(), GenerateUUID.randomUUID());
+			File targetFile = new File(targetDir, fileUpload.getOriginalFilename());
+			fileUpload.transferTo(targetFile);
 			
-			// In-case create new one
-			if (StringUtils.isEmpty(imageId)) {
-				targetFile = new File(com.sm24soft.util.FileUtil.getItemImagePath(imageField)
-						+ File.separator
-						+ GenerateUUID.randomUUID()
-						+ File.separator
-						+ multipartFile.getOriginalFilename());
-			} else { // In-case update
-				targetFile = new File(com.sm24soft.util.FileUtil.getItemImagePath(imageField)
-						+ File.separator
-						+ imageId
-						+ File.separator
-						+ multipartFile.getOriginalFilename());
-			}
-			multipartFile.transferTo(targetFile);
-			
-			String actualImageId = itemService.uploadImageForItem(imageId, imageField, targetFile.getPath());
-			return getOKStatus(actualImageId);
+			Image image = itemService.uploadPreviewOrThumbnailImageForEachItem(ImageType.valueOf(imageType), targetFile);
+			return getOKStatus(image.getIdWithPADZero());
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -170,13 +158,13 @@ public class ItemController extends ApplicationController implements Controllabl
 	}
 	
 	@RequestMapping(value = "/copy-item/{id}", method = RequestMethod.PUT)
-	public @ResponseBody HttpResponse<String> copyItemFromAnotherItem(@PathVariable("id") String id,
+	public @ResponseBody HttpResponse<String> copyItemFromOtherItem(@PathVariable("id") String id,
 			@RequestBody Item item) {
-		logger.info("Call copyItemFromAnotherItem()");
+		logger.info("Call copyItemFromOtherItem()");
 		
 		try {
 			item.setId(id);
-			itemService.copyItemFromAnotherItem(id, item);
+			itemService.copyItemFromOtherItem(id, item);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -185,8 +173,19 @@ public class ItemController extends ApplicationController implements Controllabl
 		return getOKStatus();
 	}
 	
-	private String renderItemInfoPage(final String itemId, final Model model, 
-			final String viewPage) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody HttpResponse<String> deleteItem(@PathVariable("id") String id) {
+		try {
+			itemService.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
+		}
+		return getOKStatus();
+	}
+	
+	private String renderItemInfoPage(final String itemId, final Model model, final String viewPage) {
 		List<Supplier> listOfSuppliers = null;
 		List<ItemCategory> listOfItemCategories = null;
 		
@@ -201,7 +200,7 @@ public class ItemController extends ApplicationController implements Controllabl
 		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
 			logger.error(ex.getMessage(), ex);
 			
-			return getRedirectTo404Page();
+			return redirectToError(HttpStatus.NOT_FOUND);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}
@@ -209,17 +208,5 @@ public class ItemController extends ApplicationController implements Controllabl
 		model.addAttribute("listOfSuppliers", listOfSuppliers);
 		model.addAttribute("listOfItemCategories", listOfItemCategories);
 		return viewPage;
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody HttpResponse<String> deleteItem(@PathVariable("id") String id) {
-		try {
-			itemService.deleteById(id);
-		} catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
-			
-			return getErrorStatus(ex);
-		}
-		return getOKStatus();
 	}
 }

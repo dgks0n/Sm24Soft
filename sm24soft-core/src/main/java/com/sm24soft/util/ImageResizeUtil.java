@@ -4,9 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -14,7 +17,17 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.Thumbnails.Builder;
+import net.coobird.thumbnailator.geometry.Positions;
+import net.coobird.thumbnailator.resizers.configurations.AlphaInterpolation;
+import net.coobird.thumbnailator.resizers.configurations.Antialiasing;
+import net.coobird.thumbnailator.resizers.configurations.Rendering;
+import net.coobird.thumbnailator.resizers.configurations.ScalingMode;
+
 public class ImageResizeUtil {
+	
+	public static final String PREFIX_HYPHEN_THUMBNAIL = "thumbnail-";
 
 	/**
 	 * Refer to:
@@ -81,6 +94,38 @@ public class ImageResizeUtil {
 				output.close();
 			}
 		}
+	}
+	
+	public static byte[] createThumbnail(final Integer width, final Integer height, final byte[] imageBytes)
+			throws IOException {
+		if (imageBytes == null) {
+			throw new NullPointerException("Cannot generate thumbnail with null bytes");
+		}
+
+		final InputStream inputStream = new ByteArrayInputStream(imageBytes);
+
+		final Builder<? extends InputStream> th = Thumbnails.of(inputStream);
+		th.outputFormat("png");
+		th.antialiasing(Antialiasing.ON);
+		th.alphaInterpolation(AlphaInterpolation.QUALITY);
+		// th.dithering(Dithering.DISABLE);
+		th.outputQuality(0.9f);
+		th.rendering(Rendering.QUALITY);
+		th.scalingMode(ScalingMode.BICUBIC);
+		th.crop(Positions.CENTER);
+
+		if (width != null && height != null) {
+			th.size(width, height);
+		} else if (width != null) {
+			th.width(width);
+		} else if (height != null) {
+			th.height(height);
+		}
+
+		final ByteArrayOutputStream os = new ByteArrayOutputStream(imageBytes.length);
+		th.toOutputStream(os);
+
+		return os.toByteArray();
 	}
 
 }

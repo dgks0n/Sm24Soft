@@ -1,21 +1,24 @@
 package com.sm24soft.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import com.sm24soft.entity.Image;
+import com.sm24soft.entity.Image.ImageType;
 import com.sm24soft.entity.Item;
 
 public interface IItemService extends IService {
 
 	public static final String SERVICE_ID = "itemService";
 	
-	String createNewItem(Item item);
+	String createNewItem(Item item) throws IOException;
 	
-	String updateItem(Item item);
+	String updateItem(Item item) throws IOException;
 	
-	String copyItemFromAnotherItem(String originalItemId, Item customizeItem);
+	String copyItemFromOtherItem(String oldItemId, Item newItem) throws IOException;
 	
-	String uploadImageForItem(final String imageId, final String imageField, 
-			final String imageUrl);
+	Image uploadPreviewOrThumbnailImageForEachItem(final ImageType imageType, final File file);
 	
 	void deleteById(final String id);
 	
@@ -23,6 +26,5 @@ public interface IItemService extends IService {
 	
 	List<Item> findAllBySupplierName(final String supplierName);
 	
-	List<Item> findAll();
-	
+	List<Item> findAll();	
 }

@@ -94,8 +94,7 @@
 	
 	<select id="findById" resultMap="ItemResultMap">
 		<include refid="findItemSQL" />
-		WHERE `item`.`id` = #{id}
-			AND `item`.`delete_flg` = "0";
+		WHERE `item`.`id` = #{id};
 	</select>
 	
 	<select id="findAllByItemCategoryId" resultMap="ItemResultMap">

@@ -14,7 +14,7 @@ public class GenerateUUID {
 	 * @return
 	 */
 	public static String randomUUID() {
-		return new UUID().toString().replace("-", "");
+		return new UUID().toString();
 	}
 	
 }

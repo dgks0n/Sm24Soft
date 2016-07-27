@@ -1,36 +1,25 @@
 package com.sm24soft.controller;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @org.springframework.stereotype.Controller
-public class GlobalExceptionHandleController extends ApplicationController implements Controllable {
+public class GlobalExceptionHandleController {
 
 	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandleController.class);
 	
-	@RequestMapping(value = { "/error/500" }, method = RequestMethod.GET)
-	public String handleInternalServerError(IOException ex) {
-		logger.info("Call handleInternalServerError()");
+	@RequestMapping(value = { "/errors/{errorCode}" }, method = RequestMethod.GET)
+	public String handleError(@PathVariable("errorCode") String errorCode, Exception ex) {
+		logger.info("Call handleError()");
 		
-		return "error/500";
+		if (ex != null) {
+			logger.error(ex.getMessage(), ex);
+		}
+		
+		return "errors/" + errorCode;
 	}
 	
-	@RequestMapping(value = { "/error/404" }, method = RequestMethod.GET)
-	public String handleNotFoundError() {
-		logger.info("Call handleNotFoundError()");
-		
-		return "error/404";
-	}
-	
-	@RequestMapping(value = { "/error/403" }, method = RequestMethod.GET)
-	public String handleAccessDeniedError() {
-		logger.info("Call handleAccessDeniedError()");
-		
-		return "error/403";
-	}
-
 }

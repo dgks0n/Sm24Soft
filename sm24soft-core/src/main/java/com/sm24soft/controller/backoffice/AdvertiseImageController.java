@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sm24soft.common.uuid.GenerateUUID;
 import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.AdvertiseImage;
 import com.sm24soft.http.response.HttpResponse;
 import com.sm24soft.service.IAdvertiseImageService;
 import com.sm24soft.upload.bean.MultiPartFileUploadBean;
+import com.sm24soft.util.FileUtil;
 
 @Controller
 @RequestMapping("/admin/advertise-image")
-public class AdvertiseImageController extends ApplicationController implements Controllable {
+public class AdvertiseImageController extends ApplicationController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdvertiseImageController.class);
 	
@@ -61,17 +62,16 @@ public class AdvertiseImageController extends ApplicationController implements C
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String[]> uploadAdvertiseImage(
-			@ModelAttribute("uploadForm") final MultiPartFileUploadBean multiPartFileUpload) {
+			@ModelAttribute("uploadForm") final MultiPartFileUploadBean fileUpload) {
 		logger.info("Call uploadAdvertiseImage()");
 		
 		try {
 			List<File> files = new ArrayList<>();
-			for (MultipartFile multipartFile : multiPartFileUpload.getFiles()) {
-				File targetFile = new File(com.sm24soft.util.FileUtil.getAdvertiseImagePath(File.separator 
-						+ GenerateUUID.randomUUID())
-						+ File.separator
-						+ multipartFile.getOriginalFilename());
-				multipartFile.transferTo(targetFile);
+			for (MultipartFile file : fileUpload.getFiles()) {
+				File targetDir = FileUtil.createResourceDirectory(getResourceDirectory(), GenerateUUID.randomUUID());
+				File targetFile = new File(targetDir, file.getOriginalFilename());
+				
+				file.transferTo(targetFile);
 				files.add(targetFile);
 			}
 			String[] createdAdvertiseImages = advertiseImageService.createNewAdvertiseImagesByFiles(files);
@@ -115,19 +115,19 @@ public class AdvertiseImageController extends ApplicationController implements C
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> updateAdvertiseImage(@PathVariable("id") final String id, 
-			@ModelAttribute("uploadForm") final MultiPartFileUploadBean multiPartFileUpload) {
+			@ModelAttribute("uploadForm") final MultiPartFileUploadBean fileUpload) {
 		logger.info("Call updateAdvertiseImage()");
 		
 		try {
-			File targetFile = null;
-			
-			for (MultipartFile multipartFile : multiPartFileUpload.getFiles()) {
-				targetFile = new File(com.sm24soft.util.FileUtil.getAdvertiseImagePath(File.separator 
-						+ GenerateUUID.randomUUID())
-						+ File.separator
-						+ multipartFile.getOriginalFilename());
-				multipartFile.transferTo(targetFile);
+			if (ArrayUtils.isEmpty(fileUpload.getFiles())) {
+				return getErrorStatus();
 			}
+			
+			File targetDir = FileUtil.createResourceDirectory(getResourceDirectory(), GenerateUUID.randomUUID());
+			MultipartFile sourceFile = fileUpload.getFiles()[0];
+			File targetFile = new File(targetDir, sourceFile.getOriginalFilename());
+			sourceFile.transferTo(targetFile);
+			
 			String createdAdvertiseImage = advertiseImageService.updateAdvertiseImage(id, targetFile);
 			return getOKStatus(createdAdvertiseImage);
 		} catch (Exception ex) {

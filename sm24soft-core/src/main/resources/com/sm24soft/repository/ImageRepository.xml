@@ -3,22 +3,27 @@
 <mapper namespace="com.sm24soft.repository.ImageRepository">
 	<resultMap type="com.sm24soft.entity.Image" id="ImageResultMap"
 		extends="com.sm24soft.repository.Repository.BaseResultMap">
-		<result column="image_field_id" property="imageFieldId" />
-		<result column="image_url" property="imageUrl" />
-		<result column="kind_of_image" property="kindOfImage" />
+		<result column="absolute_path" property="absolutePath" />
+		<result column="caption" property="caption" />
+		<result column="type" property="type" />
 		
-		<association column="supplier_email_address"
+		<association column="supplier_id"
 			property="supplier"
 			javaType="com.sm24soft.entity.Supplier"
-			select="com.sm24soft.repository.SupplierRepository.findByEmailAddress" />
+			select="com.sm24soft.repository.SupplierRepository.findById" />
+		<association column="item_id"
+			property="item"
+			javaType="com.sm24soft.entity.Item"
+			select="com.sm24soft.repository.ItemRepository.findById" />
 	</resultMap>
 	
 	<sql id="findImageSQL">
 		SELECT `image`.`id`,
-			`image`.`image_field_id`,
-		    `image`.`image_url`,
-		    `image`.`kind_of_image`,
-		    `image`.`supplier_email_address`,
+		    `image`.`absolute_path`,
+		    `image`.`caption`,
+		    `image`.`type`,
+		    `image`.`supplier_id`,
+		    `image`.`item_id`,
 		    `image`.`delete_flg`,
 		    `image`.`created_at`,
 		    `image`.`created_user_id`,
@@ -29,8 +34,7 @@
 	
 	<select id="findById" resultMap="ImageResultMap">
 		<include refid="findImageSQL" />
-		WHERE `image`.`id` = #{id}
-			AND `image`.`delete_flg` = "0";
+		WHERE `image`.`id` = #{id};
 	</select>
 	
 	<select id="findAll" resultMap="ImageResultMap">
@@ -75,10 +79,11 @@
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO `image`
 		(
-			`image_field_id`,
-			`image_url`,
-			`kind_of_image`,
-			`supplier_email_address`,
+			`absolute_path`,
+			`caption`,
+			`type`,
+			`supplier_id`,
+			`item_id`,
 			`delete_flg`,
 			`created_at`,
 			`created_user_id`,
@@ -87,10 +92,11 @@
 		)
 		VALUES
 		(
-			#{imageFieldId},
-			#{imageUrl},
-			#{kindOfImage},
-			#{supplier.email},
+			#{absolutePath},
+			#{caption},
+			#{type},
+			#{supplier.id},
+			#{item.id},
 			#{deleteFlg},
 			#{createdAt},
 			#{createdUserId},
@@ -102,10 +108,11 @@
 	<update id="update" parameterType="com.sm24soft.entity.Image">
 		UPDATE `image`
 		SET
-			`image_field_id` = #{imageFieldId},
-			`image_url` = #{imageUrl},
-			`kind_of_image` = #{kindOfImage},
-			`supplier_email_address` = #{supplier.email},
+			`absolute_path` = #{absolutePath},
+			`caption` = #{caption},
+			`type` = #{type},
+			`supplier_id` = #{supplier.id},
+			`item_id` = #{item.id},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}

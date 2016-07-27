@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sm24soft.common.exception.ObjectNotFoundException;
+import com.sm24soft.common.uuid.GenerateUUID;
 import com.sm24soft.controller.ApplicationController;
 import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.ItemCategory;
@@ -24,6 +26,7 @@ import com.sm24soft.entity.Supplier;
 import com.sm24soft.http.response.HttpResponse;
 import com.sm24soft.service.IItemCategoryService;
 import com.sm24soft.service.ISupplierService;
+import com.sm24soft.util.FileUtil;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/admin/supplier")
@@ -83,15 +86,14 @@ public class SupplierController extends ApplicationController implements Control
 	@RequestMapping(path = { "/upload-logo" }, method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> createOrUpdateLogoUrl(
 			@RequestParam(value = "email", required = true) String emailAddress,
-			@RequestParam(value = "file", required = true) MultipartFile multipartFile, 
+			@RequestParam(value = "file", required = true) MultipartFile fileUpload, 
 			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
 		logger.info("Call createOrUpdateLogoUrl()");
 		
 		try {
-			File targetFile = new File(com.sm24soft.util.FileUtil.getSupplierLogoPath(emailAddress) 
-					+ File.separator 
-					+ multipartFile.getOriginalFilename());
-			multipartFile.transferTo(targetFile);
+			File targetDir = FileUtil.createResourceDirectory(getResourceDirectory(), GenerateUUID.randomUUID());
+			File targetFile = new File(targetDir, fileUpload.getOriginalFilename());
+			fileUpload.transferTo(targetFile);
 			
 			supplierService.uploadRepresentativeLogo(emailAddress, imageField, targetFile.getPath());
 		} catch (Exception ex) {
@@ -105,15 +107,14 @@ public class SupplierController extends ApplicationController implements Control
 	@RequestMapping(path = { "/upload-image" }, method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> uploadOperationImages(
 			@RequestParam(value = "email", required = true) String emailAddress,
-			@RequestParam(value = "file", required = true) MultipartFile multipartFile, 
+			@RequestParam(value = "file", required = true) MultipartFile fileUpload, 
 			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
 		logger.info("Call uploadOperationImages()");
 		
 		try {
-			File targetFile = new File(com.sm24soft.util.FileUtil.getSupplierOperationImagePath(emailAddress, imageField)
-					+ File.separator
-					+ multipartFile.getOriginalFilename());
-			multipartFile.transferTo(targetFile);
+			File targetDir = FileUtil.createResourceDirectory(getResourceDirectory(), GenerateUUID.randomUUID());
+			File targetFile = new File(targetDir, fileUpload.getOriginalFilename());
+			fileUpload.transferTo(targetFile);
 			
 			supplierService.uploadOperationImage(emailAddress, imageField, targetFile.getPath());
 		} catch (Exception ex) {
@@ -149,7 +150,7 @@ public class SupplierController extends ApplicationController implements Control
 		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
 			logger.error(ex.getMessage(), ex);
 			
-			return getRedirectTo404Page();
+			return redirectToError(HttpStatus.NOT_FOUND);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}

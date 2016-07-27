@@ -208,23 +208,23 @@ public class SupplierService implements ISupplierService {
 		supplier.setEmail(emailAddress);
 		
 		Image logo = imageRepository.findLogoBySupplierEmailAddress(emailAddress, logoFieldId);
-		if (logo != null) {
-			logo.setImageUrl(logoUrl);
-			if (logo.getSupplier() == null) {
-				logo.setSupplier(supplier);
-			}
-			logo.setUpdatedAt(DateUtil.now());
-			imageRepository.update(logo);
-		} else {
-			logo = new Image();
-			logo.setImageFieldId(logoFieldId);
-			logo.setImageUrl(logoUrl);
-			logo.setKindOfImage(Image.LOGO_TYPE);
-			logo.setSupplier(supplier);
-			logo.setCreatedUserIdAsDefault();
-			logo.setUpdatedUserIdAsDefault();
-			imageRepository.save(logo);
-		}
+//		if (logo != null) {
+//			logo.setImageUrl(logoUrl);
+//			if (logo.getSupplier() == null) {
+//				logo.setSupplier(supplier);
+//			}
+//			logo.setUpdatedAt(DateUtil.now());
+//			imageRepository.update(logo);
+//		} else {
+//			logo = new Image();
+//			logo.setImageFieldId(logoFieldId);
+//			logo.setImageUrl(logoUrl);
+//			logo.setKindOfImage(Image.LOGO_TYPE);
+//			logo.setSupplier(supplier);
+//			logo.setCreatedUserIdAsDefault();
+//			logo.setUpdatedUserIdAsDefault();
+//			imageRepository.save(logo);
+//		}
 		
 		return logo.getIdWithPADZero();
 	}
@@ -251,23 +251,23 @@ public class SupplierService implements ISupplierService {
 		
 		Image image = imageRepository.findOperationImageBySupplierEmailAddressAndFieldId(emailAddress, 
 				imageFieldId);
-		if (image != null) {
-			image.setImageUrl(imageUrl);
-			if (image.getSupplier() == null) {
-				image.setSupplier(supplier);
-			}
-			image.setUpdatedAt(DateUtil.now());
-			imageRepository.update(image);
-		} else {
-			image = new Image();
-			image.setImageFieldId(imageFieldId);
-			image.setImageUrl(imageUrl);
-			image.setKindOfImage(Image.LOGO_TYPE);
-			image.setSupplier(supplier);
-			image.setCreatedUserIdAsDefault();
-			image.setUpdatedUserIdAsDefault();
-			imageRepository.save(image);
-		}
+//		if (image != null) {
+//			image.setImageUrl(imageUrl);
+//			if (image.getSupplier() == null) {
+//				image.setSupplier(supplier);
+//			}
+//			image.setUpdatedAt(DateUtil.now());
+//			imageRepository.update(image);
+//		} else {
+//			image = new Image();
+//			image.setImageFieldId(imageFieldId);
+//			image.setImageUrl(imageUrl);
+//			image.setKindOfImage(Image.LOGO_TYPE);
+//			image.setSupplier(supplier);
+//			image.setCreatedUserIdAsDefault();
+//			image.setUpdatedUserIdAsDefault();
+//			imageRepository.save(image);
+//		}
 		return image.getIdWithPADZero();
 	}
 

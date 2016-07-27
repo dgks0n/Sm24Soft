@@ -134,33 +134,35 @@
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Mô tả chi tiết</label>
 										<div class="col-md-8 col-sm-8 col-xs-12">
 											<textarea name="description" id="description" class="form-control" rows="4">$!item.description</textarea>
-											#springInputHidden( "PREVIEW_IMAGE_01" "" "previewImage1[id]" )
-											#springInputHidden( "PREVIEW_IMAGE_02" "" "previewImage2[id]" )
-											#springInputHidden( "PREVIEW_IMAGE_03" "" "previewImage3[id]" )
 										</div>
+									</div>
+									<div class="form-group">
+										#springInputHidden( "PREVIEW_IMAGE_01" "" "previewImage1[id]" )
+										#springInputHidden( "PREVIEW_IMAGE_02" "" "previewImage2[id]" )
+										#springInputHidden( "PREVIEW_IMAGE_03" "" "previewImage3[id]" )
 									</div>
 								</form>
 							</div>
 							<div id="step_no2">
 								<form class="form-upload form-horizontal form-label-left">
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-1">Hình ảnh đại diện (1)</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-1">Hình ảnh đại diện </label>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											#springInputFile( "preview-image-1" "form-control" "previewImage1" "$!item.previewImage1.id" "PREVIEW_IMAGE_01"  )
+											#springInputFile( "preview-image-1" "form-control" "previewImage1" "PREVIEW_IMAGE_01" ""  )
 											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-2">Hình ảnh đại diện (2)</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-2">Hình ảnh đại diện </label>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											#springInputFile( "preview-image-2" "form-control" "previewImage2" "$!item.previewImage2.id" "PREVIEW_IMAGE_02"  )
+											#springInputFile( "preview-image-2" "form-control" "previewImage2" "PREVIEW_IMAGE_02" ""  )
 											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-3">Hình ảnh đại diện (3)</label>
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-3">Hình ảnh đại diện </label>
 										<div class="col-md-8 col-sm-8 col-xs-12">
-											#springInputFile( "preview-image-3" "form-control" "previewImage3" "$!item.previewImage3.id" "PREVIEW_IMAGE_03"  )
+											#springInputFile( "preview-image-3" "form-control" "previewImage3" "PREVIEW_IMAGE_03" ""  )
 											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
 										</div>
 									</div>

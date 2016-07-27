@@ -66,8 +66,7 @@
 	
 	<select id="findById" resultMap="InvoiceResultMap">
 		<include refid="findInvoiceSQL" />
-		WHERE `invoice`.`id` = #{id}
-			AND `invoice`.`delete_flg` = "0";
+		WHERE `invoice`.`id` = #{id};
 	</select>
 	
 	<select id="findAllSubInvoicesByParentInvoiceId" resultMap="InvoiceResultMap">

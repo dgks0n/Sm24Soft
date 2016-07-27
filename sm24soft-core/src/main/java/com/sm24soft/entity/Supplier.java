@@ -284,11 +284,11 @@ public class Supplier extends BaseEntity {
 			return null;
 		}
 		
-		for (Image image : listOfImages) {
-			if (null != image && fieldId.equals(image.getImageFieldId())) {
-				return image;
-			}
-		}
+//		for (Image image : listOfImages) {
+//			if (null != image && fieldId.equals(image.getImageFieldId())) {
+//				return image;
+//			}
+//		}
 		return null;
 	}
  

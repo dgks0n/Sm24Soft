@@ -40,8 +40,7 @@
 	
 	<select id="findById" resultMap="ItemDetailResultMap">
 		<include refid="findItemDetailSQL" />
-		WHERE `item_detail`.`id` = #{id}
-			AND `item_detail`.`delete_flg` = "0";
+		WHERE `item_detail`.`id` = #{id};
 	</select>
 	
 	<select id="findAllByParentInvoiceId" resultMap="ItemDetailResultMap">

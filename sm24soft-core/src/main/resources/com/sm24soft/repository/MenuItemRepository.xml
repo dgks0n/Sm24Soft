@@ -35,8 +35,7 @@
 	
 	<select id="findById" resultMap="MenuItemResultMap">
 		<include refid="findMenuItemSQL" />
-		WHERE `menu_item`.`id` = #{id}
-			AND `menu_item`.`delete_flg` = "0";
+		WHERE `menu_item`.`id` = #{id};
 	</select>
 	
 	<select id="findByFullName" resultMap="MenuItemResultMap">

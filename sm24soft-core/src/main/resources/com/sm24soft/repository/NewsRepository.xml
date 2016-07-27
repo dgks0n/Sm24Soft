@@ -33,8 +33,7 @@
 	
 	<select id="findById" resultMap="NewsResultMap">
 		<include refid="findNewsSQL" />
-		WHERE `news`.`id` = #{id}
-			AND `news`.`delete_flg` = "0";
+		WHERE `news`.`id` = #{id};
 	</select>
 	
 	<select id="findAllBySupplierEmailAddress" resultMap="NewsResultMap">

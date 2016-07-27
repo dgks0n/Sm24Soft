@@ -1,7 +1,8 @@
 package com.sm24soft.component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.io.File;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 @org.springframework.stereotype.Component("PageComponent")
 public class PageComponent extends AuthenticationComponent {
 	
-	public static final String DEFAULT_ACTIVING_MENU_ITEM = "activeMenuItem";
-	public static final String DEFAULT_ACTIVING_CHILD_MENU_ITEM = "activeChildMenuItem";
+	private ServletContext context;
 	
-	private HttpServletRequest request;
 	private ISiteAssetsFacade siteAssetsFacade;
 	
 	@Autowired
-	public PageComponent(final HttpServletRequest request, final ISiteAssetsFacade siteAssetsFacade,
-			final IAuthenticationFacade authenticationFacade) {
+	public PageComponent(ServletContext context, ISiteAssetsFacade siteAssetsFacade, 
+			IAuthenticationFacade authenticationFacade) {
 		super(authenticationFacade);
 		
-		this.request = request;
+		this.context = context;
 		this.siteAssetsFacade = siteAssetsFacade;
-	}
-	
-	public String getActivingMenuItem() {
-		return getCurrentActivingMenuItem(DEFAULT_ACTIVING_MENU_ITEM);
-	}
-	
-	public String getActiveChildMenuItem() {
-		return getCurrentActivingMenuItem(DEFAULT_ACTIVING_CHILD_MENU_ITEM);
 	}
 	
 	public String getCurrentPageTitle() {
@@ -44,20 +35,6 @@ public class PageComponent extends AuthenticationComponent {
 		return siteAssetsFacade.getPageCopyright();
 	}
 	
-	private String getCurrentActivingMenuItem(String attribute) {
-		if (null == request) {
-			throw new NullPointerException("The HttpServletRequest is null");
-		}
-		final HttpSession session = request.getSession();
-		if (null != session) {
-			final Object object = session.getAttribute(attribute);
-			if (null != object) {
-				return (String) object;
-			}
-		}
-		return StringUtils.EMPTY;
-	}
-	
 	public String markSelectElement(String sourceVal, String targetVal) {
 		if (StringUtils.isEmpty(sourceVal)) {
 			return StringUtils.EMPTY;
@@ -67,5 +44,13 @@ public class PageComponent extends AuthenticationComponent {
 			return "selected";
 		}
 		return StringUtils.EMPTY;
+	}
+	
+	public String getResourcePath(String resourcePath) {
+		if (StringUtils.isEmpty(resourcePath)) {
+			return resourcePath;
+		}
+		String realPath = context.getRealPath(File.separator);
+		return resourcePath.replace(realPath, context.getContextPath() + File.separator);
 	}
 }

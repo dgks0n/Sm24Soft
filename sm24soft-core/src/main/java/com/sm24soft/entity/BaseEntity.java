@@ -8,6 +8,21 @@ public class BaseEntity extends Entity {
 	
 	private final String DEFAULT_SYSTEM_USER = "00000000";
 	
+	public enum EntityStatus {
+		NON_ACTIVE("1"),
+		ACTIVE("0");
+		
+		private String actualStatus;
+		
+		EntityStatus(String actualStatus) {
+			this.actualStatus = actualStatus;
+		}
+		
+		public String value() {
+			return this.actualStatus;
+		}
+	}
+	
 	/*
 	 * 0 = Normal, 1 = Deleted
 	 */

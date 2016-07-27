@@ -1,11 +1,22 @@
 package com.sm24soft.controller;
 
+import java.io.File;
+
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 
 import com.sm24soft.http.response.HttpException;
 import com.sm24soft.http.response.HttpResponse;
+import com.sm24soft.util.FileUtil;
 
-public abstract class ApplicationController {
+@Controller
+public class ApplicationController implements Controllable, ErrorControllable, Context {
+	
+	@Autowired
+	private ServletContext context;
 	
 	/**
 	 * Create new HttpException for response
@@ -40,8 +51,7 @@ public abstract class ApplicationController {
 		if (null == ex) {
 			return getErrorStatus(); 
 		}
-		return new HttpResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR, 
-				getResponseError(ex), null); 
+		return new HttpResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR, getResponseError(ex), null); 
 	}
 	
 	/**
@@ -53,15 +63,22 @@ public abstract class ApplicationController {
 		return new HttpResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR, null, null);
 	}
 	
-	protected String getRedirectTo404Page() {
-		return "redirect:/error/404";
+	protected String getContextPath() {
+		return getContext().getRealPath(File.separator);
 	}
 	
-	protected String getRedirectTo403Page() {
-		return "redirect:/error/403";
+	protected String getResourceDirectory() {
+		return FileUtil.getResourceDirectory(getContextPath());
+	}
+
+	@Override
+	public String redirectToError(final HttpStatus status) {
+		return "redirect:/errors/" + status.value();
+	}
+
+	@Override
+	public ServletContext getContext() {
+		return this.context;
 	}
 	
-	protected String getRedirectTo500Page() {
-		return "redirect:/error/500";
-	}
 }

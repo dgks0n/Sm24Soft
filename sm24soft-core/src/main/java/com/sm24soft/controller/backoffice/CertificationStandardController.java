@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.CertificationStandard;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.http.response.HttpResponse;
@@ -25,7 +25,7 @@ import com.sm24soft.service.ISupplierService;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/admin/certification")
-public class CertificationStandardController extends ApplicationController implements Controllable {
+public class CertificationStandardController extends ApplicationController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CertificationStandardController.class);
 	
@@ -106,7 +106,7 @@ public class CertificationStandardController extends ApplicationController imple
 		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
 			logger.error(ex.getMessage(), ex);
 			
-			return getRedirectTo404Page();
+			return redirectToError(HttpStatus.NOT_FOUND);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			

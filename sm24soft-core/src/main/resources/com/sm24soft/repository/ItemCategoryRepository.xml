@@ -37,8 +37,7 @@
 	
 	<select id="findById" resultMap="ItemCategoryResultMap">
 		<include refid="findItemCategorySQL" />
-		WHERE `item_category`.`id` = #{id}
-			AND `item_category`.`delete_flg` = "0"
+		WHERE `item_category`.`id` = #{id};
 	</select>
 	
 	<select id="findAllBySupplierId" resultMap="ItemCategoryResultMap">

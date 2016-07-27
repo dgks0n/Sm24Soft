@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sm24soft.component.IAuthenticationFacade;
-import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.controller.Controllable;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/admin")
-public class DefaultController extends ApplicationController implements Controllable {
+public class DefaultController {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultController.class);
 	

@@ -31,6 +31,7 @@
 			property="logoUrl"
 			javaType="com.sm24soft.entity.Image"
 			select="com.sm24soft.repository.ImageRepository.findLogoBySupplierEmailAddressAndDefaultFieldId" />
+			
 		<collection column="id"
 			property="listOfItemCategories"
 			javaType="ArrayList"
@@ -51,6 +52,7 @@
 			javaType="ArrayList"
 			ofType="com.sm24soft.entity.News"
 			select="com.sm24soft.repository.NewsRepository.findAllBySupplierEmailAddress" />
+			
 		<collection column="email_address"
 			property="listOfImages"
 			javaType="ArrayList"
@@ -126,8 +128,7 @@
 	
 	<select id="findById" resultMap="SupplierResultMap">
 		<include refid="findSupplierSQL" />
-		WHERE `supplier`.`id` = #{id}
-			AND `supplier`.`delete_flg` = "0";
+		WHERE `supplier`.`id` = #{id};
 	</select>
 	
 	<select id="findTopSuppliersByLimitation" parameterType="int" resultMap="SupplierResultMap">

@@ -31,7 +31,7 @@
 		$("#step_no2").on("change", "input", function() {
 			var $this = $(this);
 			
-			uploadPreviewImage($this, $this.attr("data-id"), $this.attr("data-field-id"));
+			uploadPreviewImage($this, $this.attr("data-id"));
 		});
 		
 		var options = {
@@ -250,15 +250,13 @@
 		});
 	}
 	
-	function uploadPreviewImage(obj, imageId, imageFieldId) {
-		// Starting upload
-		var action = Util.getRealPath("/admin/item/upload-preview-image");
+	function uploadPreviewImage(obj, imageId) {
+		var action = Util.getRealPath("/admin/item/upload-image");
 		var imageUrl = obj[0].files[0];
 		var formData = new FormData();
 		
 		formData.append("file", imageUrl);
-		formData.append("imageId", imageId);
-		formData.append("imageFieldId", imageFieldId);
+		formData.append("imageType", "ITEM");
 		
 		$.ajax({
 			type: "POST",
@@ -272,7 +270,7 @@
 				$.log(data, textStatus, jqXHR);
 				
 				if (data.status == 200) {
-					$("input#" + imageFieldId).val(data.result);
+					$("input#" + imageId).val(data.result);
 				} else {
 					Util.showMessageDialog(FAILT_UPLOAD_CLASS);
 				}

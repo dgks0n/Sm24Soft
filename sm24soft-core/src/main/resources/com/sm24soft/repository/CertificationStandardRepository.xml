@@ -35,8 +35,7 @@
 	
 	<select id="findById" resultMap="CertificationStandardResultMap">
 		<include refid="findCertificationStandardSQL" />
-		WHERE `certificate`.`id` = #{id}
-			AND `certificate`.`delete_flg` = "0";
+		WHERE `certificate`.`id` = #{id};
 	</select>
 	
 	<select id="findAllBySupplierEmailAddress" resultMap="CertificationStandardResultMap">

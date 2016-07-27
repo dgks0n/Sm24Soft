@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sm24soft.common.exception.DuplicateKeyException;
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.controller.Controllable;
 import com.sm24soft.entity.MenuItem;
 import com.sm24soft.http.response.HttpResponse;
 import com.sm24soft.service.IMenuItemService;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/admin/menu-item")
-public class MenuItemController extends ApplicationController implements Controllable {
+public class MenuItemController extends ApplicationController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MenuItemController.class);
 
@@ -93,7 +93,7 @@ public class MenuItemController extends ApplicationController implements Control
 		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
 			logger.error(ex.getMessage(), ex);
 			
-			return getRedirectTo404Page();
+			return redirectToError(HttpStatus.NOT_FOUND);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		} finally {

@@ -1,81 +1,87 @@
 package com.sm24soft.entity;
 
+import java.io.File;
+
 import com.sm24soft.common.util.StringFormatUtil;
 
 public class Image extends BaseEntity {
 	
-	public static final String LOGO_TYPE = "0";
-	public static final String OPERATION_IMAGE_TYPE = "1";
-	public static final String ITEM_TYPE = "2";
-	
+	public enum ImageType {
+		LOGO("0"), // Supplier's logo
+		OPERATION_IMAGE("1"), // Supplier's operation images
+		ITEM("2"), // Item's representative images
+		
+		ITEM_THUMBNAIL("3"); // Item's thumbnail, it's first representative image
+		
+		private String typeCode;
+		
+		ImageType(String typeCode) {
+			this.typeCode = typeCode;
+		}
+		
+		public String value() {
+			return typeCode;
+		}
+	}
+
 	/**
 	 * The IMAGE table have several fields:
 	 * 
-	 * id
-	 * image_field_id
-	 * image_url
-	 * kind_of_image
+	 * id 
+	 * absolute_path 
+	 * caption 
+	 * type: 0, 1, 2
 	 * supplier_id
-	 * supplier_email_address
-	 * delete_flg
-	 * created_at
+	 * item_id 
+	 * delete_flg 
+	 * created_at 
 	 * created_user_id
-	 * updated_at
+	 * updated_at 
 	 * updated_user_id
 	 */
-	private String imageUrl;
+	private String absolutePath;
+
+	private String caption;
 	
-	/**
-	 * LOGO:
-	 * 		LOGO
-	 * OPERATION IMAGE:
-	 * 		OPERATION_IMAGE_01
-	 * 		OPERATION_IMAGE_02
-	 * 		OPERATION_IMAGE_03
-	 * 		OPERATION_IMAGE_04
-	 * 		OPERATION_IMAGE_05
-	 * 		OPERATION_IMAGE_06
-	 * 		OPERATION_IMAGE_07
-	 * 		OPERATION_IMAGE_08
-	 * 		OPERATION_IMAGE_09
-	 * 		OPERATION_IMAGE_10
-	 * ITEM:
-	 * 		PREVIEW_IMAGE_01 (It's thumbnail also)
-	 * 		PREVIEW_IMAGE_02
-	 * 		PREVIEW_IMAGE_03
-	 */
-	private String imageFieldId;
-	
-	/**
-	 * 0: LOGO
-	 * 1: OPERATION_IMAGE
-	 * 2: ITEM
-	 */
-	private String kindOfImage = "0";
+	private String type;
+
 	private Supplier supplier;
+	
+	private Item item;
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	/**
+	 * Return original file
+	 * 
+	 * NOTE: It's necessary to get original file
+	 * 
+	 * @return
+	 */
+	public File getOriginalFile() {
+		return new File(getAbsolutePath());
 	}
 	
-	public String getImageFieldId() {
-		return imageFieldId;
+	public String getAbsolutePath() {
+		return absolutePath;
 	}
 
-	public void setImageFieldId(String imageFieldId) {
-		this.imageFieldId = imageFieldId;
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
 	}
 
-	public String getKindOfImage() {
-		return kindOfImage;
+	public String getCaption() {
+		return caption;
 	}
 
-	public void setKindOfImage(String kindOfImage) {
-		this.kindOfImage = kindOfImage;
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Supplier getSupplier() {
@@ -86,9 +92,17 @@ public class Image extends BaseEntity {
 		this.supplier = supplier;
 	}
 
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
 	@Override
 	public String getIdWithPADZero() {
 		return StringFormatUtil.formatString(12, getId());
 	}
-	
+
 }
