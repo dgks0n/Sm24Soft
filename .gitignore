@@ -7,7 +7,7 @@
 */.classpath
 */.project
 */.settings/
-*/wp-content/uploads/
+*sm24soft-webapp/src/main/webapp/wp-content/uploads/
 
 # Mobile Tools for Java (J2ME)
 *.mtj.tmp/
