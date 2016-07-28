@@ -2,7 +2,7 @@ package com.sm24soft.entity;
 
 import org.apache.commons.lang.StringUtils;
 
-public class CertificationStandard extends BaseEntity {
+public class Certificate extends BaseEntity {
 
 	private String name;
 	

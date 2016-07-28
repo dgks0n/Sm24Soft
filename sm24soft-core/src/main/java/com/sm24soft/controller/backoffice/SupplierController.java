@@ -21,6 +21,7 @@ import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.uuid.GenerateUUID;
 import com.sm24soft.controller.ApplicationController;
 import com.sm24soft.controller.Controllable;
+import com.sm24soft.entity.Image.ImageType;
 import com.sm24soft.entity.ItemCategory;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.http.response.HttpResponse;
@@ -85,9 +86,8 @@ public class SupplierController extends ApplicationController implements Control
 	
 	@RequestMapping(path = { "/upload-logo" }, method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> createOrUpdateLogoUrl(
-			@RequestParam(value = "email", required = true) String emailAddress,
-			@RequestParam(value = "file", required = true) MultipartFile fileUpload, 
-			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
+			@RequestParam(value = "email") String supplierEmail, @RequestParam(value = "imageId") String imageId,
+			@RequestParam(value = "imageType") String imageType, @RequestParam(value = "file") MultipartFile fileUpload) {
 		logger.info("Call createOrUpdateLogoUrl()");
 		
 		try {
@@ -95,20 +95,20 @@ public class SupplierController extends ApplicationController implements Control
 			File targetFile = new File(targetDir, fileUpload.getOriginalFilename());
 			fileUpload.transferTo(targetFile);
 			
-			supplierService.uploadRepresentativeLogo(emailAddress, imageField, targetFile.getPath());
+			String expectedResult = supplierService.uploadLogo(supplierEmail, imageId, 
+					ImageType.valueOf(imageType), targetFile);
+			return getOKStatus(expectedResult);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
 			return getErrorStatus(ex);
 		}
-		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/upload-image" }, method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> uploadOperationImages(
-			@RequestParam(value = "email", required = true) String emailAddress,
-			@RequestParam(value = "file", required = true) MultipartFile fileUpload, 
-			@RequestParam(value = "imageFieldId", required = true, defaultValue = "LOGO") String imageField) {
+			@RequestParam(value = "email") String supplierEmail, @RequestParam(value = "imageId") String imageId,
+			@RequestParam(value = "imageType") String imageType, @RequestParam(value = "file") MultipartFile fileUpload) {
 		logger.info("Call uploadOperationImages()");
 		
 		try {
@@ -116,13 +116,14 @@ public class SupplierController extends ApplicationController implements Control
 			File targetFile = new File(targetDir, fileUpload.getOriginalFilename());
 			fileUpload.transferTo(targetFile);
 			
-			supplierService.uploadOperationImage(emailAddress, imageField, targetFile.getPath());
+			String expectedResult = supplierService.uploadOperationImage(supplierEmail, imageId, 
+					ImageType.valueOf(imageType), targetFile);
+			return getOKStatus(expectedResult);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
 			return getErrorStatus(ex);
 		}
-		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
@@ -131,12 +132,13 @@ public class SupplierController extends ApplicationController implements Control
 		
 		try {
 			supplierService.deleteById(id);
+			
+			return getOKStatus(id);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
 			return getErrorStatus(ex);
 		}
-		return getOKStatus();
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
@@ -168,12 +170,12 @@ public class SupplierController extends ApplicationController implements Control
 			supplier.setId(id);
 			// push to underlying database
 			supplierService.updateSupplier(supplier);
+			return getOKStatus(supplier.getIdWithPADZero());
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
 			return getErrorStatus(ex);
 		}
-		return getOKStatus();
 	}
 	
 	@RequestMapping(value = { "/item-categories" }, method = RequestMethod.GET)
@@ -193,6 +195,8 @@ public class SupplierController extends ApplicationController implements Control
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
+			
+			return getErrorStatus(ex);
 		}
 		return getOKStatus(optionsBuilder.toString());
 	}

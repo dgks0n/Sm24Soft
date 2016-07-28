@@ -6,7 +6,7 @@
 			</div>
 			<div class="title_right">
 				<div class="col-md-8 col-sm-8 col-xs-12 form-group pull-right top_search">
-					<form class="form-search" action="#springUrl('/admin/certification')" method="get">
+					<form class="form-search" action="#springUrl('/admin/certificate')" method="get">
 						<div class="input-group">
 							<input type="text" class="form-control" name="keyword" value="$!keyword" placeholder="Tên Trang trại...">
 							<span class="input-group-btn">
@@ -24,7 +24,7 @@
 					<div class="x_title">
 						<h2>Thông tin chi tiết</h2>
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="btn btn-default" href="#springUrl('/admin/certification/create-new')"><i class="fa fa-plus"></i> Thêm mới</a></li>
+							<li><a class="btn btn-default" href="#springUrl('/admin/certificate/create-new')"><i class="fa fa-plus"></i> Thêm mới</a></li>
 						</ul>
 						<div class="clearfix"></div>
 					</div>
@@ -40,7 +40,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								#foreach ($certificate in $!listOfCertificationStandards)
+								#foreach ($certificate in $!listOfCertificates)
 								<tr>
 									<th scope="row">$velocityCount</th>
 									<td>$!certificate.name</td>
@@ -62,4 +62,4 @@
 </div>
 #springConfirmMessage( "confirm-delete-dialog" "Xác nhận" "" "Bạn muốn xoá Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
 #springErrorMessage( "fails-delete-dialog" "Thông báo" "" "Không thể xoá Tiêu chuẩn & Chứng chỉ này. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
-<script src="#springUrl('/wp-content/js/certification-standard.js')"></script>
+<script src="#springUrl('/wp-content/js/certificate.js')"></script>

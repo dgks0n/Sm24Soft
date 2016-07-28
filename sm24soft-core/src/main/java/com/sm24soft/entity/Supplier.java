@@ -56,10 +56,15 @@ public class Supplier extends BaseEntity {
 	 */
 	private String description;
 	private List<Image> listOfImages;
-	private List<CertificationStandard> listOfCertificationStandards;
+	private List<Certificate> listOfCertificationStandards;
 
 	public Supplier() {
 		super();
+	}
+	
+	public Supplier(String email) {
+		this();
+		this.email = email;
 	}
 
 	public String getCompanyName() {
@@ -249,11 +254,11 @@ public class Supplier extends BaseEntity {
 		this.listOfImages = listOfImages;
 	}
 
-	public List<CertificationStandard> getListOfCertificationStandards() {
+	public List<Certificate> getListOfCertificationStandards() {
 		return listOfCertificationStandards;
 	}
 
-	public void setListOfCertificationStandards(List<CertificationStandard> listOfCertificationStandards) {
+	public void setListOfCertificationStandards(List<Certificate> listOfCertificationStandards) {
 		this.listOfCertificationStandards = listOfCertificationStandards;
 	}
 	

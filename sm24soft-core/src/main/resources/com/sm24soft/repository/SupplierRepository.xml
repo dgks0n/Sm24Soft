@@ -27,11 +27,10 @@
 			property="contactPerson"
 			javaType="com.sm24soft.entity.RepresentativeOrContactPerson"
 			resultMap="com.sm24soft.repository.RepresentativeOrContactPersonRepository.RepresentativeOrContactPersonResultMap" />
-		<association column="email_address"
+		<association column="id"
 			property="logoUrl"
 			javaType="com.sm24soft.entity.Image"
-			select="com.sm24soft.repository.ImageRepository.findLogoBySupplierEmailAddressAndDefaultFieldId" />
-			
+			select="com.sm24soft.repository.ImageRepository.findLogoBySupplierId" />
 		<collection column="id"
 			property="listOfItemCategories"
 			javaType="ArrayList"
@@ -45,19 +44,18 @@
 		<collection column="email_address"
 			property="listOfCertificationStandards"
 			javaType="ArrayList"
-			ofType="com.sm24soft.entity.CertificationStandard"
-			select="com.sm24soft.repository.CertificationStandardRepository.findAllBySupplierEmailAddress" />
+			ofType="com.sm24soft.entity.Certificate"
+			select="com.sm24soft.repository.CertificateRepository.findAllBySupplierEmailAddress" />
 		<collection column="email_address"
 			property="listOfNews"
 			javaType="ArrayList"
 			ofType="com.sm24soft.entity.News"
 			select="com.sm24soft.repository.NewsRepository.findAllBySupplierEmailAddress" />
-			
-		<collection column="email_address"
+		<collection column="id"
 			property="listOfImages"
 			javaType="ArrayList"
 			ofType="com.sm24soft.entity.Image"
-			select="com.sm24soft.repository.ImageRepository.findOperationImagesBySupplierEmailAddress" />
+			select="com.sm24soft.repository.ImageRepository.findOperationImagesBySupplierId" />
 	</resultMap>
 	
 	<sql id="findSupplierSQL">

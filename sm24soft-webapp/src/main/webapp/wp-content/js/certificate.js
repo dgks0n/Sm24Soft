@@ -55,7 +55,7 @@
 					data: jSONData,
 					success: function(data) {
 						if (data.status == 200) {
-							location.href = Util.getRealPath("/admin/certification");
+							location.href = Util.getRealPath("/admin/certificate");
 						} else {
 							Util.showMessageDialog(failsClazz);
 						}
@@ -98,7 +98,7 @@
 			table.attr("data-selected-id", itemId);
 			
 			if ($this.hasClass("btn-edit")) {
-				location.href = Util.getRealPath("/admin/certification/") + itemId;
+				location.href = Util.getRealPath("/admin/certificate/") + itemId;
 			} else {
 				Util.showMessageDialog(".confirm-delete-dialog");
 			}
@@ -110,7 +110,7 @@
 				Util.hideMessageDialog(FAILS_DELETE_CLASS);
 				
 				var itemId = $("table.table-certificate").attr("data-selected-id");
-				var action = Util.getRealPath("/admin/certification/") + itemId;
+				var action = Util.getRealPath("/admin/certificate/") + itemId;
 				
 				$.ajax({
 					url: action,
@@ -118,7 +118,7 @@
 					dataType: "json",
 					success: function(data) {
 						if (data.status == 200) {
-							location.href = Util.getRealPath("/admin/certification");
+							location.href = Util.getRealPath("/admin/certificate");
 						} else {
 							Util.showMessageDialog(FAILS_DELETE_CLASS);
 						}

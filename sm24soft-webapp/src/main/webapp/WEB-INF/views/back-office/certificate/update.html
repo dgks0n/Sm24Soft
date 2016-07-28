@@ -12,20 +12,20 @@
 					<div class="x_title">
 						<h2>Thông tin chi tiết</h2>
 						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="btn btn-default" href="#springUrl('/admin/certification')"><i class="fa fa-reply"></i> Quay lại</a></li>
+							<li><a class="btn btn-default" href="#springUrl('/admin/certificate')"><i class="fa fa-reply"></i> Quay lại</a></li>
 						</ul>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<br>
-						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/certification/')$!certificationStandard.id">
+						<form class="form-update form-horizontal form-label-left form-main" action="#springUrl('/admin/certificate/')$!certificate.id">
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
 										<option value=""></option>
 									#foreach ($supplier in $!listOfSuppliers)
-										<option value="$!supplier.id" $!pageUtil.markSelectElement($!supplier.id, $!certificationStandard.supplier.id)>$!supplier.companyName</option>
+										<option value="$!supplier.id" $!pageUtil.markSelectElement($!supplier.id, $!certificate.supplier.id)>$!supplier.companyName</option>
 									#end
 									</select>
 								</div>
@@ -33,19 +33,19 @@
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Tiêu chuẩn & Chứng chỉ <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<input type="text" name="name" id="name" required="required" class="form-control" value="$!certificationStandard.name">
+									<input type="text" name="name" id="name" required="required" class="form-control" value="$!certificate.name">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Mô tả</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<textarea name="description" class="form-control col-md-9 col-xs-12">$!certificationStandard.description</textarea>
+									<textarea name="description" class="form-control col-md-9 col-xs-12">$!certificate.description</textarea>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="detailsLinkUrl" class="control-label col-md-3 col-sm-3 col-xs-12">Link (Url) tham khảo</label>
 								<div class="col-md-9 col-sm-9 col-xs-12">
-									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control" value="$!certificationStandard.detailsLinkUrl">
+									<input type="text" name="detailsLinkUrl" id="detailsLinkUrl" class="form-control" value="$!certificate.detailsLinkUrl">
 								</div>
 							</div>
 							<div class="ln_solid"></div>
@@ -64,4 +64,4 @@
 </div>
 #springConfirmMessage( "confirm-update-dialog" "Xác nhận" "" "Bạn muốn cập nhật Tiêu chuẩn & Chứng chỉ này?" "Huỷ" "Đồng ý" )
 #springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật Tiêu chuẩn & Chứng chỉ. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
-<script src="#springUrl('/wp-content/js/certification-standard.js')"></script>
+<script src="#springUrl('/wp-content/js/certificate.js')"></script>

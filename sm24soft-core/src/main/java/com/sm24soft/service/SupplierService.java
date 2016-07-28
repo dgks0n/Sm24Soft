@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.util.DateUtil;
+import com.sm24soft.entity.BaseEntity.EntityStatus;
 import com.sm24soft.entity.Image;
+import com.sm24soft.entity.Image.ImageType;
 import com.sm24soft.entity.RepresentativeOrContactPerson;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.repository.ImageRepository;
@@ -25,15 +27,15 @@ public class SupplierService implements ISupplierService {
 
 	private SupplierRepository supplierRepository;
 
-	private RepresentativeOrContactPersonRepository representativeOrContactPersonRepository;
+	private RepresentativeOrContactPersonRepository rOCPersonRepository;
 
 	private ImageRepository imageRepository;
 
 	@Autowired
 	public SupplierService(SupplierRepository supplierRepository, ImageRepository imageRepository,
-			RepresentativeOrContactPersonRepository representativeOrContactPersonRepository) {
+			RepresentativeOrContactPersonRepository rOCPersonRepository) {
 		this.supplierRepository = supplierRepository;
-		this.representativeOrContactPersonRepository = representativeOrContactPersonRepository;
+		this.rOCPersonRepository = rOCPersonRepository;
 		this.imageRepository = imageRepository;
 	}
 
@@ -46,18 +48,18 @@ public class SupplierService implements ISupplierService {
 		}
 
 		// Step 1: create new one representative person object for this supplier
-		RepresentativeOrContactPerson representativePerson = supplier.getRepresentativePerson();
+		RepresentativeOrContactPerson representPerson = supplier.getRepresentativePerson();
 
 		// Representative person's short name checking
-		if (!StringUtils.isEmpty(representativePerson.getShortName())) {
-			representativePerson.setCreatedUserIdAsDefault();
-			representativePerson.setUpdatedUserIdAsDefault();
+		if (!StringUtils.isEmpty(representPerson.getShortName())) {
+			representPerson.setCreatedUserIdAsDefault();
+			representPerson.setUpdatedUserIdAsDefault();
 
-			representativeOrContactPersonRepository.save(representativePerson);
+			rOCPersonRepository.save(representPerson);
 
 			// If successfully created new one representative person for
 			// supplier
-			supplier.setRepresentativePerson(representativePerson);
+			supplier.setRepresentativePerson(representPerson);
 		}
 
 		// Step 2: create new one contact person object for this supplier
@@ -66,13 +68,45 @@ public class SupplierService implements ISupplierService {
 			contactPerson.setCreatedUserIdAsDefault();
 			contactPerson.setUpdatedUserIdAsDefault();
 
-			representativeOrContactPersonRepository.save(contactPerson);
+			rOCPersonRepository.save(contactPerson);
 
 			// If successfully created new one contact for this supplier
 			supplier.setContactPerson(contactPerson);
 		}
+		
+		// Step 3: active logo
+		Image logo = supplier.getLogoUrl();
+		if (logo == null || StringUtils.isEmpty(logo.getId())) {
+			throw new IllegalArgumentException("Logo is required field");
+		}
+		
+		logo = imageRepository.findById(logo.getId());
+		if (logo == null) {
+			throw new ObjectNotFoundException("Not found");
+		}
+		
+		logo.setDeleteFlg(EntityStatus.ACTIVE.value());
+		logo.setUpdatedAt(DateUtil.now());
+		logo.setUpdatedUserIdAsDefault();
+		
+		imageRepository.update(logo);
+		
+		// Step 4: operation images
+		for (Image image : supplier.getListOfImages()) {
+			if (StringUtils.isNotEmpty(image.getId())) {
+				image = imageRepository.findById(image.getId());
+				if (image == null) {
+					continue;
+				}
+				
+				image.setDeleteFlg(EntityStatus.ACTIVE.value());
+				image.setUpdatedAt(DateUtil.now());
+				image.setUpdatedUserIdAsDefault();
+				imageRepository.update(image);
+			}
+		}
 
-		// Step 3: create new one supplier
+		// Step 5: create new one supplier
 		supplier.setCreatedUserIdAsDefault();
 		supplier.setUpdatedUserIdAsDefault();
 
@@ -141,6 +175,35 @@ public class SupplierService implements ISupplierService {
 		}
 		oldContactPerson = createNewOrUpdateRepresentOrContactPerson(supplier.getContactPerson());
 		oldSupplier.setContactPerson(oldContactPerson);
+		
+		// logo & operation images
+		Image logo = supplier.getLogoUrl();
+		if (StringUtils.isNotEmpty(logo.getId())) {
+			logo = imageRepository.findById(logo.getId());
+			if (logo != null) {
+				logo.setDeleteFlg(EntityStatus.ACTIVE.value());
+				logo.setUpdatedAt(DateUtil.now());
+				logo.setUpdatedUserIdAsDefault();
+				
+				imageRepository.update(logo);
+			}
+		}
+		
+		// Step 4: operation images
+		for (Image image : supplier.getListOfImages()) {
+			if (StringUtils.isNotEmpty(image.getId())) {
+				image = imageRepository.findById(image.getId());
+				if (image == null) {
+					continue;
+				}
+				
+				image.setDeleteFlg(EntityStatus.ACTIVE.value());
+				image.setUpdatedAt(DateUtil.now());
+				image.setUpdatedUserIdAsDefault();
+				imageRepository.update(image);
+			}
+		}
+		
 		oldSupplier.setUpdatedAt(DateUtil.now());
 		oldSupplier.setUpdatedUserIdAsDefault();
 		
@@ -190,41 +253,48 @@ public class SupplierService implements ISupplierService {
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String uploadRepresentativeLogo(String emailAddress, String logoFieldId, String logoUrl) {
-		if (StringUtils.isEmpty(emailAddress)) {
+	public String uploadLogo(String email, String existingLogoId, ImageType imageType, File logoFile) {
+		if (StringUtils.isEmpty(email)) {
 			throw new IllegalArgumentException("The supplier's email address must not be null and empty");
 		}
-		
-		if (StringUtils.isEmpty(logoUrl)) {
-			throw new IllegalArgumentException("The image object must not be null and empty");
-		}
 	
-		File logoFilePath = new File(logoUrl);
-		if (!logoFilePath.exists()) {
-			throw new IllegalArgumentException("Not found the image file.");
+		if (!logoFile.exists()) {
+			throw new ObjectNotFoundException("File not found");
 		}
 
-		Supplier supplier = new Supplier();
-		supplier.setEmail(emailAddress);
+		Supplier supplier = supplierRepository.findByEmailAddress(email);
+		if (supplier == null) {
+			supplier = new Supplier(email);
+		}
 		
-		Image logo = imageRepository.findLogoBySupplierEmailAddress(emailAddress, logoFieldId);
-//		if (logo != null) {
-//			logo.setImageUrl(logoUrl);
-//			if (logo.getSupplier() == null) {
-//				logo.setSupplier(supplier);
-//			}
-//			logo.setUpdatedAt(DateUtil.now());
-//			imageRepository.update(logo);
-//		} else {
-//			logo = new Image();
-//			logo.setImageFieldId(logoFieldId);
-//			logo.setImageUrl(logoUrl);
-//			logo.setKindOfImage(Image.LOGO_TYPE);
-//			logo.setSupplier(supplier);
-//			logo.setCreatedUserIdAsDefault();
-//			logo.setUpdatedUserIdAsDefault();
-//			imageRepository.save(logo);
-//		}
+		Image logo = null;
+		
+		if (StringUtils.isEmpty(existingLogoId)) {
+			logo = new Image();
+			logo.setAbsolutePath(logoFile.getPath());
+			logo.setCaption(logoFile.getName());
+			logo.setType(imageType.value());
+			logo.setSupplierLoadedByEmail(supplier);
+			logo.setDeleteFlg(EntityStatus.NON_ACTIVE.value());
+			logo.setCreatedAt(DateUtil.now());
+			logo.setCreatedUserIdAsDefault();
+			logo.setUpdatedAt(DateUtil.now());
+			logo.setUpdatedUserIdAsDefault();
+			
+			imageRepository.save(logo);
+		} else {
+			logo = imageRepository.findById(existingLogoId);
+			if (logo == null) {
+				throw new ObjectNotFoundException("Object not found");
+			}
+			
+			logo.setAbsolutePath(logoFile.getPath());
+			logo.setCaption(logoFile.getName());
+			logo.setUpdatedAt(DateUtil.now());
+			logo.setUpdatedUserIdAsDefault();
+			
+			imageRepository.update(logo);
+		}
 		
 		return logo.getIdWithPADZero();
 	}
@@ -232,42 +302,49 @@ public class SupplierService implements ISupplierService {
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String uploadOperationImage(String emailAddress, String imageFieldId, String imageUrl) {
-		if (StringUtils.isEmpty(emailAddress)) {
+	public String uploadOperationImage(String email, String existingOperImageId, ImageType imageType, File imageFile) {
+		if (StringUtils.isEmpty(email)) {
 			throw new IllegalArgumentException("The supplier's email address must not be null and empty");
 		}
-		
-		if (StringUtils.isEmpty(imageUrl)) {
-			throw new IllegalArgumentException("The image object must not be null and empty");
-		}
-	
-		File imageFilePath = new File(imageUrl);
-		if (!imageFilePath.exists()) {
-			throw new IllegalArgumentException("Not found the image file.");
+
+		if (!imageFile.exists()) {
+			throw new IllegalArgumentException("File not found");
 		}
 
-		Supplier supplier = new Supplier();
-		supplier.setEmail(emailAddress);
+		Supplier supplier = supplierRepository.findByEmailAddress(email);
+		if (supplier == null) {
+			supplier = new Supplier(email);
+		}
 		
-		Image image = imageRepository.findOperationImageBySupplierEmailAddressAndFieldId(emailAddress, 
-				imageFieldId);
-//		if (image != null) {
-//			image.setImageUrl(imageUrl);
-//			if (image.getSupplier() == null) {
-//				image.setSupplier(supplier);
-//			}
-//			image.setUpdatedAt(DateUtil.now());
-//			imageRepository.update(image);
-//		} else {
-//			image = new Image();
-//			image.setImageFieldId(imageFieldId);
-//			image.setImageUrl(imageUrl);
-//			image.setKindOfImage(Image.LOGO_TYPE);
-//			image.setSupplier(supplier);
-//			image.setCreatedUserIdAsDefault();
-//			image.setUpdatedUserIdAsDefault();
-//			imageRepository.save(image);
-//		}
+		Image image = null;
+		
+		if (StringUtils.isEmpty(existingOperImageId)) {
+			image = new Image();
+			image.setAbsolutePath(imageFile.getPath());
+			image.setCaption(imageFile.getName());
+			image.setType(imageType.value());
+			image.setSupplierLoadedByEmail(supplier);
+			image.setDeleteFlg(EntityStatus.NON_ACTIVE.value());
+			image.setCreatedAt(DateUtil.now());
+			image.setCreatedUserIdAsDefault();
+			image.setUpdatedAt(DateUtil.now());
+			image.setUpdatedUserIdAsDefault();
+			
+			imageRepository.save(image);
+		} else {
+			image = imageRepository.findById(existingOperImageId);
+			if (image == null) {
+				throw new ObjectNotFoundException("Object not found");
+			}
+			
+			image.setAbsolutePath(imageFile.getPath());
+			image.setCaption(imageFile.getName());
+			image.setUpdatedAt(DateUtil.now());
+			image.setUpdatedUserIdAsDefault();
+			
+			imageRepository.update(image);
+		}
+		
 		return image.getIdWithPADZero();
 	}
 
@@ -277,8 +354,7 @@ public class SupplierService implements ISupplierService {
 				&& StringUtils.isNotEmpty(newROCPerson.getShortName())
 				&& StringUtils.isNotEmpty(newROCPerson.getEmail())) {
 			
-			RepresentativeOrContactPerson oldROCPerson = 
-					representativeOrContactPersonRepository.findById(newROCPerson.getId());
+			RepresentativeOrContactPerson oldROCPerson = rOCPersonRepository.findById(newROCPerson.getId());
 			if (oldROCPerson == null) {
 				oldROCPerson = new RepresentativeOrContactPerson();
 				oldROCPerson.setShortName(newROCPerson.getShortName());
@@ -292,7 +368,7 @@ public class SupplierService implements ISupplierService {
 				oldROCPerson.setUpdatedUserIdAsDefault();
 				
 				// create new one
-				representativeOrContactPersonRepository.save(oldROCPerson);
+				rOCPersonRepository.save(oldROCPerson);
 			} else {
 				oldROCPerson.setShortName(newROCPerson.getShortName());
 				oldROCPerson.setFullName(newROCPerson.getFullName());
@@ -303,7 +379,7 @@ public class SupplierService implements ISupplierService {
 				oldROCPerson.setUpdatedUserIdAsDefault();
 				
 				// update existing object
-				representativeOrContactPersonRepository.update(oldROCPerson);
+				rOCPersonRepository.update(oldROCPerson);
 			}
 			return oldROCPerson;
 		}

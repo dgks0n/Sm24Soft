@@ -101,6 +101,16 @@
 </div>
 #end
 
+#macro( springInputFileWithLabelAndInputHidden $lblClazz $lblText $iptId $iptClazz $iptName $iptDataId $iptDataFieldId $iptHiddenName)
+<div class="form-group">
+	<label class="$!lblClazz" for="$!iptId">$!lblText</label>
+	<div class="col-md-6 col-sm-6 col-xs-12">
+		#springInputFile ( $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
+		#springInputHidden ( "" "" $iptHiddenName )
+	</div>
+</div>
+#end
+
 #macro( springInputFileRequiredWithLabel $lblClazz $lblText $iptId $iptClazz $iptName $iptDataId $iptDataFieldId )
 <div class="form-group">
 	<label class="$!lblClazz" for="$!iptId">$!lblText</label>

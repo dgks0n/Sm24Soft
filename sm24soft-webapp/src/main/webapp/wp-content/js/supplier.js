@@ -167,14 +167,13 @@
 		});
 		
 		$("input[name=logoUrl]").on("change", function(e) {
-			var changedSupplierEmail = $("#email").val();
-			if (changedSupplierEmail) {
-				$.log("Uploading logo for the email: " + changedSupplierEmail);
+			var supplierEmail = $("#email").val();
+			if (supplierEmail) {
+				$.log("Uploading logo for the email: " + supplierEmail);
 				
-				var logoFieldId = $(this).attr("data-id");
-				uploadSupplierLogo($(this), changedSupplierEmail, logoFieldId);
+				uploadSupplierLogo($(this), supplierEmail);
 			} else {
-				$.log("Current email address is invalid: " + changedSupplierEmail);
+				$.log("Current email address is invalid: " + supplierEmail);
 				
 				//Mark it still has not been uploaded
 				isUploadedLogo = false;
@@ -183,21 +182,24 @@
 		});
 		
 		$("input[name=operationImageUrl]").on("change", function(e) {
-			var $this = $(this);
-			var imageFieldId = $this.attr("data-id");
-			
-			uploadSupplierImages($this, $("#email").val(), imageFieldId);
+			var supplierEmail = $("#email").val();
+			if (supplierEmail) {
+				$.log("Uploading operation iamges for the email: " + supplierEmail);
+				
+				uploadSupplierImages($(this), supplierEmail);
+			}
 		});
 	});
 	
-	function uploadSupplierLogo(obj, emailAddress, imageFieldId) {
+	function uploadSupplierLogo(obj, supplierEmail) {
 		var logoUrl = obj[0].files[0];
 		var formData = new FormData();
 		
 		formData.append("file", logoUrl);
-		formData.append("imageFieldId", imageFieldId);
+		formData.append("imageType", "LOGO");
+		formData.append("imageId", obj.attr("data-id"));
 		
-		var action = Util.getRealPath("/admin/supplier/upload-logo?email=") + emailAddress;
+		var action = Util.getRealPath("/admin/supplier/upload-logo?email=") + supplierEmail;
 		
 		$.ajax({
 			type: "post",
@@ -210,8 +212,10 @@
 			success: function(data, textStatus, jqXHR) {
 				$.log(data, textStatus, jqXHR);
 				
-				//Mark it has been uploaded
 				isUploadedLogo = true;
+				obj.attr("data-id", data.result);
+				obj.closest("div").children("input[type=hidden]").val(data.result);
+				
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				$.log(jqXHR, textStatus, errorThrown);
@@ -228,14 +232,15 @@
 		});
 	}
 	
-	function uploadSupplierImages(obj, emailAddress, imageFieldId) {
+	function uploadSupplierImages(obj, supplierEmail) {
 		var imageUrl = obj[0].files[0];
 		var formData = new FormData();
 		
 		formData.append("file", imageUrl);
-		formData.append("imageFieldId", imageFieldId);
+		formData.append("imageType", "OPERATION_IMAGE");
+		formData.append("imageId", obj.attr("data-id"));
 		
-		var action = Util.getRealPath("/admin/supplier/upload-image?email=") + emailAddress;
+		var action = Util.getRealPath("/admin/supplier/upload-image?email=") + supplierEmail;
 		
 		$.ajax({
 			type: "post",
@@ -247,6 +252,9 @@
 			dataType: "json",
 			success: function(data, textStatus, jqXHR) {
 				$.log(data, textStatus, jqXHR);
+				
+				obj.attr("data-id", data.result);
+				obj.closest("div").children("input[type=hidden]").val(data.result);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				$.log(jqXHR, textStatus, errorThrown);
@@ -283,9 +291,9 @@
 			// been uploaded then we will have to upload before go
 			// to next step
         	if (!isUpdateForm && isStepValid && !isUploadedLogo) {
-        		var changedSupplierEmail = $("#email").val();
+        		var supplierEmail = $("#email").val();
         		
-        		uploadSupplierLogo($("#logoUrl"), changedSupplierEmail);
+        		uploadSupplierLogo($("#logoUrl"), supplierEmail);
         	}
         }
         return isStepValid;

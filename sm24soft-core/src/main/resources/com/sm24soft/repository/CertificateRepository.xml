@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sm24soft.repository.CertificationStandardRepository">
-	<resultMap type="com.sm24soft.entity.CertificationStandard" id="CertificationStandardResultMap"
+<mapper namespace="com.sm24soft.repository.CertificateRepository">
+	<resultMap type="com.sm24soft.entity.Certificate" id="CertificateResultMap"
 		extends="com.sm24soft.repository.Repository.BaseResultMap">
 		<result column="name" property="name" />
 		<result column="description" property="description" />
@@ -13,7 +13,7 @@
 			select="com.sm24soft.repository.SupplierRepository.findByEmailAddress" />
 	</resultMap>
 	
-	<sql id="findCertificationStandardSQL">
+	<sql id="findCertificateSQL">
 		SELECT `certificate`.`id`,
 		    `certificate`.`name`,
 		    `certificate`.`description`,
@@ -27,26 +27,26 @@
 		FROM `certificate`
 	</sql>
 	
-	<select id="findAll" resultMap="CertificationStandardResultMap">
-		<include refid="findCertificationStandardSQL" />
+	<select id="findAll" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
 		WHERE `certificate`.`delete_flg` = "0"
 		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
-	<select id="findById" resultMap="CertificationStandardResultMap">
-		<include refid="findCertificationStandardSQL" />
+	<select id="findById" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
 		WHERE `certificate`.`id` = #{id};
 	</select>
 	
-	<select id="findAllBySupplierEmailAddress" resultMap="CertificationStandardResultMap">
-		<include refid="findCertificationStandardSQL" />
+	<select id="findAllBySupplierEmailAddress" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
 		WHERE `certificate`.`supplier_email_address` = #{emailAddress}
 			AND `certificate`.`delete_flg` = "0"
 		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
-	<select id="findAllBySupplierName" resultMap="CertificationStandardResultMap">
-		<include refid="findCertificationStandardSQL" />
+	<select id="findAllBySupplierName" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
 		INNER JOIN `supplier`
 			ON `certificate`.`supplier_email_address` = `supplier`.`email_address`
 		WHERE `supplier`.`supplier_name` LIKE #{supplierName}
@@ -55,7 +55,7 @@
 		ORDER BY `certificate`.`name` ASC;
 	</select>
 	
-	<insert id="save" parameterType="com.sm24soft.entity.CertificationStandard"
+	<insert id="save" parameterType="com.sm24soft.entity.Certificate"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		INSERT INTO `certificate`
 		(
@@ -83,7 +83,7 @@
 		);
 	</insert>
 	
-	<update id="update" parameterType="com.sm24soft.entity.CertificationStandard">
+	<update id="update" parameterType="com.sm24soft.entity.Certificate">
 		UPDATE `certificate`
 		SET
 			`name` = #{name},

@@ -1,7 +1,9 @@
 package com.sm24soft.service;
 
+import java.io.File;
 import java.util.List;
 
+import com.sm24soft.entity.Image.ImageType;
 import com.sm24soft.entity.Supplier;
 
 public interface ISupplierService extends IService {
@@ -12,9 +14,9 @@ public interface ISupplierService extends IService {
 	
 	String updateSupplier(Supplier supplier);
 	
-	String uploadRepresentativeLogo(String emailAddress, String logoFieldId, String logoUrl);
+	String uploadLogo(String email, String existingLogoId, ImageType imageType, File logoFile);
 	
-	String uploadOperationImage(String emailAddress, String imageFieldId, String imageUrl);
+	String uploadOperationImage(String email, String existingOperImageId, ImageType imageType, File imageFile);
 	
 	Supplier findById(String id);
 	

@@ -6,8 +6,14 @@ import com.sm24soft.common.util.DateUtil;
 
 public class BaseEntity extends Entity {
 	
-	private final String DEFAULT_SYSTEM_USER = "00000000";
+	private final String DEFAULT_USER = "00000000";
 	
+	/**
+	 * Actual status for one entity (RECORD in underlying database)
+	 * 
+	 * @author sondn
+	 *
+	 */
 	public enum EntityStatus {
 		NON_ACTIVE("1"),
 		ACTIVE("0");
@@ -43,6 +49,12 @@ public class BaseEntity extends Entity {
 
 	public BaseEntity() {
 		super();
+		// Default setting
+		this.deleteFlg = EntityStatus.ACTIVE.value();
+		this.createdAt = DateUtil.now();
+		this.createdUserId = DEFAULT_USER;
+		this.updatedAt = DateUtil.now();
+		this.updatedUserId = DEFAULT_USER;
 	}
 
 	public String getDeleteFlg() {
@@ -65,6 +77,7 @@ public class BaseEntity extends Entity {
 		return createdAt;
 	}
 
+	@Deprecated
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
@@ -85,17 +98,13 @@ public class BaseEntity extends Entity {
 		this.updatedAt = updatedAt;
 	}
 
-	/**
-	 * Default is system user
-	 */
+	@Deprecated
 	public void setCreatedUserIdAsDefault() {
-		this.createdUserId = DEFAULT_SYSTEM_USER;
+		this.createdUserId = DEFAULT_USER;
 	}
 	
-	/**
-	 * Default is system user
-	 */
+	@Deprecated
 	public void setUpdatedUserIdAsDefault() {
-		this.updatedUserId = DEFAULT_SYSTEM_USER;
+		this.updatedUserId = DEFAULT_USER;
 	}
 }

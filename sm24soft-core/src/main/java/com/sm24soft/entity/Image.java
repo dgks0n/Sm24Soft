@@ -32,6 +32,7 @@ public class Image extends BaseEntity {
 	 * caption 
 	 * type: 0, 1, 2
 	 * supplier_id
+	 * supplier_email_address (it's necessary for supplier)
 	 * item_id 
 	 * delete_flg 
 	 * created_at 
@@ -46,6 +47,8 @@ public class Image extends BaseEntity {
 	private String type;
 
 	private Supplier supplier;
+	
+	private Supplier supplierLoadedByEmail;
 	
 	private Item item;
 
@@ -90,6 +93,14 @@ public class Image extends BaseEntity {
 
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
+	}
+
+	public Supplier getSupplierLoadedByEmail() {
+		return supplierLoadedByEmail;
+	}
+
+	public void setSupplierLoadedByEmail(Supplier supplierLoadedByEmail) {
+		this.supplierLoadedByEmail = supplierLoadedByEmail;
 	}
 
 	public Item getItem() {

@@ -11,6 +11,10 @@
 			property="supplier"
 			javaType="com.sm24soft.entity.Supplier"
 			select="com.sm24soft.repository.SupplierRepository.findById" />
+		<association column="supplier_email_address"
+			property="supplierLoadedByEmail"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findByEmailAddress" />
 		<association column="item_id"
 			property="item"
 			javaType="com.sm24soft.entity.Item"
@@ -23,6 +27,7 @@
 		    `image`.`caption`,
 		    `image`.`type`,
 		    `image`.`supplier_id`,
+		    `image`.`supplier_email_address`,
 		    `image`.`item_id`,
 		    `image`.`delete_flg`,
 		    `image`.`created_at`,
@@ -43,34 +48,17 @@
 		ORDER BY `image`.`updated_at` DESC;
 	</select>
 	
-	<select id="findLogoBySupplierEmailAddress" resultMap="ImageResultMap">
+	<select id="findLogoBySupplierId" resultMap="ImageResultMap">
 		<include refid="findImageSQL" />
-		WHERE `image`.`supplier_email_address` = #{emailAddress}
-			AND `image`.`kind_of_image` = "0"
-			AND `image`.`image_field_id` = #{imageFieldId}
+		WHERE `image`.`supplier_id` = #{id}
+			AND `image`.`type` = "0"
 			AND `image`.`delete_flg` = "0";
 	</select>
 	
-	<select id="findLogoBySupplierEmailAddressAndDefaultFieldId" resultMap="ImageResultMap">
+	<select id="findOperationImagesBySupplierId" resultMap="ImageResultMap">
 		<include refid="findImageSQL" />
-		WHERE `image`.`supplier_email_address` = #{emailAddress}
-			AND `image`.`kind_of_image` = "0"
-			AND `image`.`image_field_id` = "LOGO"
-			AND `image`.`delete_flg` = "0";
-	</select>
-	
-	<select id="findOperationImageBySupplierEmailAddressAndFieldId" resultMap="ImageResultMap">
-		<include refid="findImageSQL" />
-		WHERE `image`.`supplier_email_address` = #{emailAddress}
-			AND `image`.`kind_of_image` = "1"
-			AND `image`.`image_field_id` = #{imageFieldId}
-			AND `image`.`delete_flg` = "0";
-	</select>
-	
-	<select id="findOperationImagesBySupplierEmailAddress" resultMap="ImageResultMap">
-		<include refid="findImageSQL" />
-		WHERE `image`.`supplier_email_address` = #{emailAddress}
-			AND `image`.`kind_of_image` = "1"
+		WHERE `image`.`supplier_id` = #{id}
+			AND `image`.`type` = "1"
 			AND `image`.`delete_flg` = "0"
 		ORDER BY `image`.`updated_at` DESC;
 	</select>
@@ -83,6 +71,7 @@
 			`caption`,
 			`type`,
 			`supplier_id`,
+			`supplier_email_address`,
 			`item_id`,
 			`delete_flg`,
 			`created_at`,
@@ -96,6 +85,7 @@
 			#{caption},
 			#{type},
 			#{supplier.id},
+			#{supplierLoadedByEmail.email},
 			#{item.id},
 			#{deleteFlg},
 			#{createdAt},
@@ -112,6 +102,7 @@
 			`caption` = #{caption},
 			`type` = #{type},
 			`supplier_id` = #{supplier.id},
+			`supplier_email_address` = #{supplierLoadedByEmail.email},
 			`item_id` = #{item.id},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),

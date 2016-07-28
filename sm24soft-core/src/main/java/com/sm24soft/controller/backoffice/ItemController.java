@@ -95,8 +95,8 @@ public class ItemController extends ApplicationController {
 	
 	@RequestMapping(value = "/upload-image", method = RequestMethod.POST)
 	public @ResponseBody HttpResponse<String> uploadPreviewImage(
-			@RequestParam(value = "file", required = true) final MultipartFile fileUpload,
-			@RequestParam(value = "imageType", required = true) final String imageType) {
+			@RequestParam(value = "file") final MultipartFile fileUpload, 
+			@RequestParam(value = "imageType") final String imageType) {
 		logger.info("Call uploadPreviewImage()");
 		
 		try {

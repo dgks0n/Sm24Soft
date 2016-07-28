@@ -17,56 +17,54 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.controller.ApplicationController;
-import com.sm24soft.entity.CertificationStandard;
+import com.sm24soft.entity.Certificate;
 import com.sm24soft.entity.Supplier;
 import com.sm24soft.http.response.HttpResponse;
-import com.sm24soft.service.ICertificationStandardService;
+import com.sm24soft.service.ICertificateService;
 import com.sm24soft.service.ISupplierService;
 
 @org.springframework.stereotype.Controller
-@RequestMapping("/admin/certification")
-public class CertificationStandardController extends ApplicationController {
+@RequestMapping("/admin/certificate")
+public class CertificateController extends ApplicationController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CertificationStandardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CertificateController.class);
 	
 	private ISupplierService supplierService;
 	
-	private ICertificationStandardService certificationStandardService;
+	private ICertificateService certificateService;
 	
 	@Autowired
-	public CertificationStandardController(ISupplierService supplierService,
-			ICertificationStandardService certificationStandardService) {
+	public CertificateController(ISupplierService supplierService, ICertificateService certificateService) {
 		this.supplierService = supplierService;
-		this.certificationStandardService = certificationStandardService;
+		this.certificateService = certificateService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String renderCertificationStandardResultPage(
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+	public String renderCertificateResultPage(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
 			final Model model) {
-		logger.info("Call renderCertificationStandardResultPage()");
+		logger.info("Call renderCertificateResultPage()");
 		
-		List<CertificationStandard> listOfCertificationStandards = null;
+		List<Certificate> listOfCertificates = null;
 		
 		try {
 			if (StringUtils.isEmpty(keyword)) {
-				listOfCertificationStandards = certificationStandardService.findAll();
+				listOfCertificates = certificateService.findAll();
 			} else {
-				listOfCertificationStandards = certificationStandardService.findAllBySupplierName(keyword);
+				listOfCertificates = certificateService.findAllBySupplierName(keyword);
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}
 		
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("listOfCertificationStandards", listOfCertificationStandards);
+		model.addAttribute("listOfCertificates", listOfCertificates);
 		
 		return "back-office/certificate/list";
 	}
 	
 	@RequestMapping(path = { "/create-new" }, method = RequestMethod.GET)
-	public String renderCreateNewCertificationStandardPage(final Model model) {
-		logger.info("Call renderCreateNewCertificationStandardPage()");
+	public String renderCreateNewCertificatePage(final Model model) {
+		logger.info("Call renderCreateNewCertificatePage()");
 		
 		try {
 			List<Supplier> listOfSuppliers = supplierService.findAllSuppliers();
@@ -80,12 +78,11 @@ public class CertificationStandardController extends ApplicationController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody HttpResponse<String> createNewCertificationStandard(
-			@RequestBody CertificationStandard certificationStandard) {
-		logger.info("Call createNewCertificationStandard()");
+	public @ResponseBody HttpResponse<String> createNewCertificate(@RequestBody Certificate certificate) {
+		logger.info("Call createNewCertificate()");
 		
 		try {
-			certificationStandardService.createNewCertificationStandard(certificationStandard);
+			certificateService.createNewCertificate(certificate);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			return getErrorStatus(ex);
@@ -94,15 +91,15 @@ public class CertificationStandardController extends ApplicationController {
 	}
 
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.GET)
-	public String renderUpdateCertificationStandardPage(@PathVariable("id") String id, final Model model) {
-		logger.info("Call renderUpdateCertificationStandardPage()");
+	public String renderUpdateCertificatePage(@PathVariable("id") String id, final Model model) {
+		logger.info("Call renderUpdateCertificatePage()");
 		
 		try {
 			List<Supplier> listOfSuppliers = supplierService.findAllSuppliers();
 			model.addAttribute("listOfSuppliers", listOfSuppliers);
 			
-			CertificationStandard certificationStandard = certificationStandardService.findById(id);
-			model.addAttribute("certificationStandard", certificationStandard);
+			Certificate certificate = certificateService.findById(id);
+			model.addAttribute("certificate", certificate);
 		} catch (IllegalArgumentException | ObjectNotFoundException ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -111,17 +108,17 @@ public class CertificationStandardController extends ApplicationController {
 			logger.error(ex.getMessage(), ex);
 			
 			model.addAttribute("listOfSuppliers", null);
-			model.addAttribute("certificationStandard", null);
+			model.addAttribute("certificate", null);
 		}
 		return "back-office/certificate/update";
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.DELETE)
-	public @ResponseBody HttpResponse<String> deleteCertificationStandard(@PathVariable("id") String id) {
-		logger.info("Call deleteCertificationStandard()");
+	public @ResponseBody HttpResponse<String> deleteCertificate(@PathVariable("id") String id) {
+		logger.info("Call deleteCertificate()");
 		
 		try {
-			certificationStandardService.deleteById(id);
+			certificateService.deleteById(id);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			
@@ -131,14 +128,13 @@ public class CertificationStandardController extends ApplicationController {
 	}
 	
 	@RequestMapping(path = { "/{id}" }, method = RequestMethod.PUT)
-	public @ResponseBody HttpResponse<String> updateCertificationStandard(
-			@PathVariable("id") String id,
-			@RequestBody CertificationStandard certification) {
-		logger.info("Call updateCertificationStandard()");
+	public @ResponseBody HttpResponse<String> updateCertificate(
+			@PathVariable("id") String id, @RequestBody Certificate certificate) {
+		logger.info("Call updateCertificate()");
 		
 		try {
-			certification.setId(id);
-			certificationStandardService.updateCertificationStandard(certification);
+			certificate.setId(id);
+			certificateService.updateCertificate(certificate);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			

@@ -12,47 +12,45 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sm24soft.common.exception.ObjectNotFoundException;
 import com.sm24soft.common.util.DateUtil;
 import com.sm24soft.common.util.StringFormatUtil;
-import com.sm24soft.entity.CertificationStandard;
+import com.sm24soft.entity.Certificate;
 import com.sm24soft.entity.Supplier;
-import com.sm24soft.repository.CertificationStandardRepository;
+import com.sm24soft.repository.CertificateRepository;
 import com.sm24soft.repository.SupplierRepository;
 
-@Service(ICertificationStandardService.SERVICE_ID)
-public class CertificationStandardService implements ICertificationStandardService {
+@Service(ICertificateService.SERVICE_ID)
+public class CertificateService implements ICertificateService {
 
 	private SupplierRepository supplierRepository;
 	
-	private CertificationStandardRepository certificationRepository;
+	private CertificateRepository certificateRepository;
 	
 	@Autowired
-	public CertificationStandardService(SupplierRepository supplierRepository,
-			CertificationStandardRepository certificationRepository) {
+	public CertificateService(SupplierRepository supplierRepository, CertificateRepository certificateRepository) {
 		this.supplierRepository = supplierRepository;
-		this.certificationRepository = certificationRepository;
+		this.certificateRepository = certificateRepository;
 	}
 
 	@Override
-	public List<CertificationStandard> findAllBySupplierName(String supplierName) {
+	public List<Certificate> findAllBySupplierName(String supplierName) {
 		String searchKeyword = StringFormatUtil.appendPercentToLeftAndRight(supplierName);
-		return certificationRepository.findAllBySupplierName(searchKeyword);
+		return certificateRepository.findAllBySupplierName(searchKeyword);
 	}
 
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String createNewCertificationStandard(CertificationStandard certification) {
-		if (certification == null) {
+	public String createNewCertificate(Certificate certificate) {
+		if (certificate == null) {
 			throw new IllegalArgumentException("The object must not be null");
 		}
 		
-		if (StringUtils.isEmpty(certification.getName())) {
+		if (StringUtils.isEmpty(certificate.getName())) {
 			throw new IllegalArgumentException("The name must not be null and empty");
 		}
 		
-		Supplier belongToSupplier = certification.getSupplier();
+		Supplier belongToSupplier = certificate.getSupplier();
 		if (belongToSupplier == null || StringUtils.isEmpty(belongToSupplier.getId())) {
-			throw new IllegalArgumentException(
-					"Cannot create any certification standard object if current "
+			throw new IllegalArgumentException("Cannot create any certificate object if current "
 					+ "creating information does not valid.");
 		}
 		
@@ -62,38 +60,37 @@ public class CertificationStandardService implements ICertificationStandardServi
 			throw new ObjectNotFoundException("Belong to supplier object does not exist");
 		}
 		
-		certification.setSupplier(belongToSupplier);
-		certification.setCreatedAt(DateUtil.now());
-		certification.setCreatedUserIdAsDefault();
-		certification.setUpdatedAt(DateUtil.now());
-		certification.setUpdatedUserIdAsDefault();
+		certificate.setSupplier(belongToSupplier);
+		certificate.setCreatedAt(DateUtil.now());
+		certificate.setCreatedUserIdAsDefault();
+		certificate.setUpdatedAt(DateUtil.now());
+		certificate.setUpdatedUserIdAsDefault();
 		
-		certificationRepository.save(certification);
-		return certification.getIdWithPADZero();
+		certificateRepository.save(certificate);
+		return certificate.getIdWithPADZero();
 	}
 
 	@Override
 	@Transactional(rollbackFor = {
 			Exception.class }, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public String updateCertificationStandard(CertificationStandard certification) {
-		if (certification == null || StringUtils.isEmpty(certification.getId())) {
+	public String updateCertificate(Certificate newCertificate) {
+		if (newCertificate == null || StringUtils.isEmpty(newCertificate.getId())) {
 			throw new IllegalArgumentException("The update object is invalid OR does not exist in database");
 		}
 		
-		CertificationStandard oldCertificationStandard = certificationRepository.findById(
-				certification.getId());
-		if (oldCertificationStandard == null) {
+		Certificate oldCertificate = certificateRepository.findById(newCertificate.getId());
+		if (oldCertificate == null) {
 			throw new ObjectNotFoundException("The update object does not exist in database");
 		}
 		
-		oldCertificationStandard.setName(certification.getName());
-		oldCertificationStandard.setDescription(certification.getDescription());
-		oldCertificationStandard.setDetailsLinkUrl(certification.getDetailsLinkUrl());
-		oldCertificationStandard.setUpdatedAt(DateUtil.now());
-		oldCertificationStandard.setUpdatedUserIdAsDefault();
+		oldCertificate.setName(newCertificate.getName());
+		oldCertificate.setDescription(newCertificate.getDescription());
+		oldCertificate.setDetailsLinkUrl(newCertificate.getDetailsLinkUrl());
+		oldCertificate.setUpdatedAt(DateUtil.now());
+		oldCertificate.setUpdatedUserIdAsDefault();
 		
-		certificationRepository.update(oldCertificationStandard);
-		return oldCertificationStandard.getIdWithPADZero();
+		certificateRepository.update(oldCertificate);
+		return oldCertificate.getIdWithPADZero();
 	}
 
 	@Override
@@ -103,15 +100,15 @@ public class CertificationStandardService implements ICertificationStandardServi
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		certificationRepository.deleteById(id);
+		certificateRepository.deleteById(id);
 	}
 
 	@Override
-	public CertificationStandard findById(String id) {
+	public Certificate findById(String id) {
 		if (StringUtils.isEmpty(id)) {
 			throw new IllegalArgumentException("The Id must not be null and empty");
 		}
-		CertificationStandard certification = certificationRepository.findById(id);
+		Certificate certification = certificateRepository.findById(id);
 		if (certification == null) {
 			throw new ObjectNotFoundException("Not found");
 		}
@@ -119,7 +116,7 @@ public class CertificationStandardService implements ICertificationStandardServi
 	}
 
 	@Override
-	public List<CertificationStandard> findAll() {
-		return certificationRepository.findAll();
+	public List<Certificate> findAll() {
+		return certificateRepository.findAll();
 	}
 }

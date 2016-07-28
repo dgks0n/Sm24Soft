@@ -15,75 +15,113 @@ import com.sm24soft.common.util.DateUtil;
  * @author sondn
  */
 public class Item extends BaseEntity {
-	
+
 	public static final String DEFAULT_UNIT_OF_SALE = "vnđ";
 	public static final String DEFAULT_UNIT_OF_DISCOUNT = "vnđ";
 	public static final String DEFAULT_UNIT_OF_WEIGHT = "kg";
-	
+
 	public static final String DEFAULT_SALEABLE_FLAG = "1";
+
+	// ITEM table:
+	// ====================================================
+	//
+	// id,
+	// plu_code1,
+	// plu_code2,
+	// plu_code3,
+	// short_name,
+	// full_name,
+	// description,
+	// item_category_id,
+	// store_id,
+	// supplier_id,
+	// import_date,
+	// price,
+	// sale_price,
+	// old_of_sale_price,
+	// unit_of_price,
+	// discount,
+	// unit_of_discount,
+	// tax_id,
+	// saleable_flag,
+	// manufacture_date,
+	// expire_date,
+	// weight_for_sale_price,
+	// weight_of_one_box,
+	// unit_of_one_box,
+	// total_weight,
+	// total_remaining_weight_after_sell,
+	// unit_of_weight,
+	// thumbnail_id,
+	// preview_image_id1,
+	// preview_image_id2,
+	// preview_image_id3,
+	// delete_flg,
+	// created_at,
+	// created_user_id,
+	// updated_at,
+	// updated_user_id
 	
 	/**
 	 * NOTE: Formula for how to calculate price of an item as below described
 	 * 
-	 * ( salePrice / weight ) * weightOfOneBox = price for one box.
-	 * Example:
-	 * 		(150000 / 1) * 3 = (150.000VND / 1kg) * 3kg (1box) = 450000VND/1box
+	 * ( salePrice / weight ) * weightOfOneBox = price for one box. Example:
+	 * (150000 / 1) * 3 = (150.000VND / 1kg) * 3kg (1box) = 450000VND/1box
 	 * 
-	 * Dien giai:
-	 * -----------
+	 * Dien giai: -----------
 	 * 
-	 * Gia tien cua san pham nay la 150.000VND cho 1kg. Tuy nhien, san pham nay duoc
-	 * dong theo HOP (box) va HOP nay co trong luong 3kg. Nhu vay gia tien cua mot
-	 * HOP san pham nay la 150.000 * 3 = 450.000VND.
+	 * Gia tien cua san pham nay la 150.000VND cho 1kg. Tuy nhien, san pham nay
+	 * duoc dong theo HOP (box) va HOP nay co trong luong 3kg. Nhu vay gia tien
+	 * cua mot HOP san pham nay la 150.000 * 3 = 450.000VND.
 	 * 
-	 * Neu khach hang muon mua 3 hoac 4 HOP (box) thi gia tien se la:
-	 * Gia tien 1 HOP (box) * so luong HOP (box) = ???
+	 * Neu khach hang muon mua 3 hoac 4 HOP (box) thi gia tien se la: Gia tien 1
+	 * HOP (box) * so luong HOP (box) = ???
 	 * 
 	 */
-
+	
 	private String pLUCode1;
 	private String pLUCode2;
 	private String pLUCode3;
 	private String shortName;
 	private String fullName;
 	private String description;
-	
+
 	/*
 	 * Belong to a item-category
 	 */
 	private ItemCategory itemCategory;
-	
+
 	/*
 	 * Belong to a store (optional)
 	 * 
-	 * Default is NULL. 
+	 * Default is NULL.
 	 */
 	private Store store;
-	
+
 	/*
 	 * Belong to a supplier (MUST)
 	 */
 	private Supplier supplier;
-	
+
 	/*
 	 * Ngay nhap
 	 */
 	private Date importDate;
-	
+
 	/*
 	 * Gia nhap tren 1 don vi (NOTE: Luon Luon la 1 don vi).
 	 * 
 	 * Ex: 140000 VND/1kg
 	 */
 	private double price = 0;
-	
+
 	/*
 	 * Gia ban hien tai tren 1 don vi.
 	 * 
 	 * Ex: 150000 VND/1kg
 	 */
 	private double salePrice = 0;
-	
+
 	/*
 	 * Gia ban cu tren 1 don vi kg.
 	 * 
@@ -92,91 +130,89 @@ public class Item extends BaseEntity {
 	 * NOTE: Gia nay se duoc tinh dua tren % chiet khau
 	 */
 	private double oldSalePrice = 0;
-	
+
 	/*
-	 * Don vi cua gia ban tren 1 don vi.
-	 * Ex: VND (default)
+	 * Don vi cua gia ban tren 1 don vi. Ex: VND (default)
 	 */
 	private String unitOfSalePrice;
-	
+
 	/*
 	 * Chiet khau
 	 */
 	private float discount = 0;
-	
+
 	/*
 	 * Don vi cua chiet khau
 	 */
 	private String unitOfDiscount;
-	
+
 	/*
 	 * NULL, 0: NON_TAX
 	 * 
 	 * Default is NULL (NON_TAX)
 	 */
 	private Tax tax;
-	
+
 	/*
 	 * 0: NOT_FOR_SALE, 1: SALE
 	 */
 	private String saleableFlg = "1";
-	
+
 	/*
 	 * Ngay SX
 	 */
 	private Date manufactureDate = DateUtil.now();
-	
+
 	/*
 	 * Ngay HH
 	 */
 	private Date expireDate;
-	
+
 	/*
 	 * Can nang / 1 kg.
 	 * 
 	 * NOTE: Default is 1, su dung don vi nay de tinh tien.
 	 */
 	private float weightOfSalePrice = 1;
-	
+
 	/*
-	 * Can nang cua box.
-	 * Ex: box A: 0.5, box B: 1kg, box C: 3kg, box D: 5kg
+	 * Can nang cua box. Ex: box A: 0.5, box B: 1kg, box C: 3kg, box D: 5kg
 	 * 
 	 * Default is 1.
 	 */
 	private float weightOfOneBox = 1;
-	
+
 	/*
-	 * Don vi cua box 
+	 * Don vi cua box
 	 */
 	private String unitOfOneBox;
-	
+
 	/*
 	 * Tong so can nang cua san pham nay.
 	 * 
 	 * Ex: 100
 	 */
 	private float totalWeight;
-	
+
 	/*
 	 * Tong so can nang con lai sau khi da ban.
 	 * 
 	 * Ex: 10
 	 */
 	private float totalRemainingWeightAfterSell;
-	
+
 	/*
 	 * Don vi khoi luong.
 	 * 
 	 * Default is Kg.
 	 */
 	private String unitOfWeight = "kg";
-	
+
 	/*
 	 * Hinh anh dai dien
 	 */
 	private Image thumbnail;
-	
+
 	/*
 	 * Hinh anh hien thi
 	 */
@@ -350,7 +386,7 @@ public class Item extends BaseEntity {
 	public void setExpireDate(Date expireDate) {
 		this.expireDate = expireDate;
 	}
-	
+
 	public float getWeightOfSalePrice() {
 		return weightOfSalePrice;
 	}
@@ -362,7 +398,7 @@ public class Item extends BaseEntity {
 	public float getWeightOfOneBox() {
 		return weightOfOneBox;
 	}
-	
+
 	public void setWeightOfOneBox(float weightOfOneBox) {
 		this.weightOfOneBox = weightOfOneBox;
 	}
@@ -398,7 +434,7 @@ public class Item extends BaseEntity {
 	public void setUnitOfWeight(String unitOfWeight) {
 		this.unitOfWeight = unitOfWeight;
 	}
-	
+
 	public Image getThumbnail() {
 		return thumbnail;
 	}
@@ -441,5 +477,5 @@ public class Item extends BaseEntity {
 		builder.append("</button>");
 		return builder.toString();
 	}
-	
+
 }

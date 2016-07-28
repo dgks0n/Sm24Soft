@@ -83,7 +83,8 @@
 									<div class="form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">Hình ảnh đại diện (Logo) <span class="required">*</span></label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="logoUrl" class="form-control" type="file" name="logoUrl" data-id="LOGO" accept="image/*">
+											<input id="logoUrl" class="form-control" type="file" name="logoUrl" data-id="" accept="image/*">
+											<input type="hidden" name="logoUrl[id]">
 										</div>
 									</div>
 									<div class="form-group">
@@ -167,9 +168,9 @@
 									#set ( $inputId = "operationImageUrl" )
 									#set ( $inputClazz = "form-control" )
 									#foreach ( $number in [1..9] )
-									#springInputFileWithLabel ( $labelClazz "$labelText ($number)" "listOfImages$number" "$inputClazz" "$inputId" "" "OPERATION_IMAGE_0$number")
+									#springInputFileWithLabelAndInputHidden ( $labelClazz "$labelText" "listOfImages$number" "$inputClazz" "$inputId" "" "" "listOfImages[][id]")
 									#end
-									#springInputFileWithLabel ( $labelClazz "$labelText (10)" "listOfImages10" "$inputClazz" "$inputId" "" "OPERATION_IMAGE_10")
+									#springInputFileWithLabelAndInputHidden ( $labelClazz "$labelText" "listOfImages10" "$inputClazz" "$inputId" "" "" "listOfImages[][id]")
 								</div>
 							</form>
 						</div>

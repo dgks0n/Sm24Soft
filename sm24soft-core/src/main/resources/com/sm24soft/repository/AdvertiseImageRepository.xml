@@ -10,33 +10,33 @@
 	</resultMap>
 	
 	<sql id="findAdvertiseImageSQL">
-		SELECT `apress_ads`.`id`,
-		    `apress_ads`.`ad_title`,
-		    `apress_ads`.`ad_url`,
-		    `apress_ads`.`ad_path`,
-		    `apress_ads`.`status`,
-		    `apress_ads`.`delete_flg`,
-		    `apress_ads`.`created_at`,
-		    `apress_ads`.`created_user_id`,
-		    `apress_ads`.`updated_at`,
-		    `apress_ads`.`updated_user_id`
-		FROM `apress_ads`
+		SELECT `advertise_image`.`id`,
+		    `advertise_image`.`ad_title`,
+		    `advertise_image`.`ad_url`,
+		    `advertise_image`.`ad_path`,
+		    `advertise_image`.`status`,
+		    `advertise_image`.`delete_flg`,
+		    `advertise_image`.`created_at`,
+		    `advertise_image`.`created_user_id`,
+		    `advertise_image`.`updated_at`,
+		    `advertise_image`.`updated_user_id`
+		FROM `advertise_image`
 	</sql>
 	
 	<select id="findById" resultMap="AdvertiseImageResultMap">
 		<include refid="findAdvertiseImageSQL" />
-		WHERE `apress_ads`.`id` = #{id};
+		WHERE `advertise_image`.`id` = #{id};
 	</select>
 	
 	<select id="findAll" resultMap="AdvertiseImageResultMap">
 		<include refid="findAdvertiseImageSQL" />
-		WHERE `apress_ads`.`delete_flg` = "0"
-		ORDER BY `apress_ads`.`updated_at` DESC;
+		WHERE `advertise_image`.`delete_flg` = "0"
+		ORDER BY `advertise_image`.`updated_at` DESC;
 	</select>
 	
 	<insert id="save" parameterType="com.sm24soft.entity.AdvertiseImage"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		INSERT INTO `apress_ads`
+		INSERT INTO `advertise_image`
 		(
 			`ad_title`,
 			`ad_url`,
@@ -63,7 +63,7 @@
 	</insert>
 	
 	<insert id="saveListOfAdvertiseImages" parameterType="java.util.List" useGeneratedKeys="true">
-		INSERT INTO `apress_ads`
+		INSERT INTO `advertise_image`
 		(
 			`ad_title`,
 			`ad_url`,
@@ -90,7 +90,7 @@
 	</insert>
 	
 	<update id="update" parameterType="com.sm24soft.entity.AdvertiseImage">
-		UPDATE `apress_ads`
+		UPDATE `advertise_image`
 		SET
 			`ad_title` = #{advertiseTitle},
 			`ad_url` = #{advertiseUrl},
@@ -103,7 +103,7 @@
 	</update>
 	
 	<delete id="deleteById">
-		UPDATE `apress_ads`
+		UPDATE `advertise_image`
 		SET
 			`delete_flg` = "1",
 			`updated_at` = NOW()

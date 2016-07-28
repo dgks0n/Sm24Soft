@@ -60,6 +60,9 @@ public class ItemService implements IItemService {
 		if (StringUtils.isEmpty(item.getFullName())) {
 			item.setFullName(item.getShortName());
 		}
+		
+		// Boi vi gia nhap khong quan tam, nen se mac dinh cai dat
+		// la gia ban hien tai
 		item.setPrice(item.getSalePrice());
 		
 		// Neu ti le chiet khau (C) > 0 thi can phai tinh toan gia ban: 
@@ -300,6 +303,8 @@ public class ItemService implements IItemService {
 			oldItem.setPreviewImage2(prevImage3);
 		}
 		
+		// Gia nhap la gia khong quan tam, vi vay se duoc cai dat
+		// bang chinh gia ban hien tai
 		oldItem.setPrice(newItem.getSalePrice());
 		oldItem.setDiscount(newItem.getDiscount());
 		
