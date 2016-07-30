@@ -10,13 +10,15 @@
 		<result column="full_name" property="fullName" />
 		<result column="description" property="description" />
 		<result column="import_date" property="importDate" />
-		<result column="price" property="price" />
+		<result column="import_price" property="importPrice" />
+		<result column="new_import_price" property="newImportPrice" />
 		<result column="sale_price" property="salePrice" />
 		<result column="old_of_sale_price" property="oldSalePrice" />
 		<result column="unit_of_price" property="unitOfSalePrice" />
 		<result column="discount" property="discount" />
 		<result column="unit_of_discount" property="unitOfDiscount" />
-		<result column="saleable_flag" property="saleableFlg" />
+		<result column="saleable_flg" property="saleableFlg" />
+		<result column="farm_saleable_flg" property="farmSaleableFlg"/>
 		<result column="manufacture_date" property="manufactureDate" />
 		<result column="expire_date" property="expireDate" />
 		<result column="weight_for_sale_price" property="weightOfSalePrice" />
@@ -25,6 +27,9 @@
 		<result column="total_weight" property="totalWeight" />
 		<result column="total_remaining_weight_after_sell" property="totalRemainingWeightAfterSell" />
 		<result column="unit_of_weight" property="unitOfWeight" />
+		<result column="sales_expenses" property="salesExpenses" />
+		<result column="new_sales_expenses" property="newSalesExpenses" />
+		<result column="waiting_for_approval_flg" property="waitingForApprovalFlg" />
 		
 		<association column="item_category_id" 
 			property="itemCategory"
@@ -64,14 +69,16 @@
 		    `item`.`store_id`,
 		    `item`.`supplier_id`,
 		    `item`.`import_date`,
-		    `item`.`price`,
+		    `item`.`import_price`,
+		    `item`.`new_import_price`,
 		    `item`.`sale_price`,
 		    `item`.`old_of_sale_price`,
 		    `item`.`unit_of_price`,
 		    `item`.`discount`,
 		    `item`.`unit_of_discount`,
 		    `item`.`tax_id`,
-		    `item`.`saleable_flag`,
+		    `item`.`saleable_flg`,
+		    `item`.`farm_saleable_flg`,
 		    `item`.`manufacture_date`,
 		    `item`.`expire_date`,
 		    `item`.`weight_for_sale_price`,
@@ -80,10 +87,13 @@
 		    `item`.`total_weight`,
 		    `item`.`total_remaining_weight_after_sell`,
 		    `item`.`unit_of_weight`,
+		    `item`.`sales_expenses`,
+		    `item`.`new_sales_expenses`,
 		    `item`.`thumbnail_id`,
 		    `item`.`preview_image_id1`,
 		    `item`.`preview_image_id2`,
 		    `item`.`preview_image_id3`,
+		    `item`.`waiting_for_approval_flg`,
 		    `item`.`delete_flg`,
 		    `item`.`created_at`,
 		    `item`.`created_user_id`,
@@ -141,14 +151,16 @@
 			`store_id`,
 			`supplier_id`,
 			`import_date`,
-			`price`,
+			`import_price`,
+			`new_import_price`,
 			`sale_price`,
 			`old_of_sale_price`,
 			`unit_of_price`,
 			`discount`,
 			`unit_of_discount`,
 			`tax_id`,
-			`saleable_flag`,
+			`saleable_flg`,
+			`farm_saleable_flg`,
 			`manufacture_date`,
 			`expire_date`,
 			`weight_for_sale_price`,
@@ -157,10 +169,13 @@
 			`total_weight`,
 			`total_remaining_weight_after_sell`,
 			`unit_of_weight`,
+			`sales_expenses`,
+			`new_sales_expenses`,
 			`thumbnail_id`,
 			`preview_image_id1`,
 			`preview_image_id2`,
 			`preview_image_id3`,
+			`waiting_for_approval_flg`,
 			`delete_flg`,
 			`created_at`,
 			`created_user_id`,
@@ -179,7 +194,8 @@
 			#{store.id},
 			#{supplier.id},
 			#{importDate},
-			#{price},
+			#{importPrice},
+			#{newImportPrice},
 			#{salePrice},
 			#{oldSalePrice},
 			#{unitOfSalePrice},
@@ -187,6 +203,7 @@
 			#{unitOfDiscount},
 			#{tax.id},
 			#{saleableFlg},
+			#{farmSaleableFlg},
 			#{manufactureDate},
 			#{expireDate},
 			#{weightOfSalePrice},
@@ -195,10 +212,13 @@
 			#{totalWeight},
 			#{totalRemainingWeightAfterSell},
 			#{unitOfWeight},
+			#{salesExpenses},
+			#{newSalesExpenses},
 			#{thumbnail.id},
 			#{previewImage1.id},
 			#{previewImage2.id},
 			#{previewImage3.id},
+			#{waitingForApprovalFlg},
 			#{deleteFlg},
 			#{createdAt},
 			#{createdUserId},
@@ -220,14 +240,17 @@
 			`store_id` = #{store.id},
 			`supplier_id` = #{supplier.id},
 			`import_date` = #{importDate},
-			`price` = #{price},
+			`import_price` = #{importPrice},
+			`new_import_price` = #{newImportPrice},
 			`sale_price` = #{salePrice},
 			`old_of_sale_price` = #{oldSalePrice},
 			`unit_of_price` = #{unitOfSalePrice},
 			`discount` = #{discount},
 			`unit_of_discount` = #{unitOfDiscount},
 			`tax_id` = #{tax.id},
-			`saleable_flag` = #{saleableFlg},
+			`saleable_flg` = #{saleableFlg},
+			`farm_saleable_flg` = #{farmSaleableFlg},
+			`saleable_flg` = #{saleableFlg},
 			`manufacture_date` = #{manufactureDate},
 			`expire_date` = #{expireDate},
 			`weight_for_sale_price` = #{weightOfSalePrice},
@@ -236,10 +259,13 @@
 			`total_weight` = #{totalWeight},
 			`total_remaining_weight_after_sell` = #{totalRemainingWeightAfterSell},
 			`unit_of_weight` = #{unitOfWeight},
+			`sales_expenses` = #{salesExpenses},
+			`new_sales_expenses` = #{newSalesExpenses},
 			`thumbnail_id` = #{thumbnail.id},
 			`preview_image_id1` = #{previewImage1.id},
 			`preview_image_id2` = #{previewImage2.id},
 			`preview_image_id3` = #{previewImage3.id},
+			`waiting_for_approval_flg` = #{waitingForApprovalFlg},
 			`delete_flg` = #{deleteFlg},
 			`updated_at` = NOW(),
 			`updated_user_id` = #{updatedUserId}

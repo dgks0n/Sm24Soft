@@ -63,7 +63,7 @@ public class ItemService implements IItemService {
 		
 		// Boi vi gia nhap khong quan tam, nen se mac dinh cai dat
 		// la gia ban hien tai
-		item.setPrice(item.getSalePrice());
+//		item.setPrice(item.getSalePrice());
 		
 		// Neu ti le chiet khau (C) > 0 thi can phai tinh toan gia ban: 
 		// gia ban thuc te (A) = gia ban (B) - chiet khau (C)
@@ -305,7 +305,7 @@ public class ItemService implements IItemService {
 		
 		// Gia nhap la gia khong quan tam, vi vay se duoc cai dat
 		// bang chinh gia ban hien tai
-		oldItem.setPrice(newItem.getSalePrice());
+//		oldItem.setPrice(newItem.getSalePrice());
 		oldItem.setDiscount(newItem.getDiscount());
 		
 		// Neu ti le chiet khau (C) > 0 thi can phai tinh toan gia ban: 

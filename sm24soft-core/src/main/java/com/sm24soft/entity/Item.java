@@ -5,8 +5,6 @@ package com.sm24soft.entity;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.sm24soft.common.util.DateUtil;
 
 /**
@@ -17,6 +15,7 @@ import com.sm24soft.common.util.DateUtil;
 public class Item extends BaseEntity {
 
 	public static final String DEFAULT_UNIT_OF_SALE = "vnđ";
+	
 	public static final String DEFAULT_UNIT_OF_DISCOUNT = "vnđ";
 	public static final String DEFAULT_UNIT_OF_WEIGHT = "kg";
 
@@ -36,26 +35,31 @@ public class Item extends BaseEntity {
 	// store_id,
 	// supplier_id,
 	// import_date,
-	// price,
+	// import_price, => (UPDATE)
+	// new_import_price, => (NEW)
 	// sale_price,
 	// old_of_sale_price,
 	// unit_of_price,
 	// discount,
 	// unit_of_discount,
 	// tax_id,
-	// saleable_flag,
+	// saleable_flg,
+	// farm_saleable_flg, => (NEW)
 	// manufacture_date,
 	// expire_date,
 	// weight_for_sale_price,
-	// weight_of_one_box,
+	// weight_of_one_box, => (UPDATE) DATA as JSON String
 	// unit_of_one_box,
 	// total_weight,
 	// total_remaining_weight_after_sell,
 	// unit_of_weight,
+	// sales_expenses, => (NEW) Chi phí bán hàng
+	// new_sales_expenses, => (NEW)
 	// thumbnail_id,
 	// preview_image_id1,
 	// preview_image_id2,
 	// preview_image_id3,
+	// waiting_for_approval_flg => (NEW)
 	// delete_flg,
 	// created_at,
 	// created_user_id,
@@ -113,7 +117,8 @@ public class Item extends BaseEntity {
 	 * 
 	 * Ex: 140000 VND/1kg
 	 */
-	private double price = 0;
+	private double importPrice = 0;
+	private double newImportPrice = 0;
 
 	/*
 	 * Gia ban hien tai tren 1 don vi.
@@ -157,6 +162,7 @@ public class Item extends BaseEntity {
 	 * 0: NOT_FOR_SALE, 1: SALE
 	 */
 	private String saleableFlg = "1";
+	private String farmSaleableFlg = "1";
 
 	/*
 	 * Ngay SX
@@ -207,6 +213,9 @@ public class Item extends BaseEntity {
 	 * Default is Kg.
 	 */
 	private String unitOfWeight = "kg";
+	
+	private float salesExpenses;
+	private float newSalesExpenses;
 
 	/*
 	 * Hinh anh dai dien
@@ -214,11 +223,16 @@ public class Item extends BaseEntity {
 	private Image thumbnail;
 
 	/*
-	 * Hinh anh hien thi
+	 * Hinh anh hien thi. Maximum: 3
 	 */
 	private Image previewImage1;
 	private Image previewImage2;
 	private Image previewImage3;
+	
+	/*
+	 * Dang cho confirm, xac nhan tu phia Admin 
+	 */
+	private String waitingForApprovalFlg;
 
 	public Item() {
 		super();
@@ -265,10 +279,7 @@ public class Item extends BaseEntity {
 	}
 
 	public String getDescription() {
-		if (StringUtils.isEmpty(description)) {
-			return description;
-		}
-		return description.trim();
+		return description;
 	}
 
 	public void setDescription(String description) {
@@ -307,12 +318,20 @@ public class Item extends BaseEntity {
 		this.importDate = importDate;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getImportPrice() {
+		return importPrice;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setImportPrice(double importPrice) {
+		this.importPrice = importPrice;
+	}
+
+	public double getNewImportPrice() {
+		return newImportPrice;
+	}
+
+	public void setNewImportPrice(double newImportPrice) {
+		this.newImportPrice = newImportPrice;
 	}
 
 	public double getSalePrice() {
@@ -369,6 +388,14 @@ public class Item extends BaseEntity {
 
 	public void setSaleableFlg(String saleableFlg) {
 		this.saleableFlg = saleableFlg;
+	}
+
+	public String getFarmSaleableFlg() {
+		return farmSaleableFlg;
+	}
+
+	public void setFarmSaleableFlg(String farmSaleableFlg) {
+		this.farmSaleableFlg = farmSaleableFlg;
 	}
 
 	public Date getManufactureDate() {
@@ -435,6 +462,22 @@ public class Item extends BaseEntity {
 		this.unitOfWeight = unitOfWeight;
 	}
 
+	public float getSalesExpenses() {
+		return salesExpenses;
+	}
+
+	public void setSalesExpenses(float salesExpenses) {
+		this.salesExpenses = salesExpenses;
+	}
+
+	public float getNewSalesExpenses() {
+		return newSalesExpenses;
+	}
+
+	public void setNewSalesExpenses(float newSalesExpenses) {
+		this.newSalesExpenses = newSalesExpenses;
+	}
+
 	public Image getThumbnail() {
 		return thumbnail;
 	}
@@ -465,6 +508,14 @@ public class Item extends BaseEntity {
 
 	public void setPreviewImage3(Image previewImage3) {
 		this.previewImage3 = previewImage3;
+	}
+
+	public String getWaitingForApprovalFlg() {
+		return waitingForApprovalFlg;
+	}
+
+	public void setWaitingForApprovalFlg(String waitingForApprovalFlg) {
+		this.waitingForApprovalFlg = waitingForApprovalFlg;
 	}
 
 	public String getActualStatusAsString() {

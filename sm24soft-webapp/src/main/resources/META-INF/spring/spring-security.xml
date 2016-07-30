@@ -5,7 +5,7 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<!-- HTTP basic authentication in Spring Security -->
-	<http auto-config="false" 
+	<http auto-config="false"
 		entry-point-ref="loginUrlAuthenticationEntryPoint" access-decision-manager-ref="accessDecisionManager">
         <!-- ログイン時の画面制御 -->
         <custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
@@ -24,14 +24,9 @@
 		<intercept-url pattern="/admin/item-category/**" access="ROLE_ADMIN" requires-channel="http" />
 		
 		<!-- NONE AUTHENTICATE -->
-		<intercept-url pattern="/admin" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
-		
-		<!-- 全ての画面に対してROLE_USERのみアクセス可能に -->
+		<intercept-url pattern="/admin" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/j_spring_security_check" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		
-		<!-- Resource Configuration -->
-		<intercept-url pattern="/assets/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
-		<intercept-url pattern="/wp-content/**" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="http" />
+		<intercept-url pattern="/wp-content/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		
 		<port-mappings>
 			<port-mapping http="80" https="443" />
