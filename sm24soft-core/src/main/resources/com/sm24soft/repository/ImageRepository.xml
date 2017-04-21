@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.ImageRepository">
+	<resultMap type="com.sm24soft.entity.Image" id="ImageResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="absolute_path" property="absolutePath" />
+		<result column="caption" property="caption" />
+		<result column="type" property="type" />
+		
+		<association column="supplier_id"
+			property="supplier"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findById" />
+		<association column="supplier_email_address"
+			property="supplierLoadedByEmail"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findByEmailAddress" />
+		<association column="item_id"
+			property="item"
+			javaType="com.sm24soft.entity.Item"
+			select="com.sm24soft.repository.ItemRepository.findById" />
+	</resultMap>
+	
+	<sql id="findImageSQL">
+		SELECT `image`.`id`,
+		    `image`.`absolute_path`,
+		    `image`.`caption`,
+		    `image`.`type`,
+		    `image`.`supplier_id`,
+		    `image`.`supplier_email_address`,
+		    `image`.`item_id`,
+		    `image`.`delete_flg`,
+		    `image`.`created_at`,
+		    `image`.`created_user_id`,
+		    `image`.`updated_at`,
+		    `image`.`updated_user_id`
+		FROM `image`
+	</sql>
+	
+	<select id="findById" resultMap="ImageResultMap">
+		<include refid="findImageSQL" />
+		WHERE `image`.`id` = #{id};
+	</select>
+	
+	<select id="findAll" resultMap="ImageResultMap">
+		<include refid="findImageSQL" />
+		WHERE `image`.`delete_flg` = "0"
+		ORDER BY `image`.`updated_at` DESC;
+	</select>
+	
+	<select id="findLogoBySupplierId" resultMap="ImageResultMap">
+		<include refid="findImageSQL" />
+		WHERE `image`.`supplier_id` = #{id}
+			AND `image`.`type` = "0"
+			AND `image`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findOperationImagesBySupplierId" resultMap="ImageResultMap">
+		<include refid="findImageSQL" />
+		WHERE `image`.`supplier_id` = #{id}
+			AND `image`.`type` = "1"
+			AND `image`.`delete_flg` = "0"
+		ORDER BY `image`.`updated_at` DESC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.Image"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `image`
+		(
+			`absolute_path`,
+			`caption`,
+			`type`,
+			`supplier_id`,
+			`supplier_email_address`,
+			`item_id`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{absolutePath},
+			#{caption},
+			#{type},
+			#{supplier.id},
+			#{supplierLoadedByEmail.email},
+			#{item.id},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.Image">
+		UPDATE `image`
+		SET
+			`absolute_path` = #{absolutePath},
+			`caption` = #{caption},
+			`type` = #{type},
+			`supplier_id` = #{supplier.id},
+			`supplier_email_address` = #{supplierLoadedByEmail.email},
+			`item_id` = #{item.id},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `image`
+		SET
+			`delete_flg` = "1",
+			`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+</mapper>

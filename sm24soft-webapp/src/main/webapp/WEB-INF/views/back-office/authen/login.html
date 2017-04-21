@@ -1,0 +1,32 @@
+<div>
+	<a class="hiddenanchor" id="signup"></a> 
+	<a class="hiddenanchor" id="signin"></a>
+	<div class="login_wrapper">
+		<div class="animate form login_form">
+			<section class="login_content">
+				<form action="${request.contextPath}/j_spring_security_check" method="post">
+					<h1>Đăng nhập Form</h1>
+					<div>
+						<input type="text" name="j_username" class="form-control" placeholder="Tài khoản" required="required" />
+					</div>
+					<div>
+						<input type="password" name="j_password" class="form-control" placeholder="Mật khẩu" required="required" />
+					</div>
+					<div>
+						<button class="btn btn-default submit">Đăng nhập</button> 
+						<a class="reset_pass">Quên mật khẩu?</a>
+					</div>
+					<div class="clearfix"></div>
+					<div class="separator">
+						<div class="clearfix"></div>
+						<br />
+						<div>
+							<h1><i class="fa fa-paw"></i> GaLa.vn</h1>
+							<p>$!pageUtil.pageCopyright</p>
+						</div>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
+</div>

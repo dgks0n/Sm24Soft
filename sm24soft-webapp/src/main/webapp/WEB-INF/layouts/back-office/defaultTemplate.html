@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="contextPath" content="${request.contextPath}">
+<title>$!pageUtil.currentPageTitle</title>
+<link href="#springUrl('/webjars/bootstrap/css/bootstrap.min.css')" rel="stylesheet">
+<link href="#springUrl('/webjars/font-awesome/css/font-awesome.min.css')" rel="stylesheet">
+<link href="#springUrl('/wp-content/themes/gentelella/css/custom.min.css')" rel="stylesheet">
+
+<script src="#springUrl('/webjars/jquery/2.2.4/jquery.min.js')"></script>
+</head>
+<body class="nav-md">
+<div class="container body">
+	<div class="main_container">
+		<div class="col-md-3 left_col menu_fixed">
+			<div class="left_col scroll-view">
+				<div class="navbar nav_title" style="border: 0;">
+					<a href="${request.contextPath}/admin" class="site_title"><i class="fa fa-paw"></i> <span>GaLa.vn</span></a>
+				</div>
+				<div class="clearfix"></div>
+				<!-- menu profile quick info -->
+				<div class="profile">
+					<div class="profile_pic">
+						<img src="#springUrl('/wp-content/img/user.png')" alt="$!pageUtil.currentUserName" class="img-circle profile_img">
+					</div>
+					<div class="profile_info">
+						<span>Xin chào,</span>
+						<h2>$!pageUtil.currentUserName</h2>
+					</div>
+				</div>
+				<!-- /menu profile quick info -->
+				<div class="clearfix"></div>
+
+				<!-- sidebar menu -->
+				<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+					<div class="menu_section">
+						<h3>Quản lý (BOSS)</h3>
+						<ul class="nav side-menu">
+							<li>
+								<a><i class="fa fa-th-list"></i>Quản lý Danh mục <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/menu-item')">Danh mục Sản phẩm</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-home"></i>Quản lý Trang trại <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/supplier')">Thông tin Trang trại</a></li>
+									<li><a href="#springUrl('/admin/certificate')">Tiêu chuẩn & chứng chỉ</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-cube"></i>Quản lý Sản phẩm <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/item-category')">Nhóm Sản phẩm</a></li>
+									<li><a href="#springUrl('/admin/item')">Sản phẩm</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-shopping-cart"></i>Quản lý Đơn hàng <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/order?status=1')">Đơn hàng chờ duyệt</a></li>
+									<li><a href="#springUrl('/admin/order?status=2')">Đơn hàng chờ Ship</a></li>
+									<li><a href="#springUrl('/admin/order?status=3')">Đơn hàng đã hoàn thành</a></li>
+									<li><a href="#springUrl('/admin/order?status=4')">Đơn hàng đã huỷ</a></li>
+								</ul>
+							</li>
+							<li>
+								<a><i class="fa fa-newspaper-o"></i>Quản lý Tin tức <span class="fa fa-chevron-down"></span></a>
+								<ul class="nav child_menu">
+									<li><a href="#springUrl('/admin/news-promotion')">Tin tức & Khuyến mãi</a></li>
+									<li><a href="#springUrl('/admin/advertise-image')">Quản lý banner</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /sidebar menu -->
+			</div>
+		</div>
+
+		<!-- top navigation -->
+		<div class="top_nav">
+			<div class="nav_menu">
+				<nav class="" role="navigation">
+					<div class="nav toggle">
+						<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="">
+							<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
+								<img src="#springUrl('/wp-content/img/user.png')" alt="$!pageUtil.currentUserName">$!pageUtil.currentUserName
+								<span class=" fa fa-angle-down"></span>
+							</a>
+							<ul class="dropdown-menu dropdown-usermenu pull-right">
+								<li><a href="#springUrl('/admin/help')">Giúp đỡ</a></li>
+								<li><a href="#springUrl('/admin/logout')"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- /top navigation -->
+
+		<!-- page content -->
+		$!bodyContent
+		<!-- /page content -->
+
+		<!-- footer content -->
+		<footer>
+			<div class="pull-right">$!pageUtil.pageCopyright</div>
+			<div class="clearfix"></div>
+		</footer>
+		<!-- /footer content -->
+	</div>
+</div>
+<script src="#springUrl('/webjars/bootstrap/js/bootstrap.min.js')"></script>
+<script src="#springUrl('/webjars/jquery-validation/dist/jquery.validate.min.js')"></script>
+<script src="#springUrl('/webjars/jquery-validation/dist/additional-methods.min.js')"></script>
+<script src="#springUrl('/webjars/jquery.serializeJSON/jquery.serializejson.min.js')"></script>
+<script src="#springUrl('/webjars/tinymce/tinymce.min.js')"></script>
+<script src="#springUrl('/wp-content/themes/gentelella/js/custom.min.js')"></script>
+<script src="#springUrl('/wp-content/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js')"></script>
+<script src="#springUrl('/wp-content/plugins/log/jquery.firebug.console.log.js')"></script>
+<script src="#springUrl('/wp-content/js/util.js')"></script>
+</body>
+</html>

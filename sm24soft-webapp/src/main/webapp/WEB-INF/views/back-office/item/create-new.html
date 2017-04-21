@@ -1,0 +1,173 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Sản phẩm</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Thông tin chi tiết</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/item')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<!-- Smart Wizard -->
+						<p>Yêu cầu nhập thông tin của Sản phẩm theo mô tả như các bước dưới đây:</p>
+						<div id="wizard" class="form_wizard wizard_horizontal">
+							<ul class="wizard_steps">
+								<li>
+									<a href="#step_no1"> 
+										<span class="step_no">1</span> 
+										<span class="step_descr"> Step 1<br /> <small>Thông tin cơ bản</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step_no2"> 
+										<span class="step_no">2</span> 
+										<span class="step_descr"> Step 2<br /> <small>Hình ảnh đại diện Sản phẩm</small></span>
+									</a>
+								</li>
+							</ul>
+							<div id="step_no1">
+								<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/item')" method="post">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supplier-name">Trang trại trực thuộc <span class="required">*</span></label>
+										<div class="col-md-5 col-sm-5 col-xs-12">
+											<select id="supplier-name" name="supplier[id]" class="form-control" required="required">
+												<option value=""></option>
+											#foreach ($supplier in $!listOfSuppliers)
+												<option value="$!supplier.id">$!supplier.companyName</option>
+											#end
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="item-category">Danh mục Sản phẩm <span class="required">*</span></label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<select id="item-category" name="itemCategory[id]" class="form-control" required="required">
+												<option value=""></option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="short-name">Tên Sản phẩm <span class="required">*</span></label>
+										<div class="col-md-5 col-sm-5 col-xs-12">
+											<input id="short-name" class="form-control" type="text" name="shortName" required="required">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="sale-price">Giá bán <span class="required">*</span></label>
+										<div class="col-md-2 col-sm-2 col-xs-12">
+											<input id="sale-price" class="form-control" type="text" name="salePrice" required="required">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select id="unit-of-sale-price" name="unitOfSalePrice" class="form-control">
+												<option value="đ">đ</option>
+											</select>
+										</div>
+										<label class="control-label col-md-1 col-sm-1 col-xs-12" for="weight" style="text-align: center;">/</label>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<input id="weight" class="form-control" type="text" name="weight" value="1" readonly="readonly">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select name="unitOfWeight" class="form-control">
+												<option value="kg">kg</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="weight-of-one-box">Khối lượng đóng gói <span class="required">*</span></label>
+										<div class="col-md-2 col-sm-2 col-xs-12">
+											<input id="weight-of-one-box" class="form-control" type="text" name="weightOfOneBox" value="1">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select class="form-control">
+												<option value="kg">kg</option>
+											</select>
+										</div>
+										<label class="control-label col-md-1 col-sm-1 col-xs-12" style="text-align: center;">/</label>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<input class="form-control" type="text" value="1" readonly="readonly">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select id="unit-of-one-box" name="unitOfOneBox" class="form-control">
+												<option value="chiếc">chiếc</option>
+												<option value="bao">bao</option>
+												<option value="bó">bó</option>
+												<option value="hộp">hộp</option>
+												<option value="túi">túi</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="total-weight">Tổng khối lượng (E.g: 50Kg) <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="total-weight" class="form-control" type="text" name="totalWeight" required="required">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select class="form-control">
+												<option value="kg">kg</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="discount">Tỷ lệ khấu trừ <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="discount" class="form-control" type="text" name="discount" value="0">
+										</div>
+										<div class="col-md-1 col-sm-1 col-xs-12">
+											<select id="unit-of-discount" name="unitOfDiscount" class="form-control">
+												<option value="đ">đ</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Mô tả chi tiết</label>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<textarea name="description" id="description" class="form-control" rows="4" placeholder=""></textarea>
+											#springInputHidden( "PREVIEW_IMAGE_01" "" "previewImage1[id]" )
+											#springInputHidden( "PREVIEW_IMAGE_02" "" "previewImage2[id]" )
+											#springInputHidden( "PREVIEW_IMAGE_03" "" "previewImage3[id]" )
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="step_no2">
+								<form class="form-upload form-horizontal form-label-left">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-1">Hình ảnh đại diện <span class="required">*</span></label>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											#springInputFile( "preview-image-1" "form-control" "previewImage1" "PREVIEW_IMAGE_01" ""  )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-2">Hình ảnh đại diện </label>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											#springInputFile( "preview-image-2" "form-control" "previewImage2" "PREVIEW_IMAGE_02" ""  )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="preview-image-3">Hình ảnh đại diện </label>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											#springInputFile( "preview-image-3" "form-control" "previewImage3" "PREVIEW_IMAGE_03" ""  )
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Sản phẩm. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springErrorMessage( "fails-load-category-dialog" "Thông báo" "" "Không thể cập nhật danh sách Danh mục Sản phẩm cho Trang trại đã được lựa chọn. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springErrorMessage( "fails-upload-dialog" "Thông báo" "" "Không thể tải lên hình ảnh đại diện của Sản phẩm. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/wp-content/js/item.js')"></script>

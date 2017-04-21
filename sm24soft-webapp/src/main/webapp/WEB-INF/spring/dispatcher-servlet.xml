@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <!-- This tag registers the DefaultAnnotationHandlerMapping and
+         AnnotationMethodHandlerAdapter beans that are required for Spring MVC  -->
+	<mvc:annotation-driven />
+	
+	<!-- resources exclusions from servlet mapping -->
+	<mvc:resources mapping="/wp-content/**" location="/wp-content/">
+		<mvc:resource-chain resource-cache="true" auto-registration="true">
+			<mvc:resolvers>
+				<mvc:version-resolver>
+					<mvc:content-version-strategy patterns="/**" />
+				</mvc:version-resolver>
+			</mvc:resolvers>
+		</mvc:resource-chain>
+	</mvc:resources>
+	
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/">
+		<mvc:cache-control max-age="31556926" cache-public="true" />
+		<mvc:resource-chain resource-cache="true">
+			<mvc:resolvers>
+				<beans:bean class="org.springframework.web.servlet.resource.WebJarsResourceResolver" />
+			</mvc:resolvers>
+		</mvc:resource-chain>
+	</mvc:resources>
+	
+	<!-- 
+	  This bean sets up the Velocity environment for us based on a root path for templates.
+	  Optionally, a properties file can be specified for more control over the Velocity
+	  environment, but the defaults are pretty sane for file based template loading.
+	-->
+	<beans:bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<beans:property name="configLocation" value="/WEB-INF/velocity/velocity.properties" />
+	</beans:bean>
+
+	<!-- 
+	  View resolvers can also be configured with ResourceBundles or XML files. If you need
+	  different view resolving based on Locale, you have to use the resource bundle resolver.
+	-->
+	<beans:bean class="com.sm24soft.common.view.velocity.VelocityMultipleViewResolver">
+		<beans:property name="viewClass" value="com.sm24soft.common.view.velocity.VelocityToolsView" />
+		<beans:property name="toolboxConfigLocation" value="/WEB-INF/velocity/tools.xml" />
+		<beans:property name="numberToolAttribute" value="numberTool" />
+		<beans:property name="cache" value="false" />
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".html" />
+		<beans:property name="screenContentKey" value="bodyContent" />
+		<beans:property name="exposeSpringMacroHelpers" value="true" />
+		<beans:property name="contentType" value="text/html;charset=UTF-8" />
+		<beans:property name="mappings">
+			<beans:map>
+				<beans:entry key="back-office/authen/login" value="/WEB-INF/layouts/back-office/defaultLogin.html" />
+				<beans:entry key="back-office/*" value="/WEB-INF/layouts/back-office/defaultTemplate.html" />
+				
+				<beans:entry key="errors/*" value="/WEB-INF/layouts/defaultError.html" />
+			</beans:map>
+		</beans:property>
+		<beans:property name="attributesMap">
+			<beans:map>
+				<beans:entry key="pageUtil" value-ref="PageComponent" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+</beans:beans>

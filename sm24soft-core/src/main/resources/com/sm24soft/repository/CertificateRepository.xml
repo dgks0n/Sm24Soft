@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.CertificateRepository">
+	<resultMap type="com.sm24soft.entity.Certificate" id="CertificateResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="name" property="name" />
+		<result column="description" property="description" />
+		<result column="details_link_url" property="detailsLinkUrl" />
+		
+		<association column="supplier_email_address"
+			property="supplier"
+			javaType="com.sm24soft.entity.Supplier"
+			select="com.sm24soft.repository.SupplierRepository.findByEmailAddress" />
+	</resultMap>
+	
+	<sql id="findCertificateSQL">
+		SELECT `certificate`.`id`,
+		    `certificate`.`name`,
+		    `certificate`.`description`,
+		    `certificate`.`details_link_url`,
+		    `certificate`.`supplier_email_address`,
+		    `certificate`.`delete_flg`,
+		    `certificate`.`created_at`,
+		    `certificate`.`created_user_id`,
+		    `certificate`.`updated_at`,
+		    `certificate`.`updated_user_id`
+		FROM `certificate`
+	</sql>
+	
+	<select id="findAll" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
+		WHERE `certificate`.`delete_flg` = "0"
+		ORDER BY `certificate`.`name` ASC;
+	</select>
+	
+	<select id="findById" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
+		WHERE `certificate`.`id` = #{id};
+	</select>
+	
+	<select id="findAllBySupplierEmailAddress" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
+		WHERE `certificate`.`supplier_email_address` = #{emailAddress}
+			AND `certificate`.`delete_flg` = "0"
+		ORDER BY `certificate`.`name` ASC;
+	</select>
+	
+	<select id="findAllBySupplierName" resultMap="CertificateResultMap">
+		<include refid="findCertificateSQL" />
+		INNER JOIN `supplier`
+			ON `certificate`.`supplier_email_address` = `supplier`.`email_address`
+		WHERE `supplier`.`supplier_name` LIKE #{supplierName}
+			AND `certificate`.`delete_flg` = "0"
+			AND `supplier`.`delete_flg` = "0"
+		ORDER BY `certificate`.`name` ASC;
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.Certificate"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `certificate`
+		(
+			`name`,
+			`description`,
+			`details_link_url`,
+			`supplier_email_address`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{name},
+			#{description},
+			#{detailsLinkUrl},
+			#{supplier.email},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.Certificate">
+		UPDATE `certificate`
+		SET
+			`name` = #{name},
+			`description` = #{description},
+			`details_link_url` = #{detailsLinkUrl},
+			`supplier_email_address` = #{supplier.email},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+	</update>
+	
+	<delete id="deleteById">
+		UPDATE `certificate`
+		SET
+			`delete_flg` = "1",
+			`updated_at` = NOW()
+		WHERE `id` = #{id};
+	</delete>
+	
+</mapper>

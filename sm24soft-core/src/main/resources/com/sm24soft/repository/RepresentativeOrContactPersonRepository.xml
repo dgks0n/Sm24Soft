@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.RepresentativeOrContactPersonRepository">
+	<resultMap type="com.sm24soft.entity.RepresentativeOrContactPerson" id="RepresentativeOrContactPersonResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="short_name" property="shortName" />
+		<result column="full_name" property="fullName" />
+		<result column="address1" property="address1" />
+		<result column="address2" property="address2" />
+		<result column="national" property="national" />
+		<result column="identity_card_number" property="identifyCardNumber" />
+		<result column="telephone_number1" property="phoneNumber1" />
+		<result column="telephone_number2" property="phoneNumber2" />
+		<result column="telephone_number3" property="phoneNumber3" />
+		<result column="email_address" property="email" />
+		<result column="birthday" property="birthday" />
+	</resultMap>
+	
+	<sql id="findRepresentativeOrContactPersonSQL">
+	SELECT `person`.`id`,
+	    `person`.`short_name`,
+	    `person`.`full_name`,
+	    `person`.`birthday`,
+	    `person`.`address1`,
+	    `person`.`address2`,
+	    `person`.`email_address`,
+	    `person`.`national`,
+	    `person`.`identity_card_number`,
+	    `person`.`telephone_number1`,
+	    `person`.`telephone_number2`,
+	    `person`.`telephone_number3`,
+	    `person`.`created_at`,
+	    `person`.`created_user_id`,
+	    `person`.`updated_at`,
+	    `person`.`updated_user_id`
+	FROM `person`
+	</sql>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.RepresentativeOrContactPerson"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `person`
+		(
+			`short_name`,
+			`full_name`,
+			`birthday`,
+			`address1`,
+			`address2`,
+			`email_address`,
+			`national`,
+			`identity_card_number`,
+			`telephone_number1`,
+			`telephone_number2`,
+			`telephone_number3`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{shortName},
+			#{fullName},
+			#{birthday},
+			#{address1},
+			#{address2},
+			#{email},
+			#{national},
+			#{identifyCardNumber},
+			#{phoneNumber1},
+			#{phoneNumber2},
+			#{phoneNumber3},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.RepresentativeOrContactPerson">
+		UPDATE `person`
+		SET
+			`short_name` = #{shortName},
+			`full_name` = #{fullName},
+			`birthday` = #{birthday},
+			`address1` = #{address1},
+			`address2` = #{address2},
+			`email_address` = #{email},
+			`national` = #{national},
+			`identity_card_number` = #{identifyCardNumber},
+			`telephone_number1` = #{phoneNumber1},
+			`telephone_number2` = #{phoneNumber2},
+			`telephone_number3` = #{phoneNumber3},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = #{updatedAt},
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+	</update>
+	
+	<select id="findById" resultMap="RepresentativeOrContactPersonResultMap">
+		<include refid="findRepresentativeOrContactPersonSQL" />
+		WHERE `id` = #{id};
+	</select>
+	
+	<select id="findAll" resultMap="RepresentativeOrContactPersonResultMap">
+		<include refid="findRepresentativeOrContactPersonSQL" />
+		WHERE `delete_flg` = "0"
+		ORDER BY `person`.`short_name` ASC;
+	</select>
+	
+	<delete id="deleteById">
+		DELETE FROM `person`
+		WHERE `id` = #{id};
+	</delete>
+	
+</mapper>

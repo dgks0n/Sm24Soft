@@ -1,7 +1,16 @@
 *.class
+*.DS_Store
+
+# Commit without content under /bin folder
+*/bin
+*/target
+*/.classpath
+*/.project
+*/.settings/
+*sm24soft-webapp/src/main/webapp/wp-content/uploads/
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+*.mtj.tmp/
 
 # Package Files #
 *.jar

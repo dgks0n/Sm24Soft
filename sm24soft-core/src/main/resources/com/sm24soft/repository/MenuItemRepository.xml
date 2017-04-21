@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.2//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm24soft.repository.MenuItemRepository">
+	<resultMap type="com.sm24soft.entity.MenuItem" id="MenuItemResultMap"
+		extends="com.sm24soft.repository.Repository.BaseResultMap">
+		<result column="full_name_of_menu_item" property="fullNameOfMenuItem" />
+		<result column="role_of_menu_item" property="roleOfMenuItem" />
+		<result column="order_number" property="orderNumber" />
+		<result column="order_type" property="orderType" />
+		<result column="description" property="description" />
+		<result column="actual_status" property="actualStatus" />
+	</resultMap>
+	
+	<sql id="findMenuItemSQL">
+		SELECT `menu_item`.`id`,
+		    `menu_item`.`full_name_of_menu_item`,
+		    `menu_item`.`role_of_menu_item`,
+		    `menu_item`.`order_number`,
+		    `menu_item`.`order_type`,
+		    `menu_item`.`description`,
+		    `menu_item`.`actual_status`,
+		    `menu_item`.`delete_flg`,
+		    `menu_item`.`created_at`,
+		    `menu_item`.`created_user_id`,
+		    `menu_item`.`updated_at`,
+		    `menu_item`.`updated_user_id`
+		FROM `menu_item`
+	</sql>
+	
+	<sql id="findAllMenuItemsSQL">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu_item`.`delete_flg` = "0"
+		ORDER BY `menu_item`.`order_number`, `menu_item`.`full_name_of_menu_item` ASC;
+	</sql>
+	
+	<select id="findById" resultMap="MenuItemResultMap">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu_item`.`id` = #{id};
+	</select>
+	
+	<select id="findByFullName" resultMap="MenuItemResultMap">
+		<include refid="findMenuItemSQL" />
+		WHERE `menu_item`.`full_name_of_menu_item` = #{fullName}
+			AND `menu_item`.`delete_flg` = "0";
+	</select>
+	
+	<select id="findAllMenuItems" resultMap="MenuItemResultMap">
+		<include refid="findAllMenuItemsSQL" />
+	</select>
+	
+	<select id="findAll" resultMap="MenuItemResultMap">
+		<include refid="findAllMenuItemsSQL" />
+	</select>
+	
+	<insert id="save" parameterType="com.sm24soft.entity.MenuItem"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `menu_item`
+		(
+			`full_name_of_menu_item`,
+			`role_of_menu_item`,
+			`order_number`,
+			`order_type`,
+			`description`,
+			`actual_status`,
+			`delete_flg`,
+			`created_at`,
+			`created_user_id`,
+			`updated_at`,
+			`updated_user_id`
+		)
+		VALUES
+		(
+			#{fullNameOfMenuItem},
+			#{roleOfMenuItem},
+			#{orderNumber},
+			#{orderType},
+			#{description},
+			#{actualStatus},
+			#{deleteFlg},
+			#{createdAt},
+			#{createdUserId},
+			#{updatedAt},
+			#{updatedUserId}
+		);
+	</insert>
+	
+	<update id="update" parameterType="com.sm24soft.entity.MenuItem">
+		UPDATE `menu_item`
+		SET
+			`full_name_of_menu_item` = #{fullNameOfMenuItem},
+			`role_of_menu_item` = #{roleOfMenuItem},
+			`order_number` = #{orderNumber},
+			`order_type` = #{orderType},
+			`description` = #{description},
+			`actual_status` = #{actualStatus},
+			`delete_flg` = #{deleteFlg},
+			`updated_at` = NOW(),
+			`updated_user_id` = #{updatedUserId}
+		WHERE `id` = #{id};
+	</update>
+	
+	<delete id="deleteById">
+		DELETE FROM `menu_item`
+		WHERE `id` = #{id}
+			AND `delete_flg` = "0";
+	</delete>
+	
+</mapper>

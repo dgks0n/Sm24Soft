@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!--
+			ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+			
+			ALL 	- lowest possible rank and is intended to turn on all logging.
+			DEBUG 	- designates fine-grained informational events that are most useful to debug an application.
+			INFO 	- designates informational messages that highlight the progress of the application at coarse-grained level.
+			WARN 	- designates potentially harmful situations.
+			ERROR 	- designates ERROR events that might still allow the application to continue running.
+			FATAL 	- designates very severe ERROR events that will presumably lead the application to abort.
+			OFF 	- highest possible rank and is intended to turn off logging.
+     -->
+
+	<!-- Add a Daily log file appender that will roll over to a new log file 
+		each night. See http://logging.apache.org/log4j/1.2/apidocs/index.html?org/apache/log4j/DailyRollingFileAppender.html 
+		for details.
+	 -->
+	<appender name="DAILY_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/AppServerStatus.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5p | %c: %L | %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Add an appender that logs all errors to a separate log file -->
+	<appender name="ERROR_FILE" class="org.apache.log4j.rolling.RollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<rollingPolicy class="org.apache.log4j.rolling.FixedWindowRollingPolicy">
+			<param name="activeFileName" value="${catalina.base}/logs/AppServerError.log" />
+			<param name="fileNamePattern" value="${catalina.base}/logs/AppServerError_%i.log" />
+		</rollingPolicy>
+		<triggeringPolicy class="org.apache.log4j.rolling.SizeBasedTriggeringPolicy">
+			<!-- size in bytes -->
+			<param name="maxFileSize" value="10000000" />
+		</triggeringPolicy>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5p | %c: %L | %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+		</filter>
+	</appender>
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="Encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html -->
+			
+			<!-- A special feature of log4j is the "mapped diagnostic context" (MDC). 
+				 This is a map of key/value pairs which may be used by applications to 
+				 inject custom data into log entries. By default, Appway adds the following information to the MDC:  -->
+				 
+			<!-- 	userId: id of the current user -->
+			<!-- 	clientIP: IP address of the client making an HTTP request -->
+			<!-- 	httpSessionId: current HTTP session id -->
+			<!-- 	requestId: id of the current HTTP request (incremented by 1 for every request) -->
+			
+			<!-- To reference an MDC value in a log entry, the placeholder "%X{key}" may be used. 
+				 The following pattern includes the user id immediatley after the time stamp and 
+				 adds white-spaces to the end of it to have a fixed-size column with:  -->
+			
+			<!-- 	1%d | %-20X{userId} | %-5p %c - %m%n -->
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5p | %c: %L | %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="org.springframework">
+		<level value="OFF" />
+	</logger>
+	
+	<logger name="org.apache">
+		<level value="OFF" />
+	</logger>
+	
+	<logger name="com.zaxxer.hikari">
+		<level value="OFF" />
+	</logger>
+	
+	<logger name="org.mybatis.spring">
+		<level value="OFF" />
+	</logger>
+	
+	<logger name="net.sf.ehcache">
+		<level value="OFF" />
+	</logger>
+	
+	<!-- for all other loggers log only info and above log messages -->
+	<root>
+		<level value="INFO" />
+		
+		<appender-ref ref="DAILY_FILE" />
+		<appender-ref ref="ERROR_FILE" />
+		<appender-ref ref="CONSOLE"/>
+	</root>
+</log4j:configuration>

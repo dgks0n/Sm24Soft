@@ -1,0 +1,55 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Danh mục</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Thông tin chi tiết</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/menu-item')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<br>
+						<form class="form-create form-horizontal form-label-left form-main" action="#springUrl('/admin/menu-item')">
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="fullname-menu-item">Tên Danh mục <span class="required">*</span></label>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<input type="text" name="fullNameOfMenuItem" id="fullname-menu-item" required="required" class="form-control col-md-7 col-xs-12">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="order-number">Thứ tự ưu tiên</label>
+								<div class="col-md-2 col-sm-2 col-xs-12">
+									<input type="text" id="order-number" class="form-control" name="orderNumber">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả chi tiết <span class="required">*</span></label>
+								<div class="col-md-9 col-sm-9 col-xs-12">
+									<textarea name="description" id="description" class="form-control" rows="3" required="required"></textarea>
+								</div>
+							</div>
+							<div class="ln_solid"></div>
+							<div class="form-group">
+								<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+									<a class="btn btn-default btn-cancel">Huỷ</a>
+									<a class="btn btn-default btn-create-new">Đồng ý</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springErrorMessage( "fails-create-dialog" "Thông báo" "" "Không thể thêm mới Danh mục sản phẩm. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/wp-content/js/menu-item.js')"></script>

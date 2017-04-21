@@ -1,0 +1,249 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Trang trại</h3>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>
+							Thông tin chi tiết
+						</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="btn btn-default" href="#springUrl('/admin/supplier')"><i class="fa fa-reply"></i> Quay lại</a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<!-- Smart Wizard -->
+						<p>Cập nhật thông tin của Trang trại theo mô tả như các bước dưới đây: </p>
+						<div id="wizard" class="form_wizard wizard_horizontal">
+							<ul class="wizard_steps">
+								<li>
+									<a href="#step_no1"> 
+										<span class="step_no">1</span> 
+										<span class="step_descr"> Step 1<br /> <small>Thông tin cơ bản</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step_no2"> 
+										<span class="step_no">2</span> 
+										<span class="step_descr"> Step 2<br /> <small>Người đại diện</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step_no3"> 
+										<span class="step_no">3</span> 
+										<span class="step_descr"> Step 3<br /> <small>Người liên hệ trực tiếp</small></span>
+									</a>
+								</li>
+								<li>
+									<a href="#step_no4"> 
+										<span class="step_no">5</span> 
+										<span class="step_descr"> Step 5<br /> <small>Hình ảnh hoạt động</small></span>
+									</a>
+								</li>
+							</ul>
+							<form class="form-horizontal form-label-left form-update form-main" action="#springUrl('/admin/supplier/')$!supplier.id">
+								<div id="step_no1">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="company-name">Tên <span class="required">*</span></label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="company-name" name="companyName"  required="required" class="form-control" value="$!supplier.companyName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="company-trading-name">Tên giao dịch <span class="required">*</span></label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="company-trading-name" name="companyTradingName" required="required" class="form-control" value="$!supplier.companyTradingName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="email" class="form-control" name="email" required="required" type="text" value="$!supplier.email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone-number1">Số điện thoại <span class="required">*</span></label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="telephone-number1" class="form-control" name="telephoneNumber1" required="required" type="text" value="$!supplier.telephoneNumber1">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="address1">Địa chỉ <span class="required">*</span></label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="address1" class="form-control" type="text" name="address1" value="$!supplier.address1">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">Hình ảnh đại diện (Logo) <span class="required">*</span></label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="logoUrl" class="form-control" type="file" name="logoUrl" data-id="LOGO" value="$!supplier.logoUrl.imageUrl">
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Mô tả <span class="required">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-12">
+											<textarea id="description" class="form-control" name="description" rows="5">$!supplier.description</textarea>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Representative Person -->
+								<div id="step_no2">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-shortName">Tên</label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="represent-shortName" name="representativePerson[shortName]" class="form-control" value="$!supplier.representativePerson.shortName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-fullName">Tên đầy đủ</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="represent-fullName" name="representativePerson[fullName]" class="form-control" value="$!supplier.representativePerson.fullName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-email">Email</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="represent-email" class="form-control" name="representativePerson[email]" type="text" value="$!supplier.representativePerson.email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12"for="represent-phone-number1">Số điện thoại</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="represent-phone-number1" class="form-control" name="representativePerson[phoneNumber1]" type="text" value="$!supplier.representativePerson.phoneNumber1">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="represent-address1">Địa chỉ</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="represent-address1" class="form-control" type="text" name="representativePerson[address1]" value="$!supplier.representativePerson.address1">
+										</div>
+									</div>
+								</div>
+								
+								<!-- Contact Person -->
+								<div id="step_no3">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-shortName">Tên</label>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<input type="text" id="contact-shortName" name="contactPerson[shortName]" class="form-control" value="$!supplier.contactPerson.shortName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-fullName">Tên đầy đủ</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input type="text" id="contact-fullName" name="contactPerson[fullName]" class="form-control" value="$!supplier.contactPerson.fullName">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-email">Email</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="contact-email" class="form-control" name="contactPerson[email]" type="text" value="$!supplier.contactPerson.email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-phone-number1">Số điện thoại</label>
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<input id="contact-phone-number1" class="form-control" name="contactPerson[phoneNumber1]" type="text" value="$!supplier.contactPerson.phoneNumber1">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-address1">Địa chỉ</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<input id="contact-address1" class="form-control" type="text" name="contactPerson[address1]" value="$!supplier.contactPerson.address1">
+										</div>
+									</div>
+								</div>
+								<div id="step_no4">
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages1">Hình ảnh các hoạt động (1)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages1" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_1")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages2">Hình ảnh các hoạt động (2)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages2" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_2")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages3">Hình ảnh các hoạt động (3)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages3" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_3")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages4">Hình ảnh các hoạt động (4)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages4" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_4")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages5">Hình ảnh các hoạt động (5)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages5" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_4")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages6">Hình ảnh các hoạt động (6)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages6" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_6")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages7">Hình ảnh các hoạt động (7)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages7" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_7")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages8">Hình ảnh các hoạt động (8)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages8" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_8")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages9">Hình ảnh các hoạt động (9)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages9" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_9")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="listOfImages10">Hình ảnh các hoạt động (10)</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											#springInputFile ( "listOfImages10" "form-control" "operationImageUrl" "" "OPERATION_IMAGE_10")
+											#springWarningLable( "Không thay đổi giá trị này nếu bạn không muốn cập nhật!" )
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- End SmartWizard Content -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+#springConfirmMessage( "confirm-update-dialog" "Xác nhận" "" "Bạn muốn cập nhật Danh mục này?" "Huỷ" "Đồng ý" )
+#springErrorMessage( "fails-update-dialog" "Thông báo" "" "Không thể cập nhật thông tin Trang trại hoặc Nhà cung cấp. Vui lòng liên hệ với quản trị hệ thống." "Đóng" )
+#springWarningMessage( "fails-upload-dialog" "Cảnh báo" "Không thể cập nhật hình đại diện." "Vui lòng kiểm tra địa chỉ email hoặc liên hệ với quản trị hệ thống." "Đóng" )
+<script src="#springUrl('/wp-content/js/supplier.js')"></script>
